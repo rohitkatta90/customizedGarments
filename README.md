@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Garment Services — Service Catalog (Next.js)
 
-## Getting Started
+Mobile-first catalog for a women’s tailoring / alteration studio. Orders are **manual via WhatsApp** — no in-app checkout.
 
-First, run the development server:
+**Source repository:** [github.com/rohitkatta90/customizedGarments](https://github.com/rohitkatta90/customizedGarments)
+
+Deploy with **Vercel** (see [docs/PROJECT_GUIDE.md](./docs/PROJECT_GUIDE.md) §6). Vercel accounts are created by you at [vercel.com](https://vercel.com) (sign in with GitHub); this project cannot create one on your behalf.
+
+## Documentation
+
+| 📄 Document | What’s inside |
+|-------------|----------------|
+| **[docs/PROJECT_GUIDE.md](./docs/PROJECT_GUIDE.md)** | **Living project guide** — setup, env vars, run, deploy (Vercel/Netlify), structure, troubleshooting, maintenance |
+| **[docs/ORDER_MODEL.md](./docs/ORDER_MODEL.md)** | Multi-item **order / order items** model and WhatsApp summary format |
+| **[docs/ORDER_ADMIN_SYSTEM.md](./docs/ORDER_ADMIN_SYSTEM.md)** | **Firestore** order storage, **`/admin/orders`**, env vars, SQL migration path |
+| **[docs/ORDER_TRACKING.md](./docs/ORDER_TRACKING.md)** | **Customer `/track`** links, 5-step status, delays, WhatsApp line |
+| **[docs/ANALYTICS.md](./docs/ANALYTICS.md)** | **Metrics & insights** — definitions, data points, dashboard concept (no UI code) |
+| **[docs/EDGE_CASES.md](./docs/EDGE_CASES.md)** | **Edge cases** — scope changes, rush, cancel, delays, rework; rules & system mapping |
+| **[docs/ACCESSORIES_SERVICE_FLOW.md](./docs/ACCESSORIES_SERVICE_FLOW.md)** | **Styling extras** — pricing rules, admin quoting, WhatsApp confirmation |
+| **[docs/FINANCIAL_LEDGER.md](./docs/FINANCIAL_LEDGER.md)** | **Simple ledger** — orders, expenses, payment status; Sheets/Airtable → backend path |
+| **[docs/FINANCIAL_WORKFLOW.md](./docs/FINANCIAL_WORKFLOW.md)** | **End-to-end money flow** — quote → pay → deliver → receipt |
+| **[docs/CATALOG_CAPABILITIES.md](./docs/CATALOG_CAPABILITIES.md)** | **Full catalog feature list** — gallery, request form, WhatsApp, admin, receipts |
+| **[docs/OWNER_DATA_ACCESS.md](./docs/OWNER_DATA_ACCESS.md)** | **Owner / operator** — env vars, Firebase, admin URLs, privacy |
+| **[docs/PRICING_MODEL.md](./docs/PRICING_MODEL.md)** | **Tiers, ranges,** `pricing.json` — policy + maintenance |
+| **[docs/STYLING_EXTRAS_PRICING.md](./docs/STYLING_EXTRAS_PRICING.md)** | **Add-ons** — bands, categorization, approval + `stylingExtras` |
+| **[docs/EFFORT_BASED_PRICING.md](./docs/EFFORT_BASED_PRICING.md)** | **Effort units × base rate** — capacity, factors, consistency |
+| **[docs/DYNAMIC_PRICING.md](./docs/DYNAMIC_PRICING.md)** | **Rush & peak** — surcharges, demand bands, customer comms |
+| **[docs/PROFIT_MARGIN.md](./docs/PROFIT_MARGIN.md)** | **Profit margin** — labour, overhead, minimum margin, monitoring |
+| **[docs/PRICING_COMMUNICATION.md](./docs/PRICING_COMMUNICATION.md)** | **Customer pricing comms** — templates, tone, trust phrases, UX map |
+| **[docs/INTERNAL_PRICING_GUIDELINES.md](./docs/INTERNAL_PRICING_GUIDELINES.md)** | **Staff pricing rules** — tiers, escalation, recording |
+| **docs/ARCHITECTURE.md** | Technical deep dive: i18n, WhatsApp templates, JSON schemas, components |
+
+---
+
+## Quick start
 
 ```bash
+cd GarmentServicesProject
+cp .env.example .env.local   # then edit values
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Highlights
 
-## Learn More
+- **EN / हि** language toggle (cookie `gs_locale`) — UI + WhatsApp messages
+- **Catalog / reviews** in `public/data/*.json`
+- **Production:** `npm run build` must pass locally before deploy
 
-To learn more about Next.js, take a look at the following resources:
+See **[docs/PROJECT_GUIDE.md](./docs/PROJECT_GUIDE.md)** for full deployment steps and checklist.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Private / your business — adjust as needed.
