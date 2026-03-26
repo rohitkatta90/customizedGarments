@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "currency": "INR",
+  "trainingReviewCadenceMonths": 6,
+  "rangeAnchorFiles": {
+    "stitchingAlterationsExtras": "public/data/pricing.json",
+    "effortModel": "public/data/effort-pricing.json",
+    "rushPeak": "public/data/dynamic-pricing.json",
+    "marginFloor": "public/data/profit-margin.json"
+  },
+  "authority": [
+    {
+      "caseId": "within_tier_band",
+      "roleId": "any_quoted_staff"
+    },
+    {
+      "caseId": "outside_adjustment_band",
+      "roleId": "owner_or_lead"
+    },
+    {
+      "caseId": "published_config_change",
+      "roleId": "owner_only"
+    }
+  ],
+  "recording": [
+    {
+      "id": "whatsapp_written_quote",
+      "channelId": "whatsapp",
+      "whenId": "always_before_payment"
+    },
+    {
+      "id": "admin_ledger_agrees",
+      "channelId": "admin_order",
+      "whenId": "always"
+    },
+    {
+      "id": "exception_internal_note",
+      "channelId": "order_notes",
+      "whenId": "override_escalation_or_unusual_scope"
+    }
+  ]
+}

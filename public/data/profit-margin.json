@@ -1,0 +1,41 @@
+{
+  "currency": "INR",
+  "version": 1,
+  "costComponents": {
+    "costingMode": "effort_unit",
+    "laborRateInrPerEffortUnit": 180,
+    "laborRateInrPerHour": 720,
+    "laborHoursPerEffortUnit": 0.25,
+    "notes": "Internal labour cost per effort unit (below customer-facing base rate in effort-pricing.json). Hourly fields support manual time tracking when not using units."
+  },
+  "accessories": {
+    "markupPercentOnSupplierCost": 12,
+    "notes": "When you source trims for the customer, bill at supplier cost × (1 + markup). Margin check uses supplier cost in total cost; customer line includes markup."
+  },
+  "overhead": {
+    "percentOfDirectCost": 18,
+    "notes": "Rent, utilities, admin, tools — applied to labour (at internal cost) + accessories at supplier cost."
+  },
+  "marginPolicy": {
+    "basis": "revenue",
+    "minimumPercentPerOrder": 22,
+    "targetPercentPerOrder": 32,
+    "highMarginPercentThreshold": 40,
+    "lowMarginPercentThreshold": 22
+  },
+  "monitoring": {
+    "highProfitServiceProfileIds": ["stitching_designer"],
+    "highProfitTier": "premium",
+    "lowMarginWatchNotes": [
+      "Rush or peak jobs quoted without the surcharges in dynamic-pricing.json",
+      "Discounts beyond the staff adjustment band in pricing.json",
+      "Complexity or rework underestimated after intake",
+      "Accessories sourced at cost without agreed markup"
+    ]
+  },
+  "optimization": {
+    "reviewCadenceDays": 90,
+    "fabricRateInflationReviewPercent": 5,
+    "notes": "Revisit internal labour rates when wages or productivity shift; adjust base rate and effort factors together (see EFFORT_BASED_PRICING.md)."
+  }
+}

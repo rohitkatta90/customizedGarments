@@ -1,0 +1,14 @@
+{
+  "currency": "INR",
+  "version": 1,
+  "urgencySurchargePercent": {
+    "express": 15,
+    "nextDay": 25,
+    "sameDay": 40
+  },
+  "demandMultiplierRange": {
+    "peakSeason": [1.08, 1.2],
+    "highWorkload": [1.05, 1.15]
+  },
+  "referenceStandardLeadDays": 14
+}

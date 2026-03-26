@@ -1,0 +1,32 @@
+{
+  "currency": "INR",
+  "version": 1,
+  "baseRateInrPerEffortUnit": 500,
+  "serviceProfiles": {
+    "stitching_basic": {
+      "effortLevel": "low",
+      "typicalUnitsRange": [3, 7]
+    },
+    "stitching_designer": {
+      "effortLevel": "high",
+      "typicalUnitsRange": [8, 28]
+    },
+    "alteration": {
+      "effortLevel": "variable",
+      "typicalUnitsRange": [1, 12]
+    }
+  },
+  "factors": {
+    "additionalUnitsPerExtraPiece": 0.85,
+    "complexityMultiplier": {
+      "basic": 1,
+      "standard": 1.3,
+      "premium": 1.75
+    },
+    "addOnEffortUnitsPerCategory": 0.35,
+    "urgencyMultiplier": {
+      "standard": 1,
+      "rush": 1.2
+    }
+  }
+}

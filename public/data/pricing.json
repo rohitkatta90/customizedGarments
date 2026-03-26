@@ -1,0 +1,44 @@
+{
+  "currency": "INR",
+  "version": 2,
+  "tierOrder": ["basic", "standard", "premium"],
+  "stitching": {
+    "blouses": {
+      "basic": [1200, 2200],
+      "standard": [2200, 4500],
+      "premium": [4500, 9500]
+    },
+    "kurtis": {
+      "basic": [1500, 2800],
+      "standard": [2800, 5500],
+      "premium": [5500, 12000]
+    },
+    "dresses": {
+      "basic": [2500, 4500],
+      "standard": [4500, 9000],
+      "premium": [9000, 18000]
+    },
+    "custom_designs": {
+      "basic": [3000, 6000],
+      "standard": [6000, 12000],
+      "premium": [12000, 25000]
+    }
+  },
+  "alterations": {
+    "minor": [250, 900],
+    "major": [900, 5500]
+  },
+  "stylingExtras": {
+    "lace_border": [200, 4500],
+    "tassel_latkan": [80, 1500],
+    "buttons_zipper": [80, 1200],
+    "padding_cups": [250, 2000],
+    "embroidery": [500, 18000],
+    "dyeing_color": [400, 5000],
+    "extra_lining": [500, 4500]
+  },
+  "staffAdjustmentPercent": {
+    "min": -15,
+    "max": 25
+  }
+}

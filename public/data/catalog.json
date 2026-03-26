@@ -1,0 +1,98 @@
+[
+  {
+    "id": "bl-001",
+    "category": "blouses",
+    "title": "Pearl-button silk blouse",
+    "description": "Soft ivory silk with pearl accents — ideal for festive pairings.",
+    "image": {
+      "src": "https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=800&q=80",
+      "alt": "Ivory silk blouse on hanger",
+      "width": 800,
+      "height": 1000
+    }
+  },
+  {
+    "id": "bl-002",
+    "category": "blouses",
+    "title": "Minimal wrap blouse",
+    "description": "Clean lines, breathable cotton — everyday elegance.",
+    "image": {
+      "src": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800&q=80",
+      "alt": "Minimal wrap blouse styling",
+      "width": 800,
+      "height": 1100
+    }
+  },
+  {
+    "id": "ku-001",
+    "category": "kurtis",
+    "title": "Hand-block printed kurti",
+    "description": "Light cotton with artisan prints — summer comfort.",
+    "image": {
+      "src": "https://images.unsplash.com/photo-1618939304347-91c2a7d6b9c5?w=800&q=80",
+      "alt": "Printed cotton kurti",
+      "width": 800,
+      "height": 1050
+    }
+  },
+  {
+    "id": "ku-002",
+    "category": "kurtis",
+    "title": "Anarkali-inspired silhouette",
+    "description": "Flowing flare with delicate neckline detail.",
+    "image": {
+      "src": "https://images.unsplash.com/photo-1583496661160-fb5886a0aa63?w=800&q=80",
+      "alt": "Anarkali style dress",
+      "width": 800,
+      "height": 1200
+    }
+  },
+  {
+    "id": "dr-001",
+    "category": "dresses",
+    "title": "Midi wrap dress",
+    "description": "Versatile wrap — office to evening with a soft drape.",
+    "image": {
+      "src": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&q=80",
+      "alt": "Midi wrap dress",
+      "width": 800,
+      "height": 1000
+    }
+  },
+  {
+    "id": "dr-002",
+    "category": "dresses",
+    "title": "Evening pleated gown",
+    "description": "Structured pleats with a refined silhouette.",
+    "image": {
+      "src": "https://images.unsplash.com/photo-1566174053873-0e53e9c7e6b8?w=800&q=80",
+      "alt": "Evening pleated gown",
+      "width": 800,
+      "height": 1150
+    }
+  },
+  {
+    "id": "cu-001",
+    "category": "custom-designs",
+    "title": "Client sketch → finished piece",
+    "description": "From your Pinterest board or sketch to tailored fit.",
+    "image": {
+      "src": "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=80",
+      "alt": "Fashion design sketch and fabric",
+      "width": 800,
+      "height": 900
+    }
+  },
+  {
+    "id": "cu-002",
+    "category": "custom-designs",
+    "title": "Bridal blouse custom work",
+    "description": "Zardozi-inspired detailing per your reference images.",
+    "image": {
+      "src": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800&q=80",
+      "alt": "Ornate bridal blouse detail",
+      "width": 800,
+      "height": 1000
+    }
+  }
+]

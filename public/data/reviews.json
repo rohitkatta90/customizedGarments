@@ -1,0 +1,44 @@
+[
+  {
+    "id": "r1",
+    "name": "Ananya K.",
+    "rating": 5,
+    "comment": "They turned my screenshot into a flawless blouse — darts and fall exactly right. Quick, kind WhatsApp updates the whole way.",
+    "featured": true
+  },
+  {
+    "id": "r2",
+    "name": "Meera S.",
+    "rating": 5,
+    "comment": "Alteration on my silk dress was invisible — perfect hem and timeline.",
+    "featured": true
+  },
+  {
+    "id": "r3",
+    "name": "Priya R.",
+    "rating": 4,
+    "comment": "Loved the fabric suggestions. Delivery was a day later than hoped but quality made up for it.",
+    "featured": false
+  },
+  {
+    "id": "r4",
+    "name": "Divya N.",
+    "rating": 5,
+    "comment": "Custom kurti from their gallery reference — fit and neckline exactly as discussed. Delivery matched the date we locked in WhatsApp.",
+    "featured": true
+  },
+  {
+    "id": "r5",
+    "name": "Sneha P.",
+    "rating": 5,
+    "comment": "Clear pricing after measurements on chat. COD was smooth.",
+    "featured": false
+  },
+  {
+    "id": "r6",
+    "name": "Kavita M.",
+    "rating": 5,
+    "comment": "My festive blouse and my daughter's little top — both finished with care. Each piece was quoted separately before we started; no surprises.",
+    "featured": true
+  }
+]
