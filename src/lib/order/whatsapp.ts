@@ -16,8 +16,8 @@ function stitchingDesignSummary(item: StitchingOrderItem, catalog: CatalogItem[]
   }
   if (item.designSource === "upload") {
     return item.referenceFileName
-      ? `Reference file: ${item.referenceFileName}`
-      : "Reference image (to send in WhatsApp)";
+      ? `Reference (I’m sending this image in chat): ${item.referenceFileName}`
+      : "Reference image — I’m attaching it in this chat";
   }
   return item.describeText?.trim()
     ? `Design idea: ${item.describeText.trim()}`
@@ -39,6 +39,14 @@ export function buildMultiItemOrderMessage(
 ): string {
   const lines: string[] = [];
 
+  // No emoji in greeting: wa.me?text= often mangles supplementary-plane chars (e.g. U+1F60A) on WhatsApp.
+  lines.push(
+    "Hi :)",
+    "",
+    "I’d like to get the following stitched / serviced. I have attached the reference image(s) here — please use them for the design. (I’m sending the photo(s) in this chat right after this message.)",
+    "",
+  );
+
   if (customer?.name?.trim()) {
     lines.push(`Name: ${customer.name.trim()}`);
   }
@@ -48,15 +56,13 @@ export function buildMultiItemOrderMessage(
   if (customer?.requestedDeliveryDate) {
     lines.push(`Request date: ${customer.requestedDeliveryDate}`);
   }
-  if (lines.length) {
+  if (customer?.name?.trim() || customer?.phone?.trim() || customer?.requestedDeliveryDate) {
     lines.push("");
   }
 
   lines.push(
-    "Hi, I'd like to place a service request with the following items.",
-    "",
     `Total items: ${order.items.length}`,
-    `Order reference (client): ${order.id}`,
+    `Order reference: ${order.id}`,
     "",
   );
 
@@ -64,27 +70,31 @@ export function buildMultiItemOrderMessage(
     const n = index + 1;
     lines.push("---");
     if (item.service === "stitching") {
+      const s = item as StitchingOrderItem;
       lines.push(`Item ${n} — Stitching`);
-      lines.push(`Design / reference: ${stitchingDesignSummary(item, catalog)}`);
-      lines.push(`Notes: ${item.notes.trim() || "—"}`);
-      if (item.deliveryPreference) {
-        lines.push(`Preferred delivery: ${item.deliveryPreference}`);
+      lines.push(`Design / reference: ${stitchingDesignSummary(s, catalog)}`);
+      lines.push(`Notes: ${s.notes.trim() || "—"}`);
+      if (s.deliveryPreference) {
+        lines.push(`Preferred delivery date: ${s.deliveryPreference}`);
       }
     } else {
       lines.push(`Item ${n} — Alteration`);
       lines.push(`Type: ${alterationTypeLabels[item.alterationType]}`);
       if (item.garmentImageName) {
-        lines.push(`Garment photo filename: ${item.garmentImageName}`);
+        lines.push(`Garment photo (I’m attaching in chat where helpful): ${item.garmentImageName}`);
       }
       lines.push(`Notes: ${item.notes.trim() || "—"}`);
       if (item.deliveryPreference) {
-        lines.push(`Pickup / delivery preference: ${item.deliveryPreference}`);
+        lines.push(`Preferred delivery date: ${item.deliveryPreference}`);
       }
     }
     lines.push("");
   });
 
-  lines.push("I'll share reference images in this chat as needed.");
+  lines.push(
+    "Reminder: WhatsApp couldn’t attach my files from the website — the reference image(s) are the ones I’m sending in this chat.",
+    "Thank you!",
+  );
   if (extras?.trackingUrl?.trim()) {
     lines.push("");
     lines.push(`Track my order: ${extras.trackingUrl.trim()}`);
@@ -119,6 +129,9 @@ export function describeOrderItemLinesForReceipt(
 export function validateOrderItems(items: OrderItem[]): boolean {
   if (items.length === 0) return false;
   for (const item of items) {
+    if (!item.deliveryPreference?.trim()) {
+      return false;
+    }
     if (item.service === "stitching") {
       const s = item as StitchingOrderItem;
       if (s.designSource === "catalog" && !s.catalogId?.trim()) {

@@ -9,6 +9,7 @@ export type CustomerErrors = {
 
 export type ItemErrors = {
   designReference?: string;
+  deliveryDate?: string;
 };
 
 export type ServiceRequestValidationMessages = {
@@ -17,6 +18,7 @@ export type ServiceRequestValidationMessages = {
   phoneInvalid: string;
   catalogRequired: string;
   uploadRequired: string;
+  deliveryRequired: string;
 };
 
 export function validateServiceRequestForm(
@@ -41,17 +43,23 @@ export function validateServiceRequestForm(
   const itemErrors: Record<string, ItemErrors> = {};
 
   for (const item of items) {
+    const row: ItemErrors = {};
+
     if (item.service === "stitching") {
       const s = item as StitchingOrderItem;
-      const row: ItemErrors = {};
       if (s.designSource === "catalog" && !s.catalogId?.trim()) {
         row.designReference = m.catalogRequired;
       } else if (s.designSource === "upload" && !s.referenceFileName?.trim()) {
         row.designReference = m.uploadRequired;
       }
-      if (row.designReference) {
-        itemErrors[item.id] = row;
-      }
+    }
+
+    if (!item.deliveryPreference?.trim()) {
+      row.deliveryDate = m.deliveryRequired;
+    }
+
+    if (Object.keys(row).length > 0) {
+      itemErrors[item.id] = row;
     }
   }
 

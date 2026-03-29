@@ -4,9 +4,14 @@ export type CatalogCategory =
   | "dresses"
   | "custom-designs";
 
+/** Who the piece is for — drives gallery grouping. Defaults to women when omitted in JSON. */
+export type CatalogAudience = "women" | "girls";
+
 export type CatalogItem = {
   id: string;
   category: CatalogCategory;
+  /** Omit or any other value → treated as women's line */
+  audience?: CatalogAudience;
   title: string;
   description: string;
   image: {

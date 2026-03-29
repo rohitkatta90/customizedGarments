@@ -59,6 +59,7 @@ Staff can paste the same link from **Admin → Order details → Copy link**.
 
 - **List:** `/admin/orders` — quick status changes, link to **Details**.
 - **Details:** `/admin/orders/[id]` — status, copy tracking link, internal delay note, revised delivery date for customers.
+- **Design images & tailor handoff:** folder link, suggested rename filenames, **Copy tailor handoff** — see **[IMAGE_STORAGE_TAILOR_HANDOFF.md](./IMAGE_STORAGE_TAILOR_HANDOFF.md)**.
 
 ---
 

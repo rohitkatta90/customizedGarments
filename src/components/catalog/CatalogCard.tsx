@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 
 import { useI18n } from "@/components/i18n/I18nProvider";
@@ -25,13 +24,19 @@ export function CatalogCard({ item }: Props) {
 
   return (
     <article className="masonry-item overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:shadow-md">
-      <div className="relative aspect-[3/4] w-full bg-background">
-        <Image
+      <div
+        className="relative aspect-[3/4] w-full overflow-hidden bg-stone-100 [color-scheme:light]"
+        data-catalog-photo
+      >
+        {/* Native img avoids next/image optimizer issues (black tiles on some devices / hosts). */}
+        <img
           src={item.image.src}
           alt={item.image.alt}
-          fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className="object-cover"
+          width={item.image.width}
+          height={item.image.height}
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 h-full w-full object-cover"
         />
       </div>
       <div className="p-4">

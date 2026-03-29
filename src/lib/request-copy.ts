@@ -9,7 +9,7 @@ import type { ServiceRequestValidationMessages } from "@/lib/order/validate-serv
 export const requestCopy = {
   pageTitle: "Service request",
   pageIntro:
-    "Add one or more items (stitching and/or alteration). Each item can have its own design reference and optional delivery preference. Submit opens WhatsApp with a full summary — send photos there.",
+    "Add one or more items (stitching and/or alteration). Each item can have its own design reference and delivery date. You’ll confirm on the next step, then open WhatsApp — please attach reference photos there (WhatsApp cannot pull files from the website automatically).",
   requiredSuffix: "*",
   requiredLegend: "Fields marked * are required.",
   customerSection: "Your details",
@@ -37,18 +37,32 @@ export const requestCopy = {
   describePh: "Neckline, sleeves, length, occasion…",
   referenceFile: "Reference image",
   fileHintStitching:
-    "Files stay on your device until you send them in WhatsApp after this step.",
+    "The file name is saved with your request only — the image itself is not sent until you attach it in WhatsApp (we’ll remind you on the next screen).",
   notes: "Notes (fabric, measurements, instructions)",
-  notesPh: "Fabric, fit, special instructions…",
-  deliveryOptional: "Preferred delivery date (optional)",
+  notesPh:
+    "Fabric, fit, special instructions. Tip: use short bullets (Garment: … / Back: … / Length: …) so staff can copy into tailor notes.",
+  preferredDelivery: "Preferred delivery date",
   alterationType: "Type of alteration",
   garmentPhoto: "Garment photo (optional filename)",
   altNotesPh: "What should change? Any damage we should know?",
-  altDatePh: "Pickup / delivery preference (optional)",
   optionalTag: "(optional)",
   formErrorSummary: "Please review the highlighted fields below.",
   switchServiceWarning:
     "Switching service type clears this item’s fields for that service.",
+  /** Pre–WhatsApp handoff modal (English; mobile-first) */
+  handoffTitle: "Almost there — open WhatsApp",
+  handoffLead:
+    "You’ll open WhatsApp next with your order summary ready to send. WhatsApp cannot attach images from our site automatically.",
+  handoffAttachBold:
+    "Please tap the attachment (paperclip) icon in WhatsApp and send your reference photo(s) in the same chat, right after you send the message.",
+  handoffUploadExtra:
+    "You chose a reference file on this form — make sure to attach that image (or a clearer one) in WhatsApp so we can see the design.",
+  handoffAlterationExtra:
+    "If you picked a garment photo on the form, attach it in WhatsApp too so we can assess the piece.",
+  handoffCatalogExtra:
+    "If you have extra angles or fabric close-ups, feel free to attach them in WhatsApp as well.",
+  handoffOpenWhatsapp: "Open WhatsApp",
+  handoffBackToForm: "Back to edit order",
 } as const;
 
 export const requestValidationMessages: ServiceRequestValidationMessages = {
@@ -57,6 +71,7 @@ export const requestValidationMessages: ServiceRequestValidationMessages = {
   phoneInvalid: "Enter a valid phone number with country code if needed (10–15 digits).",
   catalogRequired: "Please select a design from the catalog.",
   uploadRequired: "Please choose a reference image from your device.",
+  deliveryRequired: "Please choose a preferred delivery date.",
 };
 
 export const alterationTypeLabels: Record<AlterationType, string> = {

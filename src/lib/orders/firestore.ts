@@ -149,6 +149,8 @@ function mapDocToStoredOrder(id: string, d: DocumentData): StoredOrder {
       status,
     ),
     paymentAuditLog: parsePaymentAuditLog(d.paymentAuditLog),
+    designAssetsFolderUrl: (d.designAssetsFolderUrl as string | null) ?? null,
+    tailorHandoffNotesInternal: (d.tailorHandoffNotesInternal as string | null) ?? null,
   };
 }
 
@@ -193,6 +195,8 @@ export async function createStoredOrder(input: {
     paymentModePrimary: null,
     financialNotes: null,
     paymentAuditLog: [],
+    designAssetsFolderUrl: null,
+    tailorHandoffNotesInternal: null,
   });
 
   return { trackingToken };
@@ -289,6 +293,8 @@ export async function updateOrderFields(
     paymentModePrimary?: PaymentMode | null;
     financialNotes?: string | null;
     paymentAuditLog?: PaymentAuditEntry[];
+    designAssetsFolderUrl?: string | null;
+    tailorHandoffNotesInternal?: string | null;
   },
 ): Promise<void> {
   const firestore = db();
@@ -337,6 +343,12 @@ export async function updateOrderFields(
   }
   if (patch.paymentAuditLog !== undefined) {
     updates.paymentAuditLog = patch.paymentAuditLog;
+  }
+  if (patch.designAssetsFolderUrl !== undefined) {
+    updates.designAssetsFolderUrl = patch.designAssetsFolderUrl;
+  }
+  if (patch.tailorHandoffNotesInternal !== undefined) {
+    updates.tailorHandoffNotesInternal = patch.tailorHandoffNotesInternal;
   }
   await ref.update(updates);
 }

@@ -1,6 +1,7 @@
 [
   {
     "id": "bl-001",
+    "audience": "women",
     "category": "blouses",
     "title": "Pearl-button silk blouse",
     "description": "Soft ivory silk with pearl accents — ideal for festive pairings.",
@@ -13,6 +14,7 @@
   },
   {
     "id": "bl-002",
+    "audience": "women",
     "category": "blouses",
     "title": "Minimal wrap blouse",
     "description": "Clean lines, breathable cotton — everyday elegance.",
@@ -25,6 +27,7 @@
   },
   {
     "id": "ku-001",
+    "audience": "women",
     "category": "kurtis",
     "title": "Hand-block printed kurti",
     "description": "Light cotton with artisan prints — summer comfort.",
@@ -37,6 +40,7 @@
   },
   {
     "id": "ku-002",
+    "audience": "women",
     "category": "kurtis",
     "title": "Anarkali-inspired silhouette",
     "description": "Flowing flare with delicate neckline detail.",
@@ -49,6 +53,7 @@
   },
   {
     "id": "dr-001",
+    "audience": "women",
     "category": "dresses",
     "title": "Midi wrap dress",
     "description": "Versatile wrap — office to evening with a soft drape.",
@@ -61,6 +66,7 @@
   },
   {
     "id": "dr-002",
+    "audience": "women",
     "category": "dresses",
     "title": "Evening pleated gown",
     "description": "Structured pleats with a refined silhouette.",
@@ -73,6 +79,7 @@
   },
   {
     "id": "cu-001",
+    "audience": "women",
     "category": "custom-designs",
     "title": "Client sketch → finished piece",
     "description": "From your Pinterest board or sketch to tailored fit.",
@@ -85,12 +92,52 @@
   },
   {
     "id": "cu-002",
+    "audience": "women",
     "category": "custom-designs",
     "title": "Bridal blouse custom work",
     "description": "Zardozi-inspired detailing per your reference images.",
     "image": {
       "src": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800&q=80",
       "alt": "Ornate bridal blouse detail",
+      "width": 800,
+      "height": 1000
+    }
+  },
+  {
+    "id": "gp-001",
+    "audience": "girls",
+    "category": "dresses",
+    "title": "Festive twirl dress",
+    "description": "Party-ready silhouettes with soft linings — comfortable through long celebrations.",
+    "image": {
+      "src": "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=800&q=80",
+      "alt": "Young girl in a colourful dress",
+      "width": 800,
+      "height": 1000
+    }
+  },
+  {
+    "id": "gp-002",
+    "audience": "girls",
+    "category": "kurtis",
+    "title": "Printed cotton kurti set",
+    "description": "Breathable everyday sets — matching or contrast dupatta on request.",
+    "image": {
+      "src": "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&q=80",
+      "alt": "Child wearing bright casual clothing",
+      "width": 800,
+      "height": 1000
+    }
+  },
+  {
+    "id": "gp-003",
+    "audience": "girls",
+    "category": "custom-designs",
+    "title": "Mommy & me / bespoke girls' look",
+    "description": "Coordinate with your outfit or bring a reference — we size and finish for her age.",
+    "image": {
+      "src": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&q=80",
+      "alt": "Mother and daughter in coordinated outfits",
       "width": 800,
       "height": 1000
     }

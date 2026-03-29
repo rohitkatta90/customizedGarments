@@ -23,7 +23,7 @@ Defined in `src/lib/order/types.ts`:
 
 ## Persisted backend (current + SQL migration)
 
-**Current (Firestore):** one document per order with **embedded `items`** — see `StoredOrder` and `ORDER_ADMIN_SYSTEM.md`.
+**Current (Firestore):** one document per order with **embedded `items`** — see `StoredOrder` and `ORDER_ADMIN_SYSTEM.md`. Order documents may also store **`designAssetsFolderUrl`** (shared Drive folder) and **`tailorHandoffNotesInternal`** (structured production notes); see **[IMAGE_STORAGE_TAILOR_HANDOFF.md](./IMAGE_STORAGE_TAILOR_HANDOFF.md)**.
 
 **Future SQL (suggested):**
 

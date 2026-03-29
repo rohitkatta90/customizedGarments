@@ -21,7 +21,9 @@ import {
   pendingAmountInr,
   type PaymentMode,
 } from "@/lib/orders/ledger";
+import { listSuggestedAssetFilenames } from "@/lib/orders/asset-naming";
 import { buildWhatsAppReceiptText } from "@/lib/orders/receipt";
+import { buildTailorHandoffWhatsAppText } from "@/lib/orders/tailor-handoff";
 import { siteConfig } from "@/lib/site";
 import type { CatalogItem } from "@/lib/types";
 
@@ -59,6 +61,12 @@ export function OrderDetailForm({ order: initial, catalog }: Props) {
   const [paidAmountStr, setPaidAmountStr] = useState(String(order.paidAmountInr ?? 0));
   const [paymentModePrimary, setPaymentModePrimary] = useState(order.paymentModePrimary ?? "");
   const [financialNotes, setFinancialNotes] = useState(order.financialNotes ?? "");
+  const [designAssetsFolderUrl, setDesignAssetsFolderUrl] = useState(
+    order.designAssetsFolderUrl ?? "",
+  );
+  const [tailorHandoffNotesInternal, setTailorHandoffNotesInternal] = useState(
+    order.tailorHandoffNotesInternal ?? "",
+  );
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
@@ -78,6 +86,8 @@ export function OrderDetailForm({ order: initial, catalog }: Props) {
     setPaidAmountStr(String(initial.paidAmountInr ?? 0));
     setPaymentModePrimary(initial.paymentModePrimary ?? "");
     setFinancialNotes(initial.financialNotes ?? "");
+    setDesignAssetsFolderUrl(initial.designAssetsFolderUrl ?? "");
+    setTailorHandoffNotesInternal(initial.tailorHandoffNotesInternal ?? "");
     // eslint-disable-next-line react-hooks/exhaustive-deps -- sync when server order refreshes (updatedAtIso)
   }, [initial.updatedAtIso, initial.id]);
 
@@ -109,6 +119,8 @@ export function OrderDetailForm({ order: initial, catalog }: Props) {
           paidAmountInr: Math.max(0, parseInt(paidAmountStr, 10) || 0),
           paymentModePrimary: paymentModePrimary || null,
           financialNotes: financialNotes.trim() || null,
+          designAssetsFolderUrl: designAssetsFolderUrl.trim() || null,
+          tailorHandoffNotesInternal: tailorHandoffNotesInternal.trim() || null,
         }),
       });
       if (!res.ok) {
@@ -135,6 +147,8 @@ export function OrderDetailForm({ order: initial, catalog }: Props) {
             | PaymentMode
             | null,
           financialNotes: financialNotes.trim() || null,
+          designAssetsFolderUrl: designAssetsFolderUrl.trim() || null,
+          tailorHandoffNotesInternal: tailorHandoffNotesInternal.trim() || null,
           ledgerPaymentStatus: computeLedgerPaymentStatus(
             totalAmountStr.trim() === "" ? null : Math.max(0, parseInt(totalAmountStr, 10) || 0),
             Math.max(0, parseInt(paidAmountStr, 10) || 0),
@@ -192,6 +206,19 @@ export function OrderDetailForm({ order: initial, catalog }: Props) {
       setMessage("Tracking link copied.");
     } catch {
       setMessage("Copy failed — select the link manually.");
+    }
+  }
+
+  async function copyTailorHandoff() {
+    const text = buildTailorHandoffWhatsAppText(order, catalog, {
+      designAssetsFolderUrl: designAssetsFolderUrl.trim() || null,
+      tailorHandoffNotesInternal: tailorHandoffNotesInternal.trim() || null,
+    });
+    try {
+      await navigator.clipboard.writeText(text);
+      setMessage("Tailor handoff copied — paste in WhatsApp.");
+    } catch {
+      setMessage("Could not copy tailor handoff.");
     }
   }
 
@@ -410,6 +437,69 @@ export function OrderDetailForm({ order: initial, catalog }: Props) {
           ) : (
             <p className="mt-2 text-sm text-muted">No tracking token (older order).</p>
           )}
+        </div>
+
+        <div className="border-t border-border pt-6">
+          <p className="text-sm font-semibold text-foreground">Design assets &amp; tailor handoff</p>
+          <p className="mt-1 text-xs text-muted">
+            Store customer images in a shared folder (e.g. Google Drive) named by{" "}
+            <span className="font-mono text-foreground">Order ID</span>. Paste the folder link here so
+            ops and tailors use one source of truth — not only WhatsApp.
+          </p>
+          <div className="mt-4">
+            <label className="text-xs font-medium uppercase tracking-wide text-muted" htmlFor="folder-url">
+              Design folder URL
+            </label>
+            <input
+              id="folder-url"
+              type="url"
+              inputMode="url"
+              placeholder="https://drive.google.com/drive/folders/…"
+              value={designAssetsFolderUrl}
+              onChange={(e) => setDesignAssetsFolderUrl(e.target.value)}
+              className="mt-2 w-full rounded-xl border border-border bg-background px-3 py-2 text-sm"
+            />
+          </div>
+          <div className="mt-4">
+            <label className="text-xs font-medium uppercase tracking-wide text-muted" htmlFor="tailor-notes">
+              Structured tailor notes (internal)
+            </label>
+            <p className="mt-1 text-xs text-muted">
+              Bullet style helps cutting masters scan quickly, e.g. &quot;Garment: Blouse&quot; / &quot;Back:
+              deep cut&quot; / &quot;Sleeves: elbow length&quot;.
+            </p>
+            <textarea
+              id="tailor-notes"
+              rows={6}
+              value={tailorHandoffNotesInternal}
+              onChange={(e) => setTailorHandoffNotesInternal(e.target.value)}
+              placeholder={`Garment: Kurti\n• Style: straight cut\n• Length: 45 inches\n\nGarment: Blouse\n• Back: deep cut\n• Sleeves: elbow length`}
+              className="mt-2 w-full rounded-xl border border-border bg-background px-3 py-2 font-mono text-sm"
+            />
+          </div>
+          <div className="mt-4 rounded-xl border border-border bg-background/60 p-3">
+            <p className="text-xs font-medium uppercase tracking-wide text-muted">Suggested file names</p>
+            <p className="mt-1 text-xs text-muted">
+              Rename files from the customer (e.g. IMG_1234.png) before upload — keep the same extension when
+              possible.
+            </p>
+            <ul className="mt-2 space-y-1.5 text-sm">
+              {listSuggestedAssetFilenames(order.id, order.items).map((row) => (
+                <li key={row.itemIndex} className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-2">
+                  <span className="shrink-0 text-muted">Item {row.itemIndex}</span>
+                  <code className="break-all text-foreground">{row.suggestedFilename}</code>
+                  <span className="text-xs text-muted sm:ml-auto">{row.hint}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <button
+            type="button"
+            onClick={() => void copyTailorHandoff()}
+            className="mt-4 rounded-full border border-accent bg-accent/10 px-4 py-2 text-sm font-medium text-accent-dark hover:bg-accent/15"
+          >
+            Copy tailor handoff (WhatsApp)
+          </button>
         </div>
 
         <div className="border-t border-border pt-6">

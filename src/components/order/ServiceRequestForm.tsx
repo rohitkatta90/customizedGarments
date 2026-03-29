@@ -52,6 +52,72 @@ function FieldError({ id, message }: { id: string; message?: string }) {
   );
 }
 
+/** Calendar icon for date fields — iOS Safari often omits desktop-style picker chrome. */
+function CalendarGlyph({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={18}
+      height={18}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden
+    >
+      <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+      <line x1="16" x2="16" y1="2" y2="6" />
+      <line x1="8" x2="8" y1="2" y2="6" />
+      <line x1="3" x2="21" y1="10" y2="10" />
+    </svg>
+  );
+}
+
+function DatePickerField({
+  id,
+  label,
+  min,
+  value,
+  onChange,
+  invalid,
+  errorId,
+}: {
+  id: string;
+  label: string;
+  min?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  invalid?: boolean;
+  errorId?: string;
+}) {
+  return (
+    <div className="min-w-0">
+      <label className="text-sm font-medium text-foreground" htmlFor={id}>
+        {label}
+      </label>
+      <div className="relative mt-2 w-full min-w-0">
+        <input
+          id={id}
+          type="date"
+          min={min}
+          value={value}
+          onChange={onChange}
+          required
+          aria-invalid={invalid}
+          aria-describedby={invalid && errorId ? errorId : undefined}
+          className={`box-border ${inputBase} ${invalid ? inputInvalid : inputNormal} w-full min-w-0 max-w-full py-3 pl-4 pr-11 [color-scheme:light]`}
+        />
+        <span className="pointer-events-none absolute right-3 top-1/2 z-[1] -translate-y-1/2 text-muted opacity-80">
+          <CalendarGlyph />
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -71,6 +137,8 @@ export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Pr
   const [customerPhone, setCustomerPhone] = useState("");
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [deliveryMin, setDeliveryMin] = useState("");
+  /** Built after successful submit; opening WhatsApp clears it */
+  const [whatsappPendingMessage, setWhatsappPendingMessage] = useState<string | null>(null);
 
   useEffect(() => {
     setDeliveryMin(todayLocalISODate());
@@ -83,6 +151,31 @@ export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Pr
   );
 
   const showErrors = submitAttempted && !validation.ok;
+
+  const handoffExtras = useMemo(() => {
+    let upload = false;
+    let alteration = false;
+    let catalog = false;
+    for (const item of items) {
+      if (item.service === "stitching") {
+        const s = item as StitchingOrderItem;
+        if (s.designSource === "upload") upload = true;
+        if (s.designSource === "catalog" || s.designSource === "describe") catalog = true;
+      } else if (item.garmentImageName?.trim()) {
+        alteration = true;
+      }
+    }
+    return { upload, alteration, catalog };
+  }, [items]);
+
+  useEffect(() => {
+    if (!whatsappPendingMessage) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setWhatsappPendingMessage(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [whatsappPendingMessage]);
 
   const setServiceForItem = useCallback((id: string, service: "stitching" | "alteration") => {
     setItems((prev) =>
@@ -143,10 +236,65 @@ export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Pr
     }
 
     const msg = buildMultiItemOrderMessage(order, catalog, customer, { trackingUrl });
-    window.location.href = buildWhatsAppUrl(msg);
+    setWhatsappPendingMessage(msg);
   }
 
   return (
+    <>
+    {whatsappPendingMessage ? (
+      <div
+        className="fixed inset-0 z-[100] flex items-end justify-center p-4 sm:items-center"
+        role="presentation"
+      >
+        <div
+          className="absolute inset-0 bg-black/50 backdrop-blur-[1px]"
+          aria-hidden
+        />
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="handoff-title"
+          className="relative z-[1] w-full max-w-md rounded-2xl border border-border bg-card p-5 shadow-xl sm:p-6"
+        >
+          <h2 id="handoff-title" className="font-display text-lg font-semibold text-foreground sm:text-xl">
+            {t.handoffTitle}
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted">{t.handoffLead}</p>
+          <p className="mt-3 text-sm font-medium leading-relaxed text-foreground">{t.handoffAttachBold}</p>
+          {handoffExtras.upload ? (
+            <p className="mt-3 text-sm leading-relaxed text-muted">{t.handoffUploadExtra}</p>
+          ) : null}
+          {handoffExtras.alteration ? (
+            <p className="mt-3 text-sm leading-relaxed text-muted">{t.handoffAlterationExtra}</p>
+          ) : null}
+          {handoffExtras.catalog ? (
+            <p className="mt-3 text-sm leading-relaxed text-muted">{t.handoffCatalogExtra}</p>
+          ) : null}
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row-reverse sm:justify-end">
+            <Button
+              type="button"
+              className="w-full sm:w-auto"
+              onClick={() => {
+                const msg = whatsappPendingMessage;
+                setWhatsappPendingMessage(null);
+                window.location.href = buildWhatsAppUrl(msg);
+              }}
+            >
+              {t.handoffOpenWhatsapp}
+            </Button>
+            <Button
+              type="button"
+              variant="secondary"
+              className="w-full sm:w-auto"
+              onClick={() => setWhatsappPendingMessage(null)}
+            >
+              {t.handoffBackToForm}
+            </Button>
+          </div>
+        </div>
+      </div>
+    ) : null}
+
     <form onSubmit={handleSubmit} className="space-y-8" noValidate>
       <div className="rounded-2xl border border-amber-200/70 bg-amber-50/40 p-5 shadow-sm sm:p-6">
         <p className="text-xs font-semibold uppercase tracking-[0.18em] text-amber-900/75">
@@ -219,7 +367,7 @@ export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Pr
             return (
               <li
                 key={item.id}
-                className="rounded-2xl border border-border bg-background/80 p-4 sm:p-5"
+                className="min-w-0 rounded-2xl border border-border bg-background/80 p-4 sm:p-5"
               >
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <h3 className="font-display text-lg font-semibold text-foreground">
@@ -277,6 +425,7 @@ export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Pr
                   <AlterationFields
                     item={item}
                     deliveryMin={deliveryMin}
+                    errors={showItemErrors ? itemErr : undefined}
                     onChange={(patch) => updateItem(item.id, patch)}
                   />
                 )}
@@ -298,6 +447,7 @@ export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Pr
         {t.submit}
       </Button>
     </form>
+    </>
   );
 }
 
@@ -326,9 +476,10 @@ function StitchingFields({
   };
 
   const hasDesignErr = Boolean(errors?.designReference);
+  const hasDeliveryErr = Boolean(errors?.deliveryDate);
 
   return (
-    <div className="mt-4 space-y-4">
+    <div className="mt-4 min-w-0 space-y-4">
       <div>
         <p className="text-sm font-medium text-foreground">
           {t.designSource} {t.requiredSuffix}
@@ -406,7 +557,7 @@ function StitchingFields({
             aria-describedby={
               hasDesignErr && item.designSource === "upload" ? `err-${item.id}-design-upload` : undefined
             }
-            className={`mt-2 block w-full text-sm text-muted file:mr-4 file:rounded-full file:border-0 file:bg-accent file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-accent-dark ${hasDesignErr && item.designSource === "upload" ? "rounded-xl ring-1 ring-red-500/40" : ""}`}
+            className={`mt-2 block w-full min-w-0 max-w-full text-sm text-muted file:mr-4 file:rounded-full file:border-0 file:bg-accent file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-accent-dark ${hasDesignErr && item.designSource === "upload" ? "rounded-xl ring-1 ring-red-500/40" : ""}`}
             onChange={(e) =>
               onChange({ referenceFileName: e.target.files?.[0]?.name })
             }
@@ -447,17 +598,16 @@ function StitchingFields({
       </div>
 
       <div>
-        <label className="text-sm font-medium text-foreground" htmlFor={`del-${item.id}`}>
-          {t.deliveryOptional} {t.optionalTag}
-        </label>
-        <input
+        <DatePickerField
           id={`del-${item.id}`}
-          type="date"
+          label={`${t.preferredDelivery} ${t.requiredSuffix}`}
           min={deliveryMin || undefined}
           value={item.deliveryPreference ?? ""}
           onChange={(e) => onChange({ deliveryPreference: e.target.value || undefined })}
-          className={`mt-2 ${inputBase} ${inputNormal}`}
+          invalid={hasDeliveryErr}
+          errorId={`err-${item.id}-delivery`}
         />
+        <FieldError id={`err-${item.id}-delivery`} message={errors?.deliveryDate} />
       </div>
     </div>
   );
@@ -466,14 +616,18 @@ function StitchingFields({
 function AlterationFields({
   item,
   deliveryMin,
+  errors,
   onChange,
 }: {
   item: AlterationOrderItem;
   deliveryMin: string;
+  errors?: ItemErrors;
   onChange: (p: Partial<AlterationOrderItem>) => void;
 }) {
+  const hasDeliveryErr = Boolean(errors?.deliveryDate);
+
   return (
-    <div className="mt-4 space-y-4">
+    <div className="mt-4 min-w-0 space-y-4">
       <div>
         <label className="text-sm font-medium text-foreground" htmlFor={`atype-${item.id}`}>
           {t.alterationType} {t.requiredSuffix}
@@ -496,13 +650,13 @@ function AlterationFields({
 
       <div>
         <label className="text-sm font-medium text-foreground" htmlFor={`gph-${item.id}`}>
-          {t.garmentPhoto} {t.optionalTag}
+          {t.garmentPhoto}
         </label>
         <input
           id={`gph-${item.id}`}
           type="file"
           accept="image/*"
-          className="mt-2 block w-full text-sm text-muted file:mr-4 file:rounded-full file:border-0 file:bg-accent file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-accent-dark"
+          className="mt-2 block w-full min-w-0 max-w-full text-sm text-muted file:mr-4 file:rounded-full file:border-0 file:bg-accent file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-accent-dark"
           onChange={(e) => onChange({ garmentImageName: e.target.files?.[0]?.name })}
         />
       </div>
@@ -522,17 +676,16 @@ function AlterationFields({
       </div>
 
       <div>
-        <label className="text-sm font-medium text-foreground" htmlFor={`adate-${item.id}`}>
-          {t.altDatePh} {t.optionalTag}
-        </label>
-        <input
+        <DatePickerField
           id={`adate-${item.id}`}
-          type="date"
+          label={`${t.preferredDelivery} ${t.requiredSuffix}`}
           min={deliveryMin || undefined}
           value={item.deliveryPreference ?? ""}
           onChange={(e) => onChange({ deliveryPreference: e.target.value || undefined })}
-          className={`mt-2 ${inputBase} ${inputNormal}`}
+          invalid={hasDeliveryErr}
+          errorId={`err-alt-${item.id}-delivery`}
         />
+        <FieldError id={`err-alt-${item.id}-delivery`} message={errors?.deliveryDate} />
       </div>
     </div>
   );

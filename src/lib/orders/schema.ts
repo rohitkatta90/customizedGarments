@@ -67,6 +67,15 @@ export type StoredOrder = {
   ledgerPaymentStatus: LedgerPaymentStatus;
   /** Optional audit trail for payment changes (older docs may omit) */
   paymentAuditLog?: PaymentAuditEntry[];
+  /**
+   * Shared folder link (e.g. Google Drive) containing renamed design images + notes.txt for this order.
+   * Staff-maintained; not shown on public /track.
+   */
+  designAssetsFolderUrl: string | null;
+  /**
+   * Structured bullet notes for tailor / cutting master (normalized spec). Staff-only.
+   */
+  tailorHandoffNotesInternal: string | null;
 };
 
 /** Minimal shape for the public tracking page (no PII beyond first name optional). */

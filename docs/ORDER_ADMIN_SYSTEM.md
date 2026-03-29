@@ -28,6 +28,8 @@ This app can **persist orders to Firestore** while keeping the **WhatsApp handof
 | `paidAmountInr` | number | Received so far (default 0). |
 | `paymentModePrimary` | string? | `UPI` / `COD` / `mixed` / `cash` / `other`. |
 | `financialNotes` | string? | Payment notes (advance, balance, etc.). |
+| `designAssetsFolderUrl` | string? | Shared folder link (e.g. Google Drive) for renamed design images + notes — see **[IMAGE_STORAGE_TAILOR_HANDOFF.md](./IMAGE_STORAGE_TAILOR_HANDOFF.md)**. |
+| `tailorHandoffNotesInternal` | string? | Bullet-style spec for tailor / cutting master (staff-only). |
 | *(derived)* `ledgerPaymentStatus` | — | Computed on read; not stored as source of truth. |
 | `createdAt` | timestamp | Server time on create. |
 | `updatedAt` | timestamp | Server time on any write. |
@@ -56,7 +58,7 @@ Not implemented in code. Viable approach: **Apps Script** or a small **Google Sh
 |-------|---------|
 | `/admin/login` | Password login; sets `gs_admin` cookie. |
 | `/admin/orders` | Table: filter by status, search phone, update status per row. |
-| `/admin/orders/[id]` | Status, **copy tracking link**, internal delay note, revised delivery date. |
+| `/admin/orders/[id]` | Status, **copy tracking link**, **design folder URL**, **tailor handoff** (copy WhatsApp block, suggested filenames), ledger, internal notes. |
 
 **Customer tracking:** `/track/[token]` — see **[ORDER_TRACKING.md](./ORDER_TRACKING.md)**.
 

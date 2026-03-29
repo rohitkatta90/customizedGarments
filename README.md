@@ -14,6 +14,7 @@ Deploy with **Vercel** (see [docs/PROJECT_GUIDE.md](./docs/PROJECT_GUIDE.md) §6
 | **[docs/ORDER_MODEL.md](./docs/ORDER_MODEL.md)** | Multi-item **order / order items** model and WhatsApp summary format |
 | **[docs/ORDER_ADMIN_SYSTEM.md](./docs/ORDER_ADMIN_SYSTEM.md)** | **Firestore** order storage, **`/admin/orders`**, env vars, SQL migration path |
 | **[docs/ORDER_TRACKING.md](./docs/ORDER_TRACKING.md)** | **Customer `/track`** links, 5-step status, delays, WhatsApp line |
+| **[docs/IMAGE_STORAGE_TAILOR_HANDOFF.md](./docs/IMAGE_STORAGE_TAILOR_HANDOFF.md)** | **Drive folder + Order ID**, staff SOP, tailor handoff, file naming |
 | **[docs/ANALYTICS.md](./docs/ANALYTICS.md)** | **Metrics & insights** — definitions, data points, dashboard concept (no UI code) |
 | **[docs/EDGE_CASES.md](./docs/EDGE_CASES.md)** | **Edge cases** — scope changes, rush, cancel, delays, rework; rules & system mapping |
 | **[docs/ACCESSORIES_SERVICE_FLOW.md](./docs/ACCESSORIES_SERVICE_FLOW.md)** | **Styling extras** — pricing rules, admin quoting, WhatsApp confirmation |

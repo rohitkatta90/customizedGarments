@@ -10,6 +10,7 @@ import {
   updateOrderFields,
   updateOrderStatus,
 } from "@/lib/orders/firestore";
+import { normalizeDesignFolderUrl } from "@/lib/orders/folder-url";
 import { isPaymentMode, type PaymentMode } from "@/lib/orders/ledger";
 import type { FinancialPatch } from "@/lib/orders/payment-validation";
 import { validateOrderPatch } from "@/lib/orders/payment-validation";
@@ -51,6 +52,8 @@ export async function PATCH(request: Request, context: RouteContext) {
     paidAmountInr?: number;
     paymentModePrimary?: string | null;
     financialNotes?: string | null;
+    designAssetsFolderUrl?: string | null;
+    tailorHandoffNotesInternal?: string | null;
   };
   try {
     body = (await request.json()) as typeof body;
@@ -72,7 +75,9 @@ export async function PATCH(request: Request, context: RouteContext) {
     body.totalAmountInr !== undefined ||
     body.paidAmountInr !== undefined ||
     body.paymentModePrimary !== undefined ||
-    body.financialNotes !== undefined;
+    body.financialNotes !== undefined ||
+    body.designAssetsFolderUrl !== undefined ||
+    body.tailorHandoffNotesInternal !== undefined;
 
   if (!hasStatus && !hasMeta) {
     return NextResponse.json({ error: "No updates" }, { status: 400 });
@@ -131,6 +136,40 @@ export async function PATCH(request: Request, context: RouteContext) {
       paymentModePrimary = body.paymentModePrimary;
     } else {
       return NextResponse.json({ error: "Invalid payment mode" }, { status: 400 });
+    }
+  }
+
+  let designAssetsFolderUrl: string | null | undefined;
+  if (body.designAssetsFolderUrl !== undefined) {
+    if (body.designAssetsFolderUrl === null) {
+      designAssetsFolderUrl = null;
+    } else if (typeof body.designAssetsFolderUrl === "string") {
+      const trimmed = body.designAssetsFolderUrl.trim();
+      if (trimmed === "") {
+        designAssetsFolderUrl = null;
+      } else {
+        const normalized = normalizeDesignFolderUrl(body.designAssetsFolderUrl);
+        if (!normalized) {
+          return NextResponse.json(
+            { error: "invalid_folder_url", message: "Enter a valid http(s) folder link." },
+            { status: 400 },
+          );
+        }
+        designAssetsFolderUrl = normalized;
+      }
+    } else {
+      return NextResponse.json({ error: "invalid_folder_url" }, { status: 400 });
+    }
+  }
+
+  let tailorHandoffNotesInternal: string | null | undefined;
+  if (body.tailorHandoffNotesInternal !== undefined) {
+    if (body.tailorHandoffNotesInternal === null) {
+      tailorHandoffNotesInternal = null;
+    } else if (typeof body.tailorHandoffNotesInternal === "string") {
+      tailorHandoffNotesInternal = body.tailorHandoffNotesInternal.trim() || null;
+    } else {
+      return NextResponse.json({ error: "invalid_tailor_notes" }, { status: 400 });
     }
   }
 
@@ -212,6 +251,8 @@ export async function PATCH(request: Request, context: RouteContext) {
         paymentModePrimary,
         financialNotes: body.financialNotes,
         paymentAuditLog,
+        designAssetsFolderUrl,
+        tailorHandoffNotesInternal,
       });
     }
     return NextResponse.json({ ok: true });

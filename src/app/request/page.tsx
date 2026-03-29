@@ -48,15 +48,17 @@ export default async function RequestPage() {
         </p>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">{dict.pricing.communication.requestPageLine}</p>
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_320px] lg:items-start">
+        <div className="mt-10 grid min-w-0 gap-10 lg:grid-cols-[1fr_320px] lg:items-start">
           <Suspense fallback={<FormFallback />}>
+            <div className="min-w-0">
             <ServiceRequestForm
               catalog={catalog}
               categoryLabel={dict.styling.categoryLabel}
               pricingNotice={dict.styling.pricingNotice}
             />
+            </div>
           </Suspense>
-          <aside className="lg:sticky lg:top-24">
+          <aside className="min-w-0 lg:sticky lg:top-24">
             <DeliveryEstimator />
           </aside>
         </div>

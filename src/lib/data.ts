@@ -19,8 +19,16 @@ async function readJson<T>(filename: string): Promise<T> {
   return JSON.parse(raw) as T;
 }
 
+function normalizeCatalogAudience(raw: CatalogItem[]): CatalogItem[] {
+  return raw.map((item) => ({
+    ...item,
+    audience: item.audience === "girls" ? "girls" : "women",
+  }));
+}
+
 export async function getCatalog(): Promise<CatalogItem[]> {
-  return readJson<CatalogItem[]>("catalog.json");
+  const raw = await readJson<CatalogItem[]>("catalog.json");
+  return normalizeCatalogAudience(raw);
 }
 
 export async function getPricing(): Promise<PricingModel> {
