@@ -100,6 +100,61 @@ export const quickRequestCopy = {
     "Optional — enter if you want us to look up saved measurements and attach your real number to this order.",
 } as const;
 
+/** Guided multi-step quick request (WhatsApp-style flow). */
+export const quickFlowCopy = {
+  stepProgress: (n: number) => `Step ${n} of 5`,
+  screen1Title: "What would you like to do?",
+  stitchCardTitle: "Stitch a new outfit",
+  stitchCardBody: "Create something from a design or idea",
+  alterCardTitle: "Alter an existing dress",
+  alterCardBody: "Fix fitting, length, or styling",
+  screen2Title: "How many pieces?",
+  piecesQuick1: "1 piece",
+  piecesQuick2: "2 pieces",
+  piecesQuickMany: "3+ pieces",
+  piecesQuick1Hint: "Fastest for a single garment",
+  piecesQuick2Hint: "Two pieces, one order",
+  piecesQuickManyHint: "Larger orders — set exact count below",
+  piecesExactLabel: "How many pieces exactly?",
+  piecesManyHint: "We'll confirm timeline based on number of pieces",
+  piecesManyTapContinue: "Tap Continue → when your count looks right.",
+  screen3Title: "When do you need it?",
+  earliestLabel: "Earliest available:",
+  dateHelper: "We'll confirm exact timeline on WhatsApp",
+  selectDate: "Select date",
+  screen4Title: "Anything we should know?",
+  screen4Optional: "(optional)",
+  quickAdd: "Quick add:",
+  chipDeepBack: "Deep back",
+  chipElbow: "Elbow sleeves",
+  chipStraight: "Straight fit",
+  screen5Title: "Enter your WhatsApp number",
+  screen5Optional: "(optional)",
+  screen5Helper: "We'll use this to fetch saved measurements",
+  finalTitle: "You're all set 😊",
+  finalLead: "We'll open WhatsApp to continue",
+  trustFast: "Fast replies",
+  trustPricing: "Clear pricing",
+  trustNoHidden: "No hidden charges",
+  stickyContinue: "Continue →",
+  stickyContinueWhatsapp: "Continue to WhatsApp 💬",
+  dateRequiredToast: "Please pick a delivery date to continue.",
+  backStep: "Back",
+  dateStickyHint: "Pick a delivery date above, then tap Continue →.",
+  /** Step 3 — short line directly under date picker */
+  priorityDateHook:
+    "⚡ Need it sooner? We can prioritise your order (additional charges may apply)",
+  /** Step 3 — warm explainer card */
+  priorityLongTitle: "Need it sooner? We can prioritise your order ✨",
+  priorityLongBody:
+    "We offer expedited stitching based on availability — additional charges may apply. We'll always confirm this with you before proceeding.",
+  priorityCheckbox: "I may need this on priority",
+  /** Shown when date is before standard lead and checkbox is off */
+  priorityImpliedSoftNote:
+    "We've noticed your date is on the quicker side of our usual timeline — we'll double-check what's possible when we chat.",
+  trustPriority: "Priority options available for urgent needs",
+} as const;
+
 export const requestValidationMessages: ServiceRequestValidationMessages = {
   nameRequired: "Please enter your full name.",
   phoneRequired: "Please enter your phone number (WhatsApp).",

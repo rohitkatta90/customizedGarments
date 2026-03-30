@@ -1,20 +1,31 @@
-/** English UI strings for measurement lookup (client + docs). */
+/** English UI strings for measurement lookup (client + docs). Boutique, warm tone — avoid system-error wording. */
 export const measurementUiCopy = {
   sectionTitle: "Saved measurements",
   sectionHint:
-    "If you’ve submitted our Google measurement form before, we can pull your latest numbers here.",
+    "If you’ve shared your measurements with us before, we can pull your latest numbers here.",
   findButton: "Find my measurements",
-  searching: "Looking…",
-  notConfigured:
-    "Saved measurement lookup isn’t set up on this site yet — you can still continue; we’ll confirm in WhatsApp.",
-  notFound: "No previous measurements found. We’ll take fresh measurements for you.",
-  foundIntro:
-    "We found your previous measurements. Choose whether to use each set or send updates in WhatsApp.",
+  searching: "Looking for your saved measurements…",
+  phoneStaleHint: "Number changed — tap Find again to refresh for this number.",
+  refreshLookup: "Refresh lookup",
+  notConfiguredTitle: "We’ll take care of this on WhatsApp ✨",
+  notConfiguredBody:
+    "Saved measurement lookup isn’t connected here yet — that’s perfectly fine. Continue and we’ll guide you through everything in chat.",
+  notFoundTitle: "Ohoo… looks like this is your first piece with us 😊",
+  notFoundBody:
+    "We’ll take your measurements and make sure everything fits just right.",
+  foundHeadline: "Yay! We found your measurements 😊",
+  foundSublineSingle: (date: string) =>
+    `Last saved on ${date} — would you like to use them?`,
+  foundSublineMulti:
+    "Here are your latest saves by garment — would you like to use them?",
   useThese: "Use these",
-  updateInWhatsApp: "I’ll send updates in WhatsApp",
-  perGarmentDate: (garment: string, date: string) => `${garment} — last saved ${date}`,
+  updateMeasurements: "Update measurements",
+  perGarmentSaved: (garment: string, date: string) =>
+    `${garment.replace(/_/g, " ")} · last saved ${date}`,
   kidsHint:
-    "Little ones grow quickly — please double-check kids’ measurements in WhatsApp even if you use these.",
-  errorGeneric: "Couldn’t load measurements right now. You can still continue.",
-  rateLimited: "Too many lookups. Please wait a minute and try again.",
+    "Little ones grow quickly — a quick double-check in WhatsApp is always a good idea.",
+  errorSoftTitle: "Couldn’t peek at saved measurements just now",
+  errorSoftBody: "No stress — we’ll confirm everything together on WhatsApp.",
+  rateLimitedTitle: "One moment please",
+  rateLimitedBody: "Let’s try again in a minute — we want to keep things smooth for everyone.",
 } as const;

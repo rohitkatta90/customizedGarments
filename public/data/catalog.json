@@ -141,5 +141,18 @@
       "width": 800,
       "height": 1000
     }
+  },
+  {
+    "id": "gp-004",
+    "audience": "girls",
+    "category": "dresses",
+    "title": "Party dress",
+    "description": "Soft fit, custom design — birthdays and special occasions.",
+    "image": {
+      "src": "https://images.unsplash.com/photo-1514093513312-44a09a25bdfb?w=800&q=80",
+      "alt": "Child in a party dress outdoors",
+      "width": 800,
+      "height": 1000
+    }
   }
 ]

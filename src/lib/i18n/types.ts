@@ -521,6 +521,8 @@ export type Dictionary = {
     standard: string;
     priority: string;
     estimate: string;
+    /** Hint below estimator result — priority stitching */
+    priorityEstimatorHint: string;
   };
   faq: {
     pageTitle: string;

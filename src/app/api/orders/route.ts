@@ -33,6 +33,10 @@ type QuickBody = {
   catalogId?: string;
   /** When valid, stored on the order instead of the quick-request placeholder phone. */
   customerPhone?: string;
+  /** When itemCount is "3plus", optional exact count (integer ≥ 3). */
+  exactPieceCount?: number;
+  priorityRequested?: boolean;
+  priorityImplied?: boolean;
 };
 
 type Body = StandardBody | QuickBody;
@@ -67,12 +71,24 @@ export async function POST(request: Request) {
     ) {
       return NextResponse.json({ ok: false, error: "invalid_quick_request" }, { status: 400 });
     }
+    const exact =
+      typeof body.exactPieceCount === "number" && Number.isInteger(body.exactPieceCount)
+        ? body.exactPieceCount
+        : undefined;
+    if (exact !== undefined) {
+      if (exact < 3 || body.itemCount !== "3plus") {
+        return NextResponse.json({ ok: false, error: "invalid_quick_request" }, { status: 400 });
+      }
+    }
     items = buildQuickOrderLineItems({
       serviceType: body.serviceType,
       itemCount: body.itemCount,
       preferredDeliveryDate: body.preferredDeliveryDate.trim(),
       notes: typeof body.notes === "string" ? body.notes : "",
       catalogId: typeof body.catalogId === "string" ? body.catalogId : undefined,
+      exactPieceCount: exact,
+      priorityRequested: body.priorityRequested === true,
+      priorityImplied: body.priorityImplied === true && body.priorityRequested !== true,
     });
     const cust = quickRequestCustomerForApi();
     name = cust.customerName;

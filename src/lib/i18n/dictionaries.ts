@@ -180,7 +180,12 @@ export const en: Dictionary = {
   homeFinalCta: {
     title: "Ready to get started?",
     body: "Let's bring your design to life.",
-    bullets: ["Fast replies", "Personal guidance", "Trusted service"],
+    bullets: [
+      "Fast replies",
+      "Personal guidance",
+      "Trusted service",
+      "Priority options available for urgent needs",
+    ],
     ctaPrimary: "Start on WhatsApp 💬",
     ctaSecondary: "Or use the request form",
   },
@@ -240,6 +245,7 @@ export const en: Dictionary = {
       "Effort & time — cutting, finishing, multiple fittings, and rework risk.",
       "Materials — your fabric vs. sourced trims; special linings or embellishments add cost.",
       "We avoid one flat rate for every design — similar garments can sit in different tiers.",
+      "Priority stitching available for urgent requests (quoted separately)",
     ],
     tiersSectionTitle: "Quality & customization tiers",
     tiersSectionIntro:
@@ -844,6 +850,7 @@ export const en: Dictionary = {
     standard: "Standard",
     priority: "Priority (+rush fee may apply)",
     estimate: "~{{n}} working days",
+    priorityEstimatorHint: "⚡ Need it earlier? Ask for priority stitching",
   },
   faq: {
     pageTitle: "Frequently asked questions",
@@ -1072,7 +1079,12 @@ export const hi: Dictionary = {
   homeFinalCta: {
     title: "शुरू करें?",
     body: "आपका डिज़ाइन हकीकत बनाएँ।",
-    bullets: ["तेज़ जवाब", "व्यक्तिगत मार्गदर्शन", "भरोसेमंद सेवा"],
+    bullets: [
+      "तेज़ जवाब",
+      "व्यक्तिगत मार्गदर्शन",
+      "भरोसेमंद सेवा",
+      "जरूरी ऑर्डर के लिए प्राथमिकता विकल्प उपलब्ध",
+    ],
     ctaPrimary: "व्हाट्सऐप पर शुरू करें 💬",
     ctaSecondary: "या अनुरोध फॉर्म भरें",
   },
@@ -1132,6 +1144,7 @@ export const hi: Dictionary = {
       "मेहनत और समय — कटिंग, फिनिश, कई फिटिंग, दोबारा काम का जोखिम।",
       "सामग्री — आपका कपड़ा बनाम खरीदे गए ट्रिम; खास लाइनिंग या सजावट से लागत बढ़ती है।",
       "हर डिज़ाइन के लिए एक ही फ्लैट रेट नहीं — मिलते जुलते कपड़े अलग टियर में हो सकते हैं।",
+      "जरूरी अनुरोधों के लिए प्राथमिकता सिलाई (अलग कोट)",
     ],
     tiersSectionTitle: "गुणवत्ता और कस्टमाइज़ेशन टियर",
     tiersSectionIntro:
@@ -1738,6 +1751,7 @@ export const hi: Dictionary = {
     standard: "सामान्य",
     priority: "प्राथमिकता (+तेज़ फीस लग सकती है)",
     estimate: "लगभग {{n}} कार्य दिवस",
+    priorityEstimatorHint: "⚡ पहले चाहिए? प्राथमिकता सिलाई के लिए पूछें",
   },
   faq: {
     pageTitle: "अक्सर पूछे जाने वाले सवाल",

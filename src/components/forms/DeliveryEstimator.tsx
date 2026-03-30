@@ -75,6 +75,9 @@ export function DeliveryEstimator() {
       <p className="mt-6 rounded-xl bg-background px-4 py-4 text-center font-display text-2xl font-semibold text-accent-dark">
         {d.estimate.replace("{{n}}", String(estimate))}
       </p>
+      <p className="mt-4 rounded-xl border border-border/70 bg-[#fdf8f6] px-4 py-3 text-center text-sm leading-relaxed text-muted">
+        {d.priorityEstimatorHint}
+      </p>
     </div>
   );
 }
