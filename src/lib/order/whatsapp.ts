@@ -35,6 +35,8 @@ export function buildMultiItemOrderMessage(
   extras?: {
     /** Public tracking URL — appended for WhatsApp sharing */
     trackingUrl?: string;
+    /** Appended before tracking line — e.g. saved measurements summary */
+    measurementAppend?: string;
   },
 ): string {
   const lines: string[] = [];
@@ -95,6 +97,9 @@ export function buildMultiItemOrderMessage(
     "Reminder: WhatsApp couldn’t attach my files from the website — the reference image(s) are the ones I’m sending in this chat.",
     "Thank you!",
   );
+  if (extras?.measurementAppend?.trim()) {
+    lines.push("", extras.measurementAppend.trim());
+  }
   if (extras?.trackingUrl?.trim()) {
     lines.push("");
     lines.push(`Track my order: ${extras.trackingUrl.trim()}`);

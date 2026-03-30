@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans, Noto_Sans_Devanagari } from "next/font/google";
+import { Inter, Noto_Sans_Devanagari, Playfair_Display } from "next/font/google";
 
 import { I18nProvider } from "@/components/i18n/I18nProvider";
 import { SiteFooter } from "@/components/layout/SiteFooter";
@@ -10,15 +10,15 @@ import { siteConfig } from "@/lib/site";
 
 import "./globals.css";
 
-const dmSans = DM_Sans({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-dm-sans",
+  variable: "--font-inter",
   display: "swap",
 });
 
-const cormorant = Cormorant_Garamond({
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-cormorant",
+  variable: "--font-playfair",
   display: "swap",
 });
 
@@ -77,11 +77,11 @@ export default async function RootLayout({
   return (
     <html
       lang={lang}
-      className={`${dmSans.variable} ${cormorant.variable} ${notoSansHi.variable} h-full`}
+      className={`${inter.variable} ${playfair.variable} ${notoSansHi.variable} h-full`}
     >
       <body
         className={`flex min-h-full flex-col bg-background text-foreground antialiased ${
-          locale === "hi" ? notoSansHi.className : dmSans.className
+          locale === "hi" ? notoSansHi.className : inter.className
         }`}
       >
         <I18nProvider locale={locale} dict={dict}>

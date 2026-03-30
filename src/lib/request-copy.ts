@@ -65,6 +65,41 @@ export const requestCopy = {
   handoffBackToForm: "Back to edit order",
 } as const;
 
+/** Lightweight quick stitch path (/request default) — English; mirrors tone of main request copy. */
+export const quickRequestCopy = {
+  pageTitle: "Quick stitching request",
+  pageIntro:
+    "A few taps and you’re done — we’ll open WhatsApp for photos and finer details. No account needed.",
+  pageSubline:
+    "Need several garments, file uploads, or to enter your name and phone on the site? Use the detailed request form.",
+  designLockedHint: "Design from gallery — you don’t need to pick it again.",
+  serviceLabel: "Service",
+  itemsLabel: "How many pieces?",
+  item1: "1",
+  item2: "2",
+  item3plus: "3+",
+  deliveryLabel: "Preferred delivery date",
+  notesLabel: "Additional notes",
+  notesOptional: "(optional)",
+  notesPh: "Any design details, fabric info, or special requests…",
+  submit: "Continue",
+  handoffTitle: "You're almost done! 😊",
+  handoffLead:
+    "Next, you'll open WhatsApp with your request ready to send. Please share your design photo there so we can understand the look and match it to your order.",
+  handoffBold:
+    "Tip: tap the paperclip in WhatsApp and attach your reference image right after you send the message.",
+  continueWhatsapp: "Continue to WhatsApp",
+  backEdit: "Back to edit",
+  deliveryRequired: "Please choose a delivery date.",
+  switchToDetailed: "Need multiple items, file uploads, or full details?",
+  switchToDetailedLink: "Use the detailed request form",
+  clearDesignLink: "Start without this design",
+  backToQuickLink: "← Quick request",
+  measurementPhoneLabel: "WhatsApp number",
+  measurementPhoneHint:
+    "Optional — enter if you want us to look up saved measurements and attach your real number to this order.",
+} as const;
+
 export const requestValidationMessages: ServiceRequestValidationMessages = {
   nameRequired: "Please enter your full name.",
   phoneRequired: "Please enter your phone number (WhatsApp).",

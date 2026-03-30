@@ -1,5 +1,8 @@
 # Customer measurement storage & retrieval
 
+**Implemented (read path):** Google Sheets–backed **lookup** + WhatsApp summary — see **[MEASUREMENTS_GOOGLE_SHEETS.md](./MEASUREMENTS_GOOGLE_SHEETS.md)**.  
+This file still describes the broader **data model** and phased ideas (write path, Firestore link, OTP, etc.).
+
 Design for storing and reusing tailoring measurements in the **Garment Services** catalog app (women’s wear primary, girls’ wear secondary). Complements the existing **[ORDER_MODEL.md](./ORDER_MODEL.md)** and optional **[ORDER_ADMIN_SYSTEM.md](./ORDER_ADMIN_SYSTEM.md)** (Firestore).
 
 ---

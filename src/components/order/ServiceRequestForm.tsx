@@ -5,7 +5,12 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { todayLocalISODate } from "@/lib/date-today";
 
+import {
+  MeasurementLookupPanel,
+  type MeasurementSelectionPayload,
+} from "@/components/measurements/MeasurementLookupPanel";
 import { Button } from "@/components/ui/Button";
+import { formatMeasurementsForWhatsApp } from "@/lib/measurements/format-whatsapp";
 import {
   createAlterationItem,
   createItemForService,
@@ -139,6 +144,7 @@ export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Pr
   const [deliveryMin, setDeliveryMin] = useState("");
   /** Built after successful submit; opening WhatsApp clears it */
   const [whatsappPendingMessage, setWhatsappPendingMessage] = useState<string | null>(null);
+  const [measurementPayload, setMeasurementPayload] = useState<MeasurementSelectionPayload | null>(null);
 
   useEffect(() => {
     setDeliveryMin(todayLocalISODate());
@@ -235,7 +241,13 @@ export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Pr
       /* still open WhatsApp */
     }
 
-    const msg = buildMultiItemOrderMessage(order, catalog, customer, { trackingUrl });
+    const measurementAppend =
+      measurementPayload &&
+      formatMeasurementsForWhatsApp(measurementPayload.items, measurementPayload.choices);
+    const msg = buildMultiItemOrderMessage(order, catalog, customer, {
+      trackingUrl,
+      measurementAppend: measurementAppend ?? undefined,
+    });
     setWhatsappPendingMessage(msg);
   }
 
@@ -350,6 +362,9 @@ export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Pr
               className={`mt-2 ${inputBase} ${showErrors && validation.customer.phone ? inputInvalid : inputNormal}`}
             />
             <FieldError id="err-cust-phone" message={showErrors ? validation.customer.phone : undefined} />
+          </div>
+          <div className="sm:col-span-2">
+            <MeasurementLookupPanel phone={customerPhone} onSelectionChange={setMeasurementPayload} />
           </div>
         </div>
       </div>

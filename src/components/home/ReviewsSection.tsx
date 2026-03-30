@@ -1,6 +1,7 @@
 import type { Review } from "@/lib/types";
 import { getDictionary } from "@/lib/i18n/server";
 
+import { ReviewComment } from "@/components/home/ReviewComment";
 import { StarRating } from "@/components/ui/StarRating";
 
 type Props = {
@@ -15,32 +16,35 @@ export async function ReviewsSection({ reviews }: Props) {
   });
 
   return (
-    <section id="reviews" className="scroll-mt-24 py-14 sm:py-18">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <h2 className="font-display text-3xl font-semibold text-foreground sm:text-4xl">
+    <section id="reviews" className="scroll-mt-24 border-b border-border/50 bg-card py-20 md:py-24 lg:py-[100px]">
+      <div className="page-container">
+        <h2 className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           {dict.reviews.title}
         </h2>
-        <p className="mt-2 max-w-2xl text-muted">{dict.reviews.subtitle}</p>
+        <p className="mt-2 text-lg font-semibold text-foreground">{dict.reviews.subtitle}</p>
+        <p className="mt-3 max-w-2xl text-sm text-muted">{dict.reviews.detail}</p>
 
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2">
+        <ul className="mt-12 grid gap-5 sm:grid-cols-2">
           {sorted.map((r) => (
             <li
               key={r.id}
-              className={`rounded-2xl border p-5 ${
+              className={`ds-card ${
                 r.featured
-                  ? "border-accent/40 bg-gradient-to-br from-[#fff9f8] to-card shadow-sm"
-                  : "border-border bg-card"
+                  ? "border-accent/30 bg-gradient-to-br from-[#fff9f8] to-card"
+                  : ""
               }`}
             >
               {r.featured ? (
-                <p className="text-xs font-semibold uppercase tracking-wider text-accent-dark">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-accent-dark">
                   {dict.reviews.topBadge}
                 </p>
               ) : null}
-              <div className="mt-2 flex items-center gap-2">
+              <div className={r.featured ? "mt-2" : ""}>
                 <StarRating rating={r.rating} ariaLabelTemplate={dict.ratingAria} />
               </div>
-              <p className="mt-3 text-sm leading-relaxed text-foreground">{r.comment}</p>
+              <p className="mt-3 text-sm leading-relaxed text-foreground">
+                <ReviewComment text={r.comment} />
+              </p>
               <p className="mt-4 text-sm font-semibold text-foreground">— {r.name}</p>
             </li>
           ))}

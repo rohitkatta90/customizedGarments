@@ -31,6 +31,8 @@ export type Dictionary = {
     /** Main H1 — memorable brand line */
     headline: string;
     body: string;
+    /** Primary conversion CTA (usually WhatsApp) */
+    startWhatsapp: string;
     explore: string;
     requestStitching: string;
     requestAlteration: string;
@@ -39,6 +41,35 @@ export type Dictionary = {
     cardTitle: string;
     cardSubtitle: string;
     imageAria: string;
+    /** Small trust line under hero CTAs */
+    previewCaption: string;
+  };
+  homeTrustChips: {
+    fastReply: string;
+    noHidden: string;
+    trusted: string;
+  };
+  homeImmediate: {
+    title: string;
+    body: string;
+    ctaRequest: string;
+    ctaWhatsapp: string;
+  };
+  homeGalleryPreview: {
+    title: string;
+    subtitle: string;
+  };
+  stickyCta: {
+    whatsapp: string;
+    call: string;
+  };
+  homeQuickActions: {
+    stitchTitle: string;
+    stitchBody: string;
+    alterTitle: string;
+    alterBody: string;
+    kidsTitle: string;
+    kidsBody: string;
   };
   homeEmotional: {
     title: string;
@@ -53,6 +84,8 @@ export type Dictionary = {
     intro: string;
     detail: string;
     bullets: string[];
+    /** Icon highlights on home (precision, fit, experience) */
+    highlights: { title: string; body: string }[];
     /** Subtle role mention — no names or photos */
     teamNote: string;
   };
@@ -107,7 +140,11 @@ export type Dictionary = {
   reviews: {
     title: string;
     subtitle: string;
+    /** Muted supporting line under subtitle */
+    detail: string;
     topBadge: string;
+    metricHappy: string;
+    metricStars: string;
   };
   payment: {
     title: string;
@@ -390,9 +427,20 @@ export type Dictionary = {
     dresses: string;
     customDesigns: string;
   };
+  /** Singular labels for gallery / cards (e.g. "Blouse") */
+  categoriesSingular: {
+    blouses: string;
+    kurtis: string;
+    dresses: string;
+    customDesigns: string;
+  };
   catalog: {
     getStitched: string;
+    /** Home gallery CTA with arrow */
+    getStitchedArrow: string;
     addToRequest: string;
+    /** Secondary CTA — open WhatsApp for a quick question (catalog card). */
+    chatOnWhatsApp: string;
   };
   styling: {
     /** Category label for add-ons (laces, embroidery, etc.) */

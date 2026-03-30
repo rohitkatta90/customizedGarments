@@ -8,17 +8,22 @@ export async function HomeTransparencySection() {
   const s = dict.homeTransparency;
 
   return (
-    <section className="border-b border-border/60 bg-white py-14 sm:py-18">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <h2 className="font-display text-3xl font-semibold text-foreground sm:text-4xl">{s.title}</h2>
-        <p className="mt-3 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">{s.intro}</p>
-        <ul className="mt-8 list-disc space-y-3 pl-5 text-sm leading-relaxed text-muted sm:text-base">
+    <section className="border-b border-border/50 bg-background py-20 md:py-24 lg:py-[100px]">
+      <div className="page-container">
+        <h2 className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+          {s.title}
+        </h2>
+        <p className="mt-3 max-w-2xl text-base text-muted sm:text-lg">{s.intro}</p>
+        <ul className="mt-10 max-w-2xl space-y-4 text-sm leading-relaxed text-muted sm:text-base">
           {s.bullets.map((line) => (
-            <li key={line}>{line}</li>
+            <li key={line} className="flex gap-3">
+              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden />
+              <span>{line}</span>
+            </li>
           ))}
         </ul>
         {siteConfig.showPublicPricing ? (
-          <p className="mt-8">
+          <p className="mt-10">
             <Link
               href="/pricing"
               className="text-sm font-semibold text-accent-dark underline-offset-4 hover:underline"

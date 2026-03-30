@@ -24,11 +24,11 @@ Invalid `category` values can break TypeScript/build — keep to the four enums 
 |------------|-------|----------|
 | **Gallery browse** | `/gallery` | Lists all items; **category filter** (client-side). Uses `next/image` for thumbnails. |
 | **EN / हि** | Gallery + cards | UI strings from i18n (`dictionaries.ts`) — e.g. “Get This Stitched”, category labels. |
-| **Deep link to request** | From each card | **“Add to request”** → `/request?catalog=<id>&service=stitching` pre-selects that design on the multi-item form. |
-| **WhatsApp inquiry (single design)** | “Get This Stitched” on card | Opens WhatsApp with a **prefilled message** naming title + ID (`catalogInquiryTemplate` in `src/lib/whatsapp.ts`). |
+| **Primary CTA → quick request** | **“Get This Stitched”** on card | `/request?catalog=<id>&service=stitching` — default **quick form** locks that design (`QuickStitchRequestForm`). |
+| **Secondary WhatsApp** | **“Chat on WhatsApp”** on card | Prefilled inquiry naming title + ID (`catalogInquiryTemplate` in `src/lib/whatsapp.ts`). |
+| **Detailed multi-item form** | `/request?full=1` | Full `ServiceRequestForm`: name, phone, multiple items, optional upload filename, per-item catalog picker. |
 | **Legacy stitching URL** | `/stitching?design=<id>` | Redirects into `/request` with catalog hint (see `src/app/stitching/page.tsx`). |
-| **Multi-item service request** | `/request` | **Stitching** line items can choose **Design source: From catalog** → dropdown lists **every** catalog row (`ServiceRequestForm` + `OrderItemFields`). |
-| **WhatsApp order summary** | After building the request | `buildMultiItemOrderMessage` resolves **catalog ID → title** for each stitching item so WhatsApp shows readable names. |
+| **WhatsApp order summary** | After submit | Quick path: `buildQuickStitchWhatsAppMessage`; detailed path: `buildMultiItemOrderMessage` — both resolve catalog titles where applicable. |
 | **Public tracking** | `/track/[token]` | Does **not** show catalog images; only status and high-level info. |
 
 ---

@@ -31,8 +31,9 @@ export const en: Dictionary = {
     eyebrow: "Women's tailoring studio",
     headline: "Stitching & alterations that feel made for you",
     body:
-      "From a Pinterest save to your doorstep — we help you shape the idea, lock the fit, and stitch or alter with care. Most of our work is women's wear; we also take select girls' pieces when the timeline allows.",
-    explore: "Explore designs",
+      "Browse inspiration, send your reference on WhatsApp, and we'll confirm fit, timeline, and a clear quote before you commit.",
+    startWhatsapp: "Start on WhatsApp 💬",
+    explore: "Explore Designs",
     requestStitching: "Request stitching",
     requestAlteration: "Request alteration",
     messageWa: "Message on WhatsApp",
@@ -40,11 +41,39 @@ export const en: Dictionary = {
     cardTitle: "From moodboard to the final stitch",
     cardSubtitle: "Women's blouses, kurtis & dresses · alterations · girls' party wear on request",
     imageAria: "Elegant fabric and women's fashion styling",
+    previewCaption: "Recent stitched looks — tap to start your version",
+  },
+  homeTrustChips: {
+    fastReply: "Replies within 5–10 mins",
+    noHidden: "No hidden charges",
+    trusted: "Trusted by customers",
+  },
+  homeImmediate: {
+    title: "Got a design in mind?",
+    body: "Send a screenshot, sketch, or gallery pick — we'll reply with next steps and a clear quote.",
+    ctaRequest: "Start your request",
+    ctaWhatsapp: "Chat on WhatsApp",
+  },
+  homeGalleryPreview: {
+    title: "Stitched outfits you can start from",
+    subtitle: "Every piece is made to your measurements — these are conversation starters.",
+  },
+  stickyCta: {
+    whatsapp: "Start on WhatsApp 💬",
+    call: "Call",
+  },
+  homeQuickActions: {
+    stitchTitle: "Stitch a new outfit",
+    stitchBody: "Blouse, kurti, dress, or bespoke — from your reference or ours.",
+    alterTitle: "Alter an existing dress",
+    alterBody: "Hems, take-ins, zips, reshaping — we assess before we promise dates.",
+    kidsTitle: "Kids wear request",
+    kidsBody: "Party or festive girls' wear when our schedule allows — always quoted clearly.",
   },
   homeEmotional: {
     title: "Clothes that feel like you",
     intro:
-      "You deserve pieces that fit your life — not a one-size label. We're here for the small wins: a hem that sits right, a neckline that flatters, or a full custom piece that started as a daydream.",
+      "Pieces that fit your life — hems, necklines, or a full custom look. We focus on women's tailoring first, with girls' wear when it fits our schedule.",
     pillars: [
       {
         title: "Personalised outfits",
@@ -69,7 +98,7 @@ export const en: Dictionary = {
     introShort:
       "Our workshop brings together seasoned tailoring and cutting specialists — focused on women’s wear, with careful girls’ pieces when the work deserves the same care.",
     intro:
-      "Every piece is guided by hands that have spent years refining fit, finish, and drape. We care about the small things: a clean line, a secure seam, a silhouette that feels natural when you move.",
+      "Every garment is cut and finished by experienced hands — clean lines, dependable fit, and finishes that feel natural when you move. Women's tailoring is our focus; we take select girls' pieces with the same care when timing allows.",
     detail:
       "Custom references and layered designs are welcome — we’ll be honest about what’s achievable, and we take the time to get stitching and structure right before you take your garment home.",
     bullets: [
@@ -77,8 +106,26 @@ export const en: Dictionary = {
       "Thoughtful construction — from simple elegance to more detailed work",
       "Women’s wear is our core strength; girls’ wear is offered when we can match our standards",
     ],
+    highlights: [
+      {
+        title: "Precision cutting and finishing",
+        body: "Clean lines, secure seams, and careful construction from cut to final press.",
+      },
+      {
+        title: "Perfect fitting",
+        body: "Measurements, fittings, and honest timelines so the garment feels natural on you.",
+      },
+      {
+        title: "Experienced tailoring masters",
+        body: "Seasoned cutters and stitchers who've refined fit, drape, and finish over years.",
+      },
+      {
+        title: "Women-first expertise",
+        body: "Women's wear is our core; girls' pieces when schedules allow — always quoted clearly.",
+      },
+    ],
     teamNote:
-      "Behind the work: dedicated masters in tailoring and women’s cutting, skilled stitchers, and experienced kids’ cutting support — together bringing decades of combined practice to your order.",
+      "A calm workshop rhythm: masters, skilled stitchers, and careful support behind every order.",
   },
   homeServices: {
     title: "What we do",
@@ -99,52 +146,43 @@ export const en: Dictionary = {
   },
   homeHowItWorks: {
     title: "How it works",
-    intro: "No jargon — just a clear path from hello to handover.",
+    intro: "From your first message to handover — four clear steps.",
     steps: [
       {
-        title: "Share your design or idea",
+        title: "Share design",
         body:
-          "WhatsApp us references, measurements notes, or pick something from our gallery. Tell us your event date if you have one.",
+          "Send references, measurements, or a gallery pick on WhatsApp. Mention your date if you have one.",
       },
       {
         title: "Get confirmation",
-        body:
-          "We reply with a written quote, what's included, and a realistic delivery window — before you pay.",
+        body: "Written quote, what's included, and a realistic delivery window — before you pay.",
       },
       {
         title: "Stitching & fittings",
-        body:
-          "We cut, sew, and refine. If something needs a tweak, we say so early — not on pickup day.",
+        body: "We cut, sew, and refine. Fittings and tweaks happen early — not on pickup day.",
       },
       {
         title: "Delivery & feedback",
-        body:
-          "Collect your piece, try it on, and tell us how it feels. We're here for small adjustments when agreed.",
+        body: "Collect, try on, and tell us how it feels. Small agreed adjustments when needed.",
       },
     ],
   },
   homeTransparency: {
-    title: "Straightforward pricing",
-    intro:
-      "We believe you should know what you're paying for — especially when extras make a piece special.",
+    title: "Pricing transparency",
+    intro: "Clear scope up front — extras discussed before we proceed.",
     bullets: [
-      "Your quote covers the agreed stitching or alteration scope for standard construction.",
-      "Styling extras — laces, tassels, embroidery, dyeing, extra lining, and similar — may add cost; we list them separately.",
-      "We'll confirm every extra in writing before we proceed. No hidden charges.",
+      "Base stitching or alteration scope is included in your written quote.",
+      "Add-ons (lace, embroidery, lining, dyeing, etc.) are listed separately and confirmed before work starts.",
+      "No hidden charges — you approve every line item.",
     ],
     linkText: "See indicative price bands",
   },
   homeFinalCta: {
-    title: "Start on WhatsApp",
-    body:
-      "Tell us what you're dreaming of — we'll answer quickly, in plain language, with a human on the other side.",
-    bullets: [
-      "Fast, friendly replies during business hours",
-      "Personal guidance on fabric, fit, and timeline",
-      "Trusted finishing — women's wear first, girls' pieces when we can do them justice",
-    ],
-    ctaPrimary: "Chat on WhatsApp",
-    ctaSecondary: "Submit a service request",
+    title: "Ready to get started?",
+    body: "Let's bring your design to life.",
+    bullets: ["Fast replies", "Personal guidance", "Trusted service"],
+    ctaPrimary: "Start on WhatsApp 💬",
+    ctaSecondary: "Or use the request form",
   },
   home: {
     talkTitle: "Prefer voice?",
@@ -169,10 +207,13 @@ export const en: Dictionary = {
     seeAll: "See all reviews",
   },
   reviews: {
-    title: "Customer reviews",
-    subtitle:
-      "Real feedback after delivery. Highlights show especially detailed notes — we're grateful for every message.",
+    title: "Loved by clients",
+    subtitle: "100+ happy customers",
+    detail:
+      "Real feedback after delivery — featured notes are especially detailed; we're grateful for every message.",
     topBadge: "Top review",
+    metricHappy: "100+ happy customers",
+    metricStars: "5-star experiences",
   },
   payment: {
     title: "Payments",
@@ -706,9 +747,17 @@ export const en: Dictionary = {
     dresses: "Dresses",
     customDesigns: "Custom Designs",
   },
+  categoriesSingular: {
+    blouses: "Blouse",
+    kurtis: "Kurti",
+    dresses: "Dress",
+    customDesigns: "Custom",
+  },
   catalog: {
     getStitched: "Get This Stitched",
+    getStitchedArrow: "Get this stitched →",
     addToRequest: "Add to service request",
+    chatOnWhatsApp: "Chat on WhatsApp",
   },
   styling: {
     categoryLabel: "Additional Styling Elements",
@@ -873,7 +922,8 @@ export const hi: Dictionary = {
     eyebrow: "महिलाओं की टेलरिंग स्टूडियो",
     headline: "ऐसी सिलाई और अल्टरेशन जो आप पर बनाई लगे",
     body:
-      "Pinterest से आपके दरवाज़े तक — हम विचार को साफ़ करते हैं, फिट पक्का करते हैं, फिर सिलाई या अल्टरेशन में पूरा ध्यान। अधिकतर काम महिलाओं का; समय मिले तो बच्चियों के चुनिंदा पीस भी।",
+      "प्रेरणा देखें, व्हाट्सऐप पर रेफरेंस भेजें — हम फिट, समय और स्पष्ट कोट पुष्ट करेंगे, आगे बढ़ने से पहले।",
+    startWhatsapp: "व्हाट्सऐप पर शुरू करें 💬",
     explore: "डिज़ाइन देखें",
     requestStitching: "सिलाई का अनुरोध",
     requestAlteration: "अल्टरेशन का अनुरोध",
@@ -883,11 +933,39 @@ export const hi: Dictionary = {
     cardSubtitle:
       "महिलाओं के ब्लाउज, कुर्ती, ड्रेस · अल्टरेशन · बच्चियों की पार्टी पहनावा (अनुरोध पर)",
     imageAria: "सुरुचिपूर्ण कपड़ा और महिला फैशन",
+    previewCaption: "हाल की सिलाई — अपना वर्ज़न शुरू करने के लिए टैप करें",
+  },
+  homeTrustChips: {
+    fastReply: "5–10 मिनट में जवाब",
+    noHidden: "कोई छिपा शुल्क नहीं",
+    trusted: "ग्राहकों का भरोसा",
+  },
+  homeImmediate: {
+    title: "दिमाग में डिज़ाइन है?",
+    body: "स्क्रीनशॉट, स्केच या गैलरी चुनाव भेजें — हम अगले कदम और स्पष्ट कोट के साथ जवाब देंगे।",
+    ctaRequest: "अनुरोध शुरू करें",
+    ctaWhatsapp: "व्हाट्सऐप पर चैट",
+  },
+  homeGalleryPreview: {
+    title: "सिलाई किए आउटफिट — यहीं से शुरू करें",
+    subtitle: "हर पीस आपके नाप पर बनता है — ये तस्वीरें बातचीत की शुरुआत हैं।",
+  },
+  stickyCta: {
+    whatsapp: "व्हाट्सऐप पर शुरू करें 💬",
+    call: "कॉल",
+  },
+  homeQuickActions: {
+    stitchTitle: "नया आउटफिट सिलवाएँ",
+    stitchBody: "ब्लाउज, कुर्ती, ड्रेस या खास डिज़ाइन — आपके रेफरेंस या हमारी गैलरी से।",
+    alterTitle: "पुरानी ड्रेस बदलवाएँ",
+    alterBody: "हेम, टाइट/ढीला, ज़िप, आकार — कपड़ा देखकर ही तारीख तय।",
+    kidsTitle: "बच्चियों की पहनावा",
+    kidsBody: "पार्टी या त्योहार — जब शेड्यूल मिले; हमेशा साफ़ कोट।",
   },
   homeEmotional: {
     title: "वही कपड़े जो आप जैसे लगें",
     intro:
-      "आपके जीवन पर सही बैठे पीस — एक लेबल में नहीं। हम छोटी जीतों के लिए यहाँ हैं: सही हेम, सुडौल गला, या पूरा कस्टम जो दिन में ख्याल था।",
+      "हेम, गला या पूरा कस्टम — हम पहले महिलाओं की टेलरिंग पर ध्यान देते हैं; शेड्यूल मिले तो बच्चियों का काम भी।",
     pillars: [
       {
         title: "निजी पहनावा",
@@ -912,7 +990,7 @@ export const hi: Dictionary = {
     introShort:
       "हमारे वर्कशॉप में अनुभवी सिलाई और कटिंग विशेषज्ञ हैं — मुख्य रूप से महिलाओं के पहनावे पर ध्यान, और जहाँ वही देखभाल चाहिए वहाँ बच्चियों के पीस भी।",
     intro:
-      "हर पीस ऐसे हाथों से जाता है जिन्होंने सालों तक फिट, फिनिश और गिरावट निखारी है। छोटी बातें मायने रखती हैं — साफ़ लाइन, मज़बूत सिलाई, और ऐसा सिलूट जो चलने पर सहज लगे।",
+      "हर पीस अनुभवी हाथों से — साफ़ लाइनें और भरोसेमंद फिट। महिलाओं का पहनावा मुख्य फोकस; बच्चियों का काम जब शेड्यूल मिले, हमेशा साफ़ कोट।",
     detail:
       "कस्टम रेफरेंस और परतदार डिज़ाइन आमंत्रित हैं — हम ईमानदारी से बताते हैं क्या संभव है, और घर ले जाने से पहले सिलाई और संरचना पर समय देते हैं।",
     bullets: [
@@ -920,8 +998,26 @@ export const hi: Dictionary = {
       "सोच-समझकर बनावट — सादी सुंदरता से लेकर विस्तृत काम तक",
       "महिलाओं का पहनावा हमारी मुख्य ताकत; बच्चियों का काम जब हम अपने मानक पर खरे उतर सकें",
     ],
+    highlights: [
+      {
+        title: "सटीक कटिंग और फिनिश",
+        body: "साफ़ लाइनें, मज़बूत सिलाई, कट से आखिरी प्रेस तक सावधानी।",
+      },
+      {
+        title: "बेहतरीन फिट",
+        body: "नाप, फिटिंग और ईमानदार समय — पहनावा सहज लगे।",
+      },
+      {
+        title: "अनुभवी टेलरिंग मास्टर",
+        body: "वर्षों से फिट, गिरावट और फिनिश निखारते कटर और सिलाई विशेषज्ञ।",
+      },
+      {
+        title: "पहले महिलाओं की विशेषज्ञता",
+        body: "मुख्य काम महिलाओं का; बच्चियों का जब शेड्यूल मिले — साफ़ कोट।",
+      },
+    ],
     teamNote:
-      "पर्दे के पीछे: सिलाई और महिलाओं की कटिंग में निपुण मास्टर, कुशल सिलाई कर्मी, और बच्चों की कटिंग में अनुभवी सहयोग — मिलकर दशकों का अनुभाव आपके ऑर्डर में।",
+      "शांत वर्कशॉप लय: मास्टर, कुशल सिलाई और सहयोग — हर ऑर्डर के पीछे।",
   },
   homeServices: {
     title: "हम क्या करते हैं",
@@ -942,52 +1038,43 @@ export const hi: Dictionary = {
   },
   homeHowItWorks: {
     title: "कैसे होता है",
-    intro: "कठिन शब्द नहीं — हैलो से हैंडओवर तक साफ़ रास्ता।",
+    intro: "पहले संदेश से हैंडओवर तक — चार साफ़ कदम।",
     steps: [
       {
-        title: "डिज़ाइन या विचार साझा करें",
+        title: "डिज़ाइन साझा करें",
         body:
-          "व्हाट्सऐप पर रेफरेंस, नाप नोट, या गैलरी से चुनाव। अगर तारीख ज़रूरी है तो बताएँ।",
+          "व्हाट्सऐप पर रेफरेंस, नाप या गैलरी चुनाव। तारीख ज़रूरी हो तो बताएँ।",
       },
       {
         title: "पुष्टि पाएँ",
-        body:
-          "हम लिखित कोट, क्या शामिल है, और यथार्थवादी डिलीवरी बताते हैं — भुगतान से पहले।",
+        body: "लिखित कोट, क्या शामिल है, यथार्थवादी डिलीवरी — भुगतान से पहले।",
       },
       {
         title: "सिलाई और फिटिंग",
-        body:
-          "काटते, सिलते, निखारते। कुछ बदलाव चाहिए तो जल्दी कहते हैं — पिकअप दिन नहीं।",
+        body: "काटना, सिलना, निखारना। फिटिंग और बदलाव जल्दी — पिकअप दिन नहीं।",
       },
       {
         title: "डिलीवरी और फीडबैक",
-        body:
-          "पीस लें, पहनकर देखें, बताएँ कैसा लगा। सहमति से छोटे समायोजन संभव।",
+        body: "पीस लें, पहनकर देखें, बताएँ कैसा लगा। सहमति से छोटे समायोजन।",
       },
     ],
   },
   homeTransparency: {
-    title: "साफ़ कीमत",
-    intro:
-      "आप जानें किसके पैसे कहाँ जा रहे हैं — खासकर जब एक्स्ट्रा से पीस खास बनता है।",
+    title: "कीमत पारदर्शिता",
+    intro: "शुरू में स्पष्ट दायरा — एक्स्ट्रा काम शुरू करने से पहले चर्चा।",
     bullets: [
-      "कोट में सहमत सिलाई या अल्टरेशन की सामान्य बनावट शामिल है।",
-      "स्टाइलिंग एक्स्ट्रा — लेस, लटकन, कढ़ाई, रंगाई, अतिरिक्त लाइनिंग आदि — अलग लाइन में हो सकते हैं।",
-      "हर अतिरिक्त चीज़ आगे बढ़ने से पहले लिखित में पुष्टि। कोई छिपा शुल्क नहीं।",
+      "लिखित कोट में बेस सिलाई या अल्टरेशन शामिल।",
+      "ऐड-ऑन (लेस, कढ़ाई, लाइनिंग, रंगाई आदि) अलग लाइन में; काम से पहले पुष्टि।",
+      "कोई छिपा शुल्क नहीं — हर पंक्ति आपकी मंज़ूरी से।",
     ],
     linkText: "संकेतक कीमत बैंड देखें",
   },
   homeFinalCta: {
-    title: "व्हाट्सऐप से शुरू करें",
-    body:
-      "बताएँ क्या सोच रही हैं — हम जल्दी, सरल भाषा में जवाब देंगे; दूसरी तरफ इंसान है।",
-    bullets: [
-      "कार्य समय में तेज़, दोस्ताना जवाब",
-      "कपड़ा, फिट और समय पर व्यक्तिगत मार्गदर्शन",
-      "भरोसेमंद फिनिश — पहले महिलाओं का काम, बच्चियों का जब हम न्याय कर सकें",
-    ],
-    ctaPrimary: "व्हाट्सऐप पर चैट",
-    ctaSecondary: "सेवा अनुरोध भेजें",
+    title: "शुरू करें?",
+    body: "आपका डिज़ाइन हकीकत बनाएँ।",
+    bullets: ["तेज़ जवाब", "व्यक्तिगत मार्गदर्शन", "भरोसेमंद सेवा"],
+    ctaPrimary: "व्हाट्सऐप पर शुरू करें 💬",
+    ctaSecondary: "या अनुरोध फॉर्म भरें",
   },
   home: {
     talkTitle: "आवाज़ पसंद है?",
@@ -1012,10 +1099,13 @@ export const hi: Dictionary = {
     seeAll: "सभी रिव्यू देखें",
   },
   reviews: {
-    title: "ग्राहक रिव्यू",
-    subtitle:
-      "डिलीवरी के बाद सच्ची प्रतिक्रिया। फ़ीचर्ड में खास विस्तार वाले नोट — हर संदेश के लिए धन्यवाद।",
+    title: "ग्राहकों को पसंद",
+    subtitle: "100+ खुश ग्राहक",
+    detail:
+      "डिलीवरी के बाद सच्ची प्रतिक्रिया — फ़ीचर्ड में विस्तृत नोट; हर संदेश के लिए धन्यवाद।",
     topBadge: "शीर्ष रिव्यू",
+    metricHappy: "100+ खुश ग्राहक",
+    metricStars: "5-सितारा अनुभव",
   },
   payment: {
     title: "भुगतान",
@@ -1551,9 +1641,17 @@ export const hi: Dictionary = {
     dresses: "ड्रेस",
     customDesigns: "कस्टम डिज़ाइन",
   },
+  categoriesSingular: {
+    blouses: "ब्लाउज",
+    kurtis: "कुर्ती",
+    dresses: "ड्रेस",
+    customDesigns: "कस्टम",
+  },
   catalog: {
     getStitched: "यह सिलवाएँ",
+    getStitchedArrow: "यह सिलवाएँ →",
     addToRequest: "Add to service request",
+    chatOnWhatsApp: "WhatsApp पर चैट करें",
   },
   styling: {
     categoryLabel: "अतिरिक्त स्टाइलिंग तत्व",

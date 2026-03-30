@@ -5,9 +5,9 @@ type Variant = "primary" | "secondary" | "ghost";
 
 const variants: Record<Variant, string> = {
   primary:
-    "bg-accent text-white shadow-sm hover:bg-accent-dark focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    "bg-accent text-white shadow-[0_2px_12px_-2px_rgba(196,138,138,0.45)] hover:bg-accent-dark focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background",
   secondary:
-    "border border-border bg-card text-foreground hover:border-accent/40 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    "border-2 border-accent bg-transparent text-foreground hover:bg-accent/[0.08] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background",
   ghost:
     "text-foreground hover:bg-black/[0.04] focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background",
 };
@@ -31,7 +31,7 @@ type ButtonAsLink = Base & {
 export function Button(props: ButtonAsButton | ButtonAsLink) {
   const { children, className = "", variant = "primary" } = props;
   const base =
-    "inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition-colors";
+    "inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl px-6 py-3 text-sm font-semibold transition-colors";
 
   if ("href" in props && props.href) {
     const { href, external } = props;

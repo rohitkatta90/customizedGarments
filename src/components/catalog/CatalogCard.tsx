@@ -47,20 +47,20 @@ export function CatalogCard({ item }: Props) {
           {item.description}
         </p>
         <div className="mt-4 flex flex-col gap-2">
+          <Link
+            href={`/request?catalog=${encodeURIComponent(item.id)}&service=stitching`}
+            className="flex min-h-12 w-full items-center justify-center rounded-2xl bg-accent px-4 text-sm font-semibold text-white shadow-[0_2px_12px_-2px_rgba(196,138,138,0.4)] transition hover:bg-accent-dark"
+          >
+            {dict.catalog.getStitched}
+          </Link>
           <a
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex min-h-11 w-full items-center justify-center rounded-full bg-accent px-4 text-sm font-semibold text-white transition hover:bg-accent-dark"
+            className="text-center text-sm font-medium text-muted underline-offset-4 hover:text-foreground hover:underline"
           >
-            {dict.catalog.getStitched}
+            {dict.catalog.chatOnWhatsApp}
           </a>
-          <Link
-            href={`/request?catalog=${encodeURIComponent(item.id)}&service=stitching`}
-            className="text-center text-xs font-medium text-accent-dark underline-offset-4 hover:underline"
-          >
-            {dict.catalog.addToRequest}
-          </Link>
         </div>
       </div>
     </article>

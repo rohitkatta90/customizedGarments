@@ -13,8 +13,8 @@ export function SiteFooter() {
   );
 
   return (
-    <footer className="mt-auto border-t border-border bg-white/60">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-3">
+    <footer className="mt-auto border-t border-border bg-card/80">
+      <div className="page-container grid gap-10 py-12 lg:grid-cols-3">
         <div>
           <p className="font-display text-2xl font-semibold text-foreground">
             {siteConfig.name}

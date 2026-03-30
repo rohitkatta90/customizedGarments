@@ -1,14 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --background: #faf6f3;
-  --foreground: #2d2424;
-  --muted: #6b5e5e;
-  --accent: #c98b8d;
-  --accent-dark: #a86a6d;
+  /* Figma-style design tokens */
+  --background: #f7f3f0;
+  --foreground: #2b2b2b;
+  --muted: #6b6b6b;
+  --accent: #c48a8a;
+  --accent-dark: #a86a6a;
   --card: #ffffff;
-  --border: #eadfd8;
-  --ring: #c98b8d;
+  --border: #e8e0db;
+  --ring: #c48a8a;
 }
 
 @theme inline {
@@ -19,8 +20,8 @@
   --color-accent-dark: var(--accent-dark);
   --color-card: var(--card);
   --color-border: var(--border);
-  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-cormorant), ui-serif, Georgia, serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-playfair), ui-serif, Georgia, "Times New Roman", serif;
 }
 
 html {
@@ -33,8 +34,22 @@ body {
   font-family: var(--font-sans);
 }
 
+@layer components {
+  .page-container {
+    @apply mx-auto w-full max-w-[1200px] px-6 lg:px-12;
+  }
+
+  .section-y {
+    @apply py-20 md:py-24 lg:py-[100px];
+  }
+
+  .ds-card {
+    @apply rounded-2xl border border-border bg-card p-5 shadow-[0_4px_24px_-4px_rgba(43,43,43,0.08)] md:p-6;
+  }
+}
+
 .font-display {
-  font-family: var(--font-cormorant), ui-serif, Georgia, serif;
+  font-family: var(--font-playfair), ui-serif, Georgia, "Times New Roman", serif;
 }
 
 html[lang="hi"] .font-display {

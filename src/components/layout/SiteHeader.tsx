@@ -30,8 +30,8 @@ export function SiteHeader() {
   );
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/80 bg-background/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center gap-2 px-4 py-3 sm:gap-3 sm:px-6">
+    <header className="sticky top-0 z-50 border-b border-border/80 bg-[#f7f3f0]/90 backdrop-blur-md">
+      <div className="page-container flex items-center gap-2 py-3 sm:gap-3">
         <div className="min-w-0 flex-1">
           <Link href="/" className="group flex flex-col leading-tight">
             <span className="truncate font-display text-lg font-semibold tracking-tight text-foreground transition-colors group-hover:text-accent-dark sm:text-xl md:text-2xl">
