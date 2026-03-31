@@ -9,6 +9,7 @@ import type { EffortPricingModel } from "@/lib/pricing/effort-types";
 import type { ProfitMarginModel } from "@/lib/pricing/profit-margin-types";
 import type { StaffPricingPolicy } from "@/lib/pricing/staff-policy-types";
 import { formatInrRange } from "@/lib/pricing/format";
+import { formatBrandText } from "@/lib/site";
 import type {
   PricingModel,
   PricingTierId,
@@ -75,7 +76,7 @@ export function PricingPageContent({ pricing, effort, dynamic, margin, staffPoli
         <h1 className="font-display text-4xl font-semibold text-foreground sm:text-5xl">
           {p.pageTitle}
         </h1>
-        <p className="mt-3 text-muted">{p.pageIntro}</p>
+        <p className="mt-3 text-muted">{formatBrandText(p.pageIntro)}</p>
 
         <section className="mt-12 rounded-2xl border border-border bg-card p-6 shadow-sm">
           <h2 className="font-display text-xl font-semibold text-foreground">{p.principlesTitle}</h2>

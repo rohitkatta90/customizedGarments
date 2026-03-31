@@ -5,14 +5,15 @@ import { GalleryClient } from "@/components/catalog/GalleryClient";
 import { CraftsmanshipSection } from "@/components/home/CraftsmanshipSection";
 import { getCatalog } from "@/lib/data";
 import { getDictionary } from "@/lib/i18n/server";
-import { siteConfig } from "@/lib/site";
+import { formatBrandText, siteConfig } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const dict = await getDictionary();
   return {
     title: dict.gallery.title,
-    description:
-      "Radha Creations — browse blouse, kurti, dress, and custom design inspiration. Tap to message us on WhatsApp.",
+    description: formatBrandText(
+      "{{name}} — browse blouse, kurti, dress, and custom design inspiration. Tap to message us on WhatsApp.",
+    ),
   };
 }
 
@@ -24,7 +25,7 @@ export default async function GalleryPage() {
     <div className="py-10 sm:py-14">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-dark">
-          {dict.gallery.eyebrow}
+          {formatBrandText(dict.gallery.eyebrow)}
         </p>
         <h1 className="mt-2 font-display text-4xl font-semibold text-foreground sm:text-5xl">
           {dict.gallery.title}

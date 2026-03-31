@@ -65,6 +65,11 @@ This document is a single reference for **what the stack is**, **which services 
 
 ## 4. Data & configuration
 
+### Brand name consistency
+
+- **`NEXT_PUBLIC_BUSINESS_NAME`** drives `siteConfig.name` (header, footer title, default metadata title template, PWA manifest name).
+- English copy can use the placeholder **`{{name}}`** in `dictionaries.ts`; render paths call **`formatBrandText()`** from `src/lib/site.ts` so subtitles, descriptions, and hero eyebrow stay aligned with the env-driven name on Vercel builds.
+
 ### Environment variables
 
 Canonical list and comments: **`.env.example`**. Categories:

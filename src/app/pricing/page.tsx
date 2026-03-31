@@ -9,12 +9,13 @@ import {
   getStaffPricingPolicy,
 } from "@/lib/data";
 import { getDictionary } from "@/lib/i18n/server";
+import { formatBrandText } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const dict = await getDictionary();
   return {
     title: dict.pricing.pageTitle,
-    description: dict.pricing.metaDescription,
+    description: formatBrandText(dict.pricing.metaDescription),
   };
 }
 

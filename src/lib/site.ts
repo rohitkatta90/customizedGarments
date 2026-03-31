@@ -19,6 +19,11 @@ export const siteConfig = {
   showPublicPricing: process.env.NEXT_PUBLIC_SHOW_PRICING === "true",
 } as const;
 
+/** Interpolate `{{name}}` in dictionary strings so UI matches `NEXT_PUBLIC_BUSINESS_NAME` / header. */
+export function formatBrandText(text: string): string {
+  return text.replace(/\{\{name\}\}/g, siteConfig.name);
+}
+
 export function whatsappDigits(): string {
   return stripNonDigits(siteConfig.whatsappPhone);
 }

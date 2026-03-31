@@ -11,7 +11,7 @@
 - **Product:** Mobile-first **service catalog** for a women’s tailoring / alteration business — **not** a shopping cart.
 - **Orders:** Customers reach you via **WhatsApp** with prefilled messages. Optional **Firestore** persistence + **`/admin/orders`** for listing, filters, and status updates (see **[ORDER_ADMIN_SYSTEM.md](./ORDER_ADMIN_SYSTEM.md)**). No payment gateway in the app; UPI/COD are explained on the site and settled in chat. **Money:** quote and payments on each order, delivery guards, WhatsApp receipts — see **[FINANCIAL_WORKFLOW.md](./FINANCIAL_WORKFLOW.md)**.
 - **Content:** Catalog and reviews live in **`public/data/*.json`** (edit files → redeploy). **Catalog** capabilities (gallery, deep links, receipts): **[CATALOG_CAPABILITIES.md](./CATALOG_CAPABILITIES.md)**. **Owner data access** (Firebase, admin, secrets): **[OWNER_DATA_ACCESS.md](./OWNER_DATA_ACCESS.md)**.
-- **Languages:** **English** and **Hindi** via header **EN / हि** (cookie `gs_locale`).
+- **Languages:** **English** UI (dictionary in `src/lib/i18n/dictionaries.ts`; structure supports more locales later).
 
 ---
 
@@ -50,7 +50,7 @@ cp .env.example .env.local
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `NEXT_PUBLIC_BUSINESS_NAME` | Recommended | Brand name in header/footer. |
+| `NEXT_PUBLIC_BUSINESS_NAME` | Recommended | Brand name in header, tab title, manifest, and `formatBrandText` / `{{name}}` copy. Omit to use the default in `src/lib/site.ts`. |
 | `NEXT_PUBLIC_WHATSAPP_PHONE` | **Yes** for real WhatsApp links | **Digits only**, country code included, **no** `+` (e.g. India `9198xxxxxxxx`). |
 | `NEXT_PUBLIC_DESIGNER_PHONE` | Recommended | Shown for “Call designer”; can include spaces and `+`. |
 | `NEXT_PUBLIC_SITE_URL` | **Yes** for production | Canonical site URL, **no trailing slash** (e.g. `https://your-app.vercel.app`). Used for Open Graph, sitemap, `metadataBase`. |
@@ -113,6 +113,8 @@ npm run lint
 4. **Environment variables:** Add every key from `.env.example` with production values (especially `NEXT_PUBLIC_WHATSAPP_PHONE`, `NEXT_PUBLIC_SITE_URL`).
 5. **Deploy.** Vercel runs `npm run build` automatically.
 
+**Brand name on the live site:** The header title, default browser tab title, manifest, and any copy that uses `{{name}}` in the English dictionary all read from **`NEXT_PUBLIC_BUSINESS_NAME`**, which is **baked in at build time**. If the site still shows an old name after you change the code default, open **Vercel → Project → Settings → Environment Variables**, set `NEXT_PUBLIC_BUSINESS_NAME` to the correct name (e.g. `Radha Creations`), then **Redeploy** (or trigger a new production build). Removing the variable uses the fallback in `src/lib/site.ts`.
+
 **Production URL:** Set `NEXT_PUBLIC_SITE_URL` to your Vercel domain (or custom domain) once you know it, then redeploy so SEO and sitemap URLs stay correct.
 
 **Custom domain:** Vercel → Project → Domains → add DNS as instructed.
@@ -131,7 +133,7 @@ npm run lint
 - [ ] WhatsApp links open the correct number (`api.whatsapp.com/send?phone=...`).
 - [ ] “Call designer” `tel:` works on a real phone.
 - [ ] Gallery images load (remote hosts allowed in `next.config.ts` → `images.remotePatterns`).
-- [ ] Toggle **EN / हि** and confirm copy + WhatsApp message language.
+- [ ] Header, hero eyebrow, and subtitle show the same brand as `NEXT_PUBLIC_BUSINESS_NAME` (redeploy after env changes).
 - [ ] `/sitemap.xml` and `/robots.txt` load (optional smoke test).
 - [ ] If using Firestore: submit a test order from `/request`, confirm it appears at `/admin/orders` after login.
 

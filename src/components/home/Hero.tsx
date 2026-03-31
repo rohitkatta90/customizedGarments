@@ -4,7 +4,7 @@ import { HeroCarousel } from "@/components/home/HeroCarousel";
 import { TrustChips } from "@/components/home/TrustChips";
 import { Button } from "@/components/ui/Button";
 import { getDictionary } from "@/lib/i18n/server";
-import { siteConfig } from "@/lib/site";
+import { formatBrandText, siteConfig } from "@/lib/site";
 import type { CatalogItem } from "@/lib/types";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
@@ -54,7 +54,7 @@ export async function Hero({ previewItems }: Props) {
 
           <div className="order-2 max-w-none animate-fade-up lg:order-1 lg:w-[60%] lg:min-w-0 lg:pr-4">
             <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-muted">
-              {dict.hero.eyebrow}
+              {formatBrandText(dict.hero.eyebrow)}
             </p>
             <h1 className="mt-4 font-display text-[2rem] font-semibold leading-[1.15] tracking-tight text-foreground sm:text-4xl xl:text-[2.75rem]">
               {dict.hero.headline}

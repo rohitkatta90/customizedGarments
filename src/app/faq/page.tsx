@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 
 import { FaqAccordion } from "@/components/faq/FaqAccordion";
 import { getDictionary } from "@/lib/i18n/server";
+import { formatBrandText } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const dict = await getDictionary();
   return {
     title: dict.faq.pageTitle,
-    description:
-      "Frequently asked questions about Radha Creations — custom stitching, alterations, payments, and delivery.",
+    description: formatBrandText(
+      "Frequently asked questions about {{name}} — custom stitching, alterations, payments, and delivery.",
+    ),
   };
 }
 

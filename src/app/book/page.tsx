@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 
 import { BookAppointmentForm } from "@/components/forms/BookAppointmentForm";
 import { getDictionary } from "@/lib/i18n/server";
+import { formatBrandText } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
   const dict = await getDictionary();
   return {
     title: dict.book.pageTitle,
-    description:
-      "Book a call or visit with Radha Creations. We confirm slots over WhatsApp.",
+    description: formatBrandText(
+      "Book a call or visit with {{name}}. We confirm slots over WhatsApp.",
+    ),
   };
 }
 

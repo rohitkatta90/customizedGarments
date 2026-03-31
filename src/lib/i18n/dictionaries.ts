@@ -2,16 +2,16 @@ import type { Dictionary } from "./types";
 
 export const en: Dictionary = {
   meta: {
-    title: "Radha Creations — Women's Custom Stitching & Alterations",
+    title: "Women's Custom Stitching & Alterations",
     description:
-      "Radha Creations — premium women's tailoring: custom stitching, alterations, and a design gallery. Girls' occasion wear on request. Honest quotes on WhatsApp.",
+      "{{name}} — premium women's tailoring: custom stitching, alterations, and a design gallery. Girls' occasion wear on request. Honest quotes on WhatsApp.",
   },
   site: {
-    tagline: "Radha Creations — stitching & alterations that feel made for you",
+    tagline: "{{name}} — stitching & alterations that feel made for you",
     description:
-      "Radha Creations offers women's custom tailoring and alterations with a calm, personal process over WhatsApp. We also take select girls' wear — party pieces or mom-and-me moments — when it fits our schedule.",
+      "{{name}} offers women's custom tailoring and alterations with a calm, personal process over WhatsApp. We also take select girls' wear — party pieces or mom-and-me moments — when it fits our schedule.",
     businessHours: "Mon–Sat, 10:00 – 19:00 IST",
-    subtitle: "Radha Creations · women's tailoring · alterations · girls' wear on request",
+    subtitle: "{{name}} · women's tailoring · alterations · girls' wear on request",
   },
   nav: {
     home: "Home",
@@ -28,7 +28,7 @@ export const en: Dictionary = {
     language: "Language",
   },
   hero: {
-    eyebrow: "Radha Creations",
+    eyebrow: "{{name}}",
     headline: "Stitching & alterations that feel made for you",
     body:
       "Browse inspiration, send your reference on WhatsApp, and we'll confirm fit, timeline, and a clear quote before you commit.",
@@ -236,9 +236,9 @@ export const en: Dictionary = {
   pricing: {
     pageTitle: "Pricing guide",
     pageIntro:
-      "Radha Creations — indicative ranges in INR. Final quotes depend on design complexity, fabric, fittings, and timeline. Your written quote on WhatsApp lists base work and any extras; we confirm before you pay.",
+      "{{name}} — indicative ranges in INR. Final quotes depend on design complexity, fabric, fittings, and timeline. Your written quote on WhatsApp lists base work and any extras; we confirm before you pay.",
     metaDescription:
-      "Radha Creations — indicative tailoring prices: transparent quotes, tiers, INR ranges, add-ons, effort-based and rush rules. Final written quote on WhatsApp.",
+      "{{name}} — indicative tailoring prices: transparent quotes, tiers, INR ranges, add-ons, effort-based and rush rules. Final written quote on WhatsApp.",
     principlesTitle: "How we price",
     principles: [
       "Complexity — plain construction vs. heavy handwork, layering, or designer detailing.",
@@ -685,7 +685,7 @@ export const en: Dictionary = {
     crafted: "Crafted with care.",
   },
   gallery: {
-    eyebrow: "Radha Creations catalog",
+    eyebrow: "{{name}} catalog",
     title: "Inspiration gallery",
     subtitlePrefix: "Past work and reference styles from",
     subtitleSuffix:
@@ -699,7 +699,7 @@ export const en: Dictionary = {
   terms: {
     pageTitle: "Terms & friendly ordering notes",
     metaDescription:
-      "Plain-language terms for Radha Creations: how the gallery works, WhatsApp confirmation, measurements, delivery, and payments.",
+      "Plain-language terms for {{name}}: how the gallery works, WhatsApp confirmation, measurements, delivery, and payments.",
     lead:
       "We wrote this to be easy to read — not fine print. If anything is unclear, message us on WhatsApp and we’ll explain happily.",
     sections: [

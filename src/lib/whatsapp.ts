@@ -1,4 +1,4 @@
-import { whatsappDigits } from "./site";
+import { siteConfig, whatsappDigits } from "./site";
 
 export { buildOrderConfirmationWhatsAppMessage } from "@/lib/order/order-confirmation-message";
 
@@ -51,7 +51,7 @@ export function alterationRequestTemplate(params: {
 }
 
 export function catalogInquiryTemplate(params: { itemTitle: string; itemId: string }): string {
-  return `Hi, I'd like Radha Creations to stitch: "${params.itemTitle}" (catalog ID: ${params.itemId}). Please share next steps and timeline.`;
+  return `Hi, I'd like ${siteConfig.name} to stitch: "${params.itemTitle}" (catalog ID: ${params.itemId}). Please share next steps and timeline.`;
 }
 
 export function bookAppointmentTemplate(params: {

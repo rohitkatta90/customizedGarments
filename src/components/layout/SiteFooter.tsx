@@ -3,7 +3,7 @@
 import Link from "next/link";
 
 import { useI18n } from "@/components/i18n/I18nProvider";
-import { siteConfig, telHref } from "@/lib/site";
+import { formatBrandText, siteConfig, telHref } from "@/lib/site";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 export function SiteFooter() {
@@ -20,7 +20,7 @@ export function SiteFooter() {
             {siteConfig.name}
           </p>
           <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted">
-            {dict.site.description}
+            {formatBrandText(dict.site.description)}
           </p>
           <p className="mt-3 text-xs text-muted">{dict.site.businessHours}</p>
         </div>

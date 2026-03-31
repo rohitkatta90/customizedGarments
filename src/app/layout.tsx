@@ -5,7 +5,7 @@ import { I18nProvider } from "@/components/i18n/I18nProvider";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
-import { siteConfig } from "@/lib/site";
+import { formatBrandText, siteConfig } from "@/lib/site";
 
 import "./globals.css";
 
@@ -25,6 +25,7 @@ const siteUrl = siteConfig.siteUrl.replace(/\/$/, "");
 
 export async function generateMetadata(): Promise<Metadata> {
   const dict = await getDictionary();
+  const metaDescription = formatBrandText(dict.meta.description);
 
   return {
     metadataBase: new URL(siteUrl),
@@ -32,10 +33,10 @@ export async function generateMetadata(): Promise<Metadata> {
       default: `${siteConfig.name} — ${dict.meta.title}`,
       template: `%s · ${siteConfig.name}`,
     },
-    description: dict.meta.description,
+    description: metaDescription,
     openGraph: {
       title: `${siteConfig.name} — ${dict.meta.title}`,
-      description: dict.meta.description,
+      description: metaDescription,
       url: siteUrl,
       siteName: siteConfig.name,
       locale: "en_IN",
@@ -44,7 +45,7 @@ export async function generateMetadata(): Promise<Metadata> {
     twitter: {
       card: "summary_large_image",
       title: `${siteConfig.name} — ${dict.meta.title}`,
-      description: dict.meta.description,
+      description: metaDescription,
     },
     robots: {
       index: true,

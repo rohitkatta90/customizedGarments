@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { useI18n } from "@/components/i18n/I18nProvider";
-import { siteConfig } from "@/lib/site";
+import { formatBrandText, siteConfig } from "@/lib/site";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
 export function SiteHeader() {
@@ -38,7 +38,7 @@ export function SiteHeader() {
               {siteConfig.name}
             </span>
             <span className="truncate text-[10px] font-medium uppercase tracking-[0.18em] text-muted sm:text-[11px] sm:tracking-[0.2em]">
-              {dict.site.subtitle}
+              {formatBrandText(dict.site.subtitle)}
             </span>
           </Link>
         </div>
