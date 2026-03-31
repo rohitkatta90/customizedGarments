@@ -10,17 +10,20 @@ function newId(): OrderItemId {
 export function createStitchingItem(
   partial?: Partial<Pick<StitchingOrderItem, "designSource" | "catalogId">>,
 ): StitchingOrderItem {
-  const catalogId = partial?.catalogId;
+  const catalogId = partial?.catalogId?.trim() || undefined;
   const designSource =
     partial?.designSource ?? (catalogId ? "catalog" : "describe");
-  return {
+  const item: StitchingOrderItem = {
     id: newId(),
     service: "stitching",
     designSource,
-    catalogId,
     notes: "",
     describeText: "",
   };
+  if (catalogId) {
+    item.catalogId = catalogId;
+  }
+  return item;
 }
 
 export function createAlterationItem(): AlterationOrderItem {

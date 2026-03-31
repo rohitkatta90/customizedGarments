@@ -1,4 +1,4 @@
-export type Locale = "en" | "hi";
+export type Locale = "en";
 
 export type FaqItem = { id: string; q: string; a: string };
 

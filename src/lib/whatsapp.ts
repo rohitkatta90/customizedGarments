@@ -1,38 +1,28 @@
-import type { Locale } from "@/lib/i18n/types";
-
 import { whatsappDigits } from "./site";
 
+export { buildOrderConfirmationWhatsAppMessage } from "@/lib/order/order-confirmation-message";
+
+/**
+ * Opens WhatsApp with a prefilled message. `encodeURIComponent` is correct UTF-8;
+ * many WhatsApp clients still corrupt supplementary-plane characters (most emoji)
+ * in the `text` query and show U+FFFD. Prefer ASCII / BMP punctuation in `message`
+ * for reliable display — see quick-request / buildMultiItemOrderMessage.
+ */
 export function buildWhatsAppUrl(message: string): string {
   const phone = whatsappDigits();
-  const text = encodeURIComponent(message.trim());
-  return `https://wa.me/${phone}?text=${text}`;
+  const text = encodeURIComponent(message.trim().normalize("NFC"));
+  return `https://api.whatsapp.com/send?phone=${phone}&text=${text}`;
 }
 
-export function stitchingRequestTemplate(
-  params: {
-    designLabel: string;
-    deliveryDate: string;
-    notes: string;
-    referenceImageName?: string;
-  },
-  locale: Locale,
-): string {
-  const ref =
-    params.referenceImageName && locale === "en"
-      ? ` Reference image attached in chat: ${params.referenceImageName}.`
-      : params.referenceImageName && locale === "hi"
-        ? ` चैट में संलग्न रेफरेंस: ${params.referenceImageName}।`
-        : "";
-  if (locale === "hi") {
-    return [
-      "नमस्ते, मैं सिलाई का अनुरोध करना चाहती हूँ।",
-      `डिज़ाइन / प्रेरणा: ${params.designLabel}।`,
-      `पसंदीदा डिलीवरी तिथि: ${params.deliveryDate}।`,
-      `नोट्स (कपड़ा, नाप, डेडलाइन): ${params.notes || "—"}।${ref}`,
-      "",
-      "ज़रूरत हो तो इस चैट में डिज़ाइन फोटो भेजूँगी।",
-    ].join(" ");
-  }
+export function stitchingRequestTemplate(params: {
+  designLabel: string;
+  deliveryDate: string;
+  notes: string;
+  referenceImageName?: string;
+}): string {
+  const ref = params.referenceImageName
+    ? ` Reference image attached in chat: ${params.referenceImageName}.`
+    : "";
   return [
     "Hi, I want to request stitching.",
     `Design / inspiration: ${params.designLabel}.`,
@@ -43,29 +33,15 @@ export function stitchingRequestTemplate(
   ].join(" ");
 }
 
-export function alterationRequestTemplate(
-  params: {
-    alterationType: string;
-    garmentImageName?: string;
-    pickupOrDeliveryDate: string;
-    notes: string;
-  },
-  locale: Locale,
-): string {
-  const img =
-    params.garmentImageName && locale === "en"
-      ? ` Garment photo filename: ${params.garmentImageName}.`
-      : params.garmentImageName && locale === "hi"
-        ? ` कपड़े की फोटो फाइल: ${params.garmentImageName}।`
-        : "";
-  if (locale === "hi") {
-    return [
-      "नमस्ते, मैं अल्टरेशन का अनुरोध करना चाहती हूँ।",
-      `प्रकार: ${params.alterationType}।`,
-      `पिकअप / डिलीवरी पसंदीदा तिथि: ${params.pickupOrDeliveryDate}।`,
-      `नोट्स: ${params.notes || "—"}।${img}`,
-    ].join(" ");
-  }
+export function alterationRequestTemplate(params: {
+  alterationType: string;
+  garmentImageName?: string;
+  pickupOrDeliveryDate: string;
+  notes: string;
+}): string {
+  const img = params.garmentImageName
+    ? ` Garment photo filename: ${params.garmentImageName}.`
+    : "";
   return [
     "Hi, I want to request an alteration.",
     `Type: ${params.alterationType}.`,
@@ -74,35 +50,15 @@ export function alterationRequestTemplate(
   ].join(" ");
 }
 
-export function catalogInquiryTemplate(
-  params: {
-    itemTitle: string;
-    itemId: string;
-  },
-  locale: Locale,
-): string {
-  if (locale === "hi") {
-    return `नमस्ते, मैं यह डिज़ाइन सिलवाना चाहती हूँ: "${params.itemTitle}" (ID: ${params.itemId})। कृपया अगले कदम और समय बताएँ।`;
-  }
-  return `Hi, I'd like to get this design stitched: "${params.itemTitle}" (ID: ${params.itemId}). Please share next steps and timeline.`;
+export function catalogInquiryTemplate(params: { itemTitle: string; itemId: string }): string {
+  return `Hi, I'd like Radha Creations to stitch: "${params.itemTitle}" (catalog ID: ${params.itemId}). Please share next steps and timeline.`;
 }
 
-export function bookAppointmentTemplate(
-  params: {
-    preferredDate: string;
-    timeWindow: string;
-    notes: string;
-  },
-  locale: Locale,
-): string {
-  if (locale === "hi") {
-    return [
-      "नमस्ते, मैं डिज़ाइनर से अपॉइंटमेंट बुक करना चाहती हूँ।",
-      `पसंदीदा तिथि: ${params.preferredDate}।`,
-      `समय स्लॉट: ${params.timeWindow}।`,
-      `नोट्स: ${params.notes || "—"}।`,
-    ].join(" ");
-  }
+export function bookAppointmentTemplate(params: {
+  preferredDate: string;
+  timeWindow: string;
+  notes: string;
+}): string {
   return [
     "Hi, I'd like to book an appointment with the designer.",
     `Preferred date: ${params.preferredDate}.`,

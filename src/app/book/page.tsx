@@ -1,24 +1,19 @@
 import type { Metadata } from "next";
 
 import { BookAppointmentForm } from "@/components/forms/BookAppointmentForm";
-import { dictionaries } from "@/lib/i18n/dictionaries";
-import { getDictionary, getLocale } from "@/lib/i18n/server";
+import { getDictionary } from "@/lib/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const locale = await getLocale();
-  const dict = dictionaries[locale];
+  const dict = await getDictionary();
   return {
     title: dict.book.pageTitle,
     description:
-      locale === "hi"
-        ? "डिज़ाइनर से अपॉइंटमेंट। व्हाट्सऐप पर पुष्टि।"
-        : "Book a call or visit with the designer. We confirm slots over WhatsApp.",
+      "Book a call or visit with Radha Creations. We confirm slots over WhatsApp.",
   };
 }
 
 export default async function BookPage() {
   const dict = await getDictionary();
-  const locale = await getLocale();
 
   return (
     <div className="py-10 sm:py-14">
@@ -28,7 +23,7 @@ export default async function BookPage() {
         </h1>
         <p className="mt-3 max-w-2xl text-muted">{dict.book.pageIntro}</p>
         <div className="mt-10">
-          <BookAppointmentForm key={locale} />
+          <BookAppointmentForm />
         </div>
       </div>
     </div>

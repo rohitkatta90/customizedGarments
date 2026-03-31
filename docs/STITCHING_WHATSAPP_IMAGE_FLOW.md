@@ -2,7 +2,7 @@
 
 ## Why this flow exists
 
-WhatsApp deep links (`wa.me?text=…`) can only prefill **text**. They cannot attach images from the browser. Customers must use the attachment (paperclip) control in WhatsApp after opening the chat.
+WhatsApp deep links (`api.whatsapp.com/send?phone=…&text=…`, same behavior as `wa.me`) can only prefill **text**. They cannot attach images from the browser. Customers must use the attachment (paperclip) control in WhatsApp after opening the chat.
 
 ## Step-by-step customer UX
 
@@ -18,7 +18,7 @@ WhatsApp deep links (`wa.me?text=…`) can only prefill **text**. They cannot at
    - They should tap the **paperclip** and attach reference photo(s) in the same chat, ideally right after sending the prefilled message.
 
 4. **Actions on the modal**  
-   - **Open WhatsApp** — navigates to `wa.me` with the encoded message.  
+   - **Open WhatsApp** — navigates to `api.whatsapp.com/send` with the encoded message.  
    - **Back to edit order** — closes the dialog (Escape also closes).  
    - Contextual reminders appear when the order includes upload-based stitching, alteration garment photos, or catalog/describe stitching (optional extra angles).
 
@@ -42,7 +42,7 @@ Source: `src/lib/request-copy.ts`.
 
 Built by `buildMultiItemOrderMessage` in `src/lib/order/whatsapp.ts`. It includes:
 
-- A short ASCII-friendly greeting (e.g. `Hi :)`). Avoid emoji in `wa.me?text=` bodies; some WhatsApp clients mishandle supplementary-plane characters in the query string and show a broken glyph instead (e.g. after “Hi”).
+- Prefilled bodies use ASCII-friendly punctuation (e.g. `Hi :)`, `[Priority]`). Avoid emoji in the `text=` query; many clients mishandle supplementary-plane characters and show U+FFFD () instead.
 - A line that references attached / following images honestly (with a short clarification that photos follow the text-only deep link).
 - Customer block (name, phone, request date).
 - `Total items`, `Order reference`, then per-item blocks (stitching or alteration) with design summary, notes, preferred delivery date.

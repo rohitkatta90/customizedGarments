@@ -19,7 +19,7 @@ flowchart LR
   A --> WA
 ```
 
-Orders are **not** stored in a database. Forms build a text message and open `https://wa.me/<phone>?text=…`.
+Orders are **not** stored in a database. Forms build a text message and open `https://api.whatsapp.com/send?phone=<digits>&text=…` (UTF-8–encoded; emoji in prefill is avoided for client bugs).
 
 ---
 
@@ -90,7 +90,7 @@ src/
     ui/                   # Button, StarRating
   lib/
     site.ts               # Env-backed config
-    whatsapp.ts           # Message builders + wa.me URLs
+    whatsapp.ts           # Message builders + WhatsApp send URLs
     data.ts               # Reads public/data/*.json (server)
     types.ts
     categories.ts
@@ -188,18 +188,16 @@ Implemented in `src/lib/whatsapp.ts`. Examples:
 
 > Hi, I'd like to book an appointment with the designer. Preferred date: […]. Time window: […]. Notes: […].
 
-When the site language is **Hindi** (`हि`), the same flows send **Hindi** WhatsApp bodies (see `stitchingRequestTemplate`, etc. in `whatsapp.ts`).
+WhatsApp templates (`stitchingRequestTemplate`, etc. in `whatsapp.ts`) are **English only**.
 
 ---
 
-## Internationalization (EN / HI)
+## Copy & i18n (English only)
 
-- **Cookie:** `gs_locale` — values `en` (default) or `hi`
-- **Toggle:** Header **EN** | **हि** → server action `setLocale` → `router.refresh()`
-- **Copy:** `src/lib/i18n/dictionaries.ts` (`en` / `hi` objects, same shape)
+- **Dictionary:** `src/lib/i18n/dictionaries.ts` exports `en` only; `Locale` is `"en"`.
 - **Provider:** `I18nProvider` wraps the shell so client components use `useI18n()`
-- **Server components** call `getDictionary()` / `getLocale()` from `src/lib/i18n/server.ts`
-- **Fonts:** `Noto Sans Devanagari` when `lang="hi"`; `html[lang="hi"] .font-display` uses Devanagari for headings
+- **Server components** call `getDictionary()` / `getLocale()` from `src/lib/i18n/server.ts` (always `en`).
+- **Fonts:** `Inter` + `Playfair Display`; `lang="en"` on `<html>`.
 
 ---
 
@@ -207,7 +205,7 @@ When the site language is **Hindi** (`हि`), the same flows send **Hindi** Wh
 
 | Area        | Components |
 |------------|------------|
-| Shell      | `SiteHeader`, `SiteFooter`, `I18nProvider`, `LanguageToggle` |
+| Shell      | `SiteHeader`, `SiteFooter`, `I18nProvider` |
 | Home       | `Hero`, `TestimonialsPreview`, `ReviewsSection`, `PaymentOptions` |
 | Gallery    | `GalleryClient`, `CatalogCard` |
 | Services   | `ServiceRequestForm` (multi-item), `DeliveryEstimator`, `BookAppointmentForm` |

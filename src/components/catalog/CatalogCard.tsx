@@ -11,15 +11,12 @@ type Props = {
 };
 
 export function CatalogCard({ item }: Props) {
-  const { locale, dict } = useI18n();
+  const { dict } = useI18n();
 
-  const message = catalogInquiryTemplate(
-    {
-      itemTitle: item.title,
-      itemId: item.id,
-    },
-    locale,
-  );
+  const message = catalogInquiryTemplate({
+    itemTitle: item.title,
+    itemId: item.id,
+  });
   const href = buildWhatsAppUrl(message);
 
   return (

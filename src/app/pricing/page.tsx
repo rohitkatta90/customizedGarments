@@ -8,12 +8,10 @@ import {
   getProfitMarginModel,
   getStaffPricingPolicy,
 } from "@/lib/data";
-import { dictionaries } from "@/lib/i18n/dictionaries";
-import { getDictionary, getLocale } from "@/lib/i18n/server";
+import { getDictionary } from "@/lib/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const locale = await getLocale();
-  const dict = dictionaries[locale];
+  const dict = await getDictionary();
   return {
     title: dict.pricing.pageTitle,
     description: dict.pricing.metaDescription,

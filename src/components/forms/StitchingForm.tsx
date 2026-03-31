@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { useI18n } from "@/components/i18n/I18nProvider";
+import { clampIsoDateToMin, todayLocalISODate } from "@/lib/date-today";
 import type { CatalogItem } from "@/lib/types";
 import { buildWhatsAppUrl, stitchingRequestTemplate } from "@/lib/whatsapp";
 
@@ -16,7 +17,7 @@ type Props = {
 };
 
 export function StitchingForm({ catalog }: Props) {
-  const { locale, dict } = useI18n();
+  const { dict } = useI18n();
   const d = dict.stitching;
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -30,6 +31,7 @@ export function StitchingForm({ catalog }: Props) {
   const [fileName, setFileName] = useState<string | undefined>();
   const [notes, setNotes] = useState("");
   const [deliveryDate, setDeliveryDate] = useState("");
+  const deliveryMinToday = useMemo(() => todayLocalISODate(), []);
 
   const designLabel = useMemo(() => {
     if (source === "catalog") {
@@ -48,18 +50,16 @@ export function StitchingForm({ catalog }: Props) {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!deliveryDate.trim()) {
+    const safeDelivery = clampIsoDateToMin(deliveryDate, deliveryMinToday);
+    if (!safeDelivery.trim()) {
       return;
     }
-    const msg = stitchingRequestTemplate(
-      {
-        designLabel,
-        deliveryDate,
-        notes,
-        referenceImageName: source === "upload" ? fileName : undefined,
-      },
-      locale,
-    );
+    const msg = stitchingRequestTemplate({
+      designLabel,
+      deliveryDate: safeDelivery,
+      notes,
+      referenceImageName: source === "upload" ? fileName : undefined,
+    });
     window.location.href = buildWhatsAppUrl(msg);
   }
 
@@ -189,9 +189,15 @@ export function StitchingForm({ catalog }: Props) {
         <input
           id="delivery"
           type="date"
+          min={deliveryMinToday}
           required
           value={deliveryDate}
-          onChange={(e) => setDeliveryDate(e.target.value)}
+          onChange={(e) =>
+            setDeliveryDate(clampIsoDateToMin(e.target.value, deliveryMinToday))
+          }
+          onBlur={() =>
+            setDeliveryDate((p) => clampIsoDateToMin(p, deliveryMinToday))
+          }
           className="mt-2 w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none ring-accent focus:ring-2"
         />
       </div>

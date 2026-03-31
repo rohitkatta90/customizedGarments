@@ -24,6 +24,11 @@ import { normalizePhone } from "./phone";
 
 const COLLECTION = "garment_orders";
 
+/** Firestore rejects `undefined`; client/quick payloads may omit optional fields as explicit undefined. */
+function orderItemsForFirestore(items: OrderItem[]): OrderItem[] {
+  return JSON.parse(JSON.stringify(items)) as OrderItem[];
+}
+
 function getFirebaseApp(): App | null {
   const projectId = process.env.FIREBASE_PROJECT_ID;
   const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
@@ -172,7 +177,7 @@ export async function createStoredOrder(input: {
     customerPhone: input.customerPhone.trim(),
     customerPhoneNormalized: normalized,
     requestedDeliveryDate: input.requestedDeliveryDate,
-    items: input.items,
+    items: orderItemsForFirestore(input.items),
     status: "request_received" satisfies OrderStatus,
     createdAt: now,
     updatedAt: now,

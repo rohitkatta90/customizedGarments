@@ -3,7 +3,7 @@ function stripNonDigits(value: string): string {
 }
 
 export const siteConfig = {
-  name: process.env.NEXT_PUBLIC_BUSINESS_NAME ?? "Loom & Lace Atelier",
+  name: process.env.NEXT_PUBLIC_BUSINESS_NAME ?? "Radha Creations",
   /** E.164 digits only, no + (e.g. 9198xxxxxxxxx for India) */
   whatsappPhone: process.env.NEXT_PUBLIC_WHATSAPP_PHONE ?? "919876543210",
   /** Display / tel: link */

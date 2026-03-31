@@ -1,23 +1,18 @@
 import type { Metadata } from "next";
 
 import { FaqAccordion } from "@/components/faq/FaqAccordion";
-import { dictionaries } from "@/lib/i18n/dictionaries";
-import { getDictionary, getLocale } from "@/lib/i18n/server";
+import { getDictionary } from "@/lib/i18n/server";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const locale = await getLocale();
-  const dict = dictionaries[locale];
+  const dict = await getDictionary();
   return {
     title: dict.faq.pageTitle,
     description:
-      locale === "hi"
-        ? "व्हाट्सऐप पर सिलाई और अल्टरेशन के बारे में सवाल।"
-        : "Frequently asked questions about custom stitching, alterations, payments, and delivery.",
+      "Frequently asked questions about Radha Creations — custom stitching, alterations, payments, and delivery.",
   };
 }
 
 export default async function FaqPage() {
-  const locale = await getLocale();
   const dict = await getDictionary();
 
   return (
@@ -28,7 +23,7 @@ export default async function FaqPage() {
         </h1>
         <p className="mt-3 text-muted">{dict.faq.pageIntro}</p>
         <div className="mt-10">
-          <FaqAccordion key={locale} />
+          <FaqAccordion />
         </div>
       </div>
     </div>

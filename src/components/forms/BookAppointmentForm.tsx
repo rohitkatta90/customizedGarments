@@ -1,35 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { useI18n } from "@/components/i18n/I18nProvider";
-import { todayLocalISODate } from "@/lib/date-today";
+import { clampIsoDateToMin, todayLocalISODate } from "@/lib/date-today";
 import { buildWhatsAppUrl, bookAppointmentTemplate } from "@/lib/whatsapp";
 
 import { Button } from "@/components/ui/Button";
 
 export function BookAppointmentForm() {
-  const { locale, dict } = useI18n();
+  const { dict } = useI18n();
   const d = dict.book;
   const [preferredDate, setPreferredDate] = useState("");
   const [timeWindow, setTimeWindow] = useState(d.morning);
   const [notes, setNotes] = useState("");
   const [submitAttempted, setSubmitAttempted] = useState(false);
-  const [dateMin, setDateMin] = useState("");
-
-  useEffect(() => {
-    setDateMin(todayLocalISODate());
-  }, []);
+  const [dateMin] = useState(() => todayLocalISODate());
 
   const dateError = submitAttempted && !preferredDate.trim() ? d.dateRequired : undefined;
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!preferredDate.trim()) {
+    const safeDate = clampIsoDateToMin(preferredDate, dateMin);
+    if (safeDate !== preferredDate) {
+      setPreferredDate(safeDate);
+    }
+    if (!safeDate.trim()) {
       setSubmitAttempted(true);
       return;
     }
-    const msg = bookAppointmentTemplate({ preferredDate, timeWindow, notes }, locale);
+    const msg = bookAppointmentTemplate({ preferredDate: safeDate, timeWindow, notes });
     window.location.href = buildWhatsAppUrl(msg);
   }
 
@@ -58,9 +58,12 @@ export function BookAppointmentForm() {
         <input
           id="appt-date"
           type="date"
-          min={dateMin || undefined}
+          min={dateMin}
           value={preferredDate}
-          onChange={(e) => setPreferredDate(e.target.value)}
+          onChange={(e) => setPreferredDate(clampIsoDateToMin(e.target.value, dateMin))}
+          onBlur={() =>
+            setPreferredDate((p) => clampIsoDateToMin(p, dateMin))
+          }
           aria-invalid={Boolean(dateError)}
           aria-describedby={dateError ? "err-appt-date" : undefined}
           className={`mt-2 ${inputBase} ${dateError ? inputErr : inputOk}`}

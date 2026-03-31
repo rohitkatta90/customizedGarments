@@ -128,7 +128,7 @@ npm run lint
 ### 6.3 Post-deploy checklist
 
 - [ ] `NEXT_PUBLIC_SITE_URL` matches the live URL (no trailing slash).
-- [ ] WhatsApp links open the correct number (`wa.me/...`).
+- [ ] WhatsApp links open the correct number (`api.whatsapp.com/send?phone=...`).
 - [ ] “Call designer” `tel:` works on a real phone.
 - [ ] Gallery images load (remote hosts allowed in `next.config.ts` → `images.remotePatterns`).
 - [ ] Toggle **EN / हि** and confirm copy + WhatsApp message language.

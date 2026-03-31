@@ -33,7 +33,7 @@ Staff can paste the same structure for manual messages; the admin **Copy WhatsAp
 Below is the **shape** the app generates (values are filled from the order + ledger):
 
 ```
-Loom & Lace Atelier
+Radha Creations
 
 Thanks for choosing us — here’s your order summary.
 

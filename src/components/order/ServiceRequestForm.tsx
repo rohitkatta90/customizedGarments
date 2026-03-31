@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, type ChangeEvent } from "react";
 
-import { todayLocalISODate } from "@/lib/date-today";
+import { clampIsoDateToMin, todayLocalISODate } from "@/lib/date-today";
 
 import {
   MeasurementLookupPanel,
@@ -57,6 +57,22 @@ function FieldError({ id, message }: { id: string; message?: string }) {
   );
 }
 
+function emitDateInputChange(
+  e: ChangeEvent<HTMLInputElement>,
+  next: string,
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void,
+) {
+  if (next === e.target.value) {
+    onChange(e);
+    return;
+  }
+  onChange({
+    ...e,
+    target: { ...e.target, value: next },
+    currentTarget: { ...e.currentTarget, value: next },
+  } as ChangeEvent<HTMLInputElement>);
+}
+
 /** Calendar icon for date fields — iOS Safari often omits desktop-style picker chrome. */
 function CalendarGlyph({ className }: { className?: string }) {
   return (
@@ -94,7 +110,7 @@ function DatePickerField({
   label: string;
   min?: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
   invalid?: boolean;
   errorId?: string;
 }) {
@@ -109,7 +125,21 @@ function DatePickerField({
           type="date"
           min={min}
           value={value}
-          onChange={onChange}
+          onChange={(e) => {
+            const raw = e.target.value;
+            const next = min ? clampIsoDateToMin(raw, min) : raw;
+            emitDateInputChange(e, next, onChange);
+          }}
+          onBlur={(e) => {
+            if (!min || !value) return;
+            const next = clampIsoDateToMin(value, min);
+            if (next === value) return;
+            onChange({
+              ...e,
+              target: { ...e.target, value: next },
+              currentTarget: { ...e.currentTarget, value: next },
+            } as ChangeEvent<HTMLInputElement>);
+          }}
           required
           aria-invalid={invalid}
           aria-describedby={invalid && errorId ? errorId : undefined}
@@ -141,14 +171,10 @@ export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Pr
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [submitAttempted, setSubmitAttempted] = useState(false);
-  const [deliveryMin, setDeliveryMin] = useState("");
+  const [deliveryMin] = useState(() => todayLocalISODate());
   /** Built after successful submit; opening WhatsApp clears it */
   const [whatsappPendingMessage, setWhatsappPendingMessage] = useState<string | null>(null);
   const [measurementPayload, setMeasurementPayload] = useState<MeasurementSelectionPayload | null>(null);
-
-  useEffect(() => {
-    setDeliveryMin(todayLocalISODate());
-  }, []);
 
   const validation = useMemo(
     () =>
@@ -222,9 +248,8 @@ export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Pr
       requestedDeliveryDate: todayLocalISODate(),
     };
 
-    let trackingUrl: string | undefined;
     try {
-      const res = await fetch("/api/orders", {
+      await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -235,8 +260,6 @@ export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Pr
           items,
         }),
       });
-      const data = (await res.json()) as { trackingUrl?: string };
-      if (data.trackingUrl) trackingUrl = data.trackingUrl;
     } catch {
       /* still open WhatsApp */
     }
@@ -245,7 +268,6 @@ export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Pr
       measurementPayload &&
       formatMeasurementsForWhatsApp(measurementPayload.items, measurementPayload.choices);
     const msg = buildMultiItemOrderMessage(order, catalog, customer, {
-      trackingUrl,
       measurementAppend: measurementAppend ?? undefined,
     });
     setWhatsappPendingMessage(msg);
@@ -616,7 +638,7 @@ function StitchingFields({
         <DatePickerField
           id={`del-${item.id}`}
           label={`${t.preferredDelivery} ${t.requiredSuffix}`}
-          min={deliveryMin || undefined}
+          min={deliveryMin}
           value={item.deliveryPreference ?? ""}
           onChange={(e) => onChange({ deliveryPreference: e.target.value || undefined })}
           invalid={hasDeliveryErr}
@@ -694,7 +716,7 @@ function AlterationFields({
         <DatePickerField
           id={`adate-${item.id}`}
           label={`${t.preferredDelivery} ${t.requiredSuffix}`}
-          min={deliveryMin || undefined}
+          min={deliveryMin}
           value={item.deliveryPreference ?? ""}
           onChange={(e) => onChange({ deliveryPreference: e.target.value || undefined })}
           invalid={hasDeliveryErr}

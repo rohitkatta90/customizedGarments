@@ -4,19 +4,15 @@ import Link from "next/link";
 import { GalleryClient } from "@/components/catalog/GalleryClient";
 import { CraftsmanshipSection } from "@/components/home/CraftsmanshipSection";
 import { getCatalog } from "@/lib/data";
-import { dictionaries } from "@/lib/i18n/dictionaries";
-import { getDictionary, getLocale } from "@/lib/i18n/server";
+import { getDictionary } from "@/lib/i18n/server";
 import { siteConfig } from "@/lib/site";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const locale = await getLocale();
-  const dict = dictionaries[locale];
+  const dict = await getDictionary();
   return {
     title: dict.gallery.title,
     description:
-      locale === "hi"
-        ? "ब्लाउज, कुर्ती, ड्रेस और कस्टम प्रेरणा। व्हाट्सऐप पर संदेश।"
-        : "Browse blouse, kurti, dress, and custom design inspiration. Tap Get This Stitched to message us on WhatsApp.",
+      "Radha Creations — browse blouse, kurti, dress, and custom design inspiration. Tap to message us on WhatsApp.",
   };
 }
 

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { addCalendarDaysLocal, todayLocalISODate } from "@/lib/date-today";
+import { addCalendarDaysLocal, clampIsoDateToMin, todayLocalISODate } from "@/lib/date-today";
 
 import {
   MeasurementLookupPanel,
@@ -93,7 +93,6 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
   const [serviceType, setServiceType] = useState<QuickServiceType>(serviceFromUrl);
   const [pieces, setPieces] = useState(1);
   const [deliveryDate, setDeliveryDate] = useState("");
-  const [deliveryMin, setDeliveryMin] = useState("");
   const [notes, setNotes] = useState("");
   const [dateTouched, setDateTouched] = useState(false);
   const [customerPhone, setCustomerPhone] = useState("");
@@ -132,8 +131,10 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
   }, [earliestISO]);
 
   useEffect(() => {
-    setDeliveryMin(earliestISO);
-  }, [earliestISO]);
+    if (step !== 3 || !deliveryDate.trim()) return;
+    const clamped = clampIsoDateToMin(deliveryDate, earliestISO);
+    if (clamped !== deliveryDate) setDeliveryDate(clamped);
+  }, [step, deliveryDate, earliestISO]);
 
   const itemCount = piecesToQuickCount(pieces);
 
@@ -142,7 +143,10 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
     [catalog, catalogIdFromUrl],
   );
 
-  const dateInvalid = dateTouched && step === 3 && !deliveryDate.trim();
+  const dateInvalid =
+    dateTouched &&
+    step === 3 &&
+    (!deliveryDate.trim() || deliveryDate < earliestISO);
 
   const priorityImpliedByDate = useMemo(
     () =>
@@ -165,12 +169,11 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
   }, [catalogIdFromUrl, serviceType]);
 
   const finalize = useCallback(async () => {
-    if (!deliveryDate.trim()) return;
+    if (!deliveryDate.trim() || deliveryDate < earliestISO) return;
     setFinalizing(true);
     const order: Order = { id: orderId, items: [] };
-    let trackingUrl: string | undefined;
     try {
-      const res = await fetch("/api/orders", {
+      await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -187,8 +190,6 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
           ...(isPhonePlausible(customerPhone) ? { customerPhone: customerPhone.trim() } : {}),
         }),
       });
-      const data = (await res.json()) as { trackingUrl?: string };
-      if (data.trackingUrl) trackingUrl = data.trackingUrl;
     } catch {
       /* still hand off */
     }
@@ -207,7 +208,6 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
       preferredDeliveryDate: deliveryDate.trim(),
       notes,
       catalogId: selectedCatalogItem?.id,
-      trackingUrl,
       measurementAppend: measurementAppend ?? undefined,
     });
     setPreparedMessage(msg);
@@ -226,6 +226,7 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
     pieces,
     priorityRequestedForPayload,
     priorityImpliedForPayload,
+    earliestISO,
   ]);
 
   function chooseQuickPieceCount(n: 1 | 2) {
@@ -256,8 +257,8 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
   }
 
   function onDeliveryDateChange(value: string) {
-    setDeliveryDate(value);
     setDateTouched(true);
+    setDeliveryDate(clampIsoDateToMin(value, earliestISO));
   }
 
   function goNext() {
@@ -271,7 +272,7 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
     }
     if (step === 3) {
       setDateTouched(true);
-      if (!deliveryDate.trim()) return;
+      if (!deliveryDate.trim() || deliveryDate < earliestISO) return;
       setStep(4);
       return;
     }
@@ -298,7 +299,8 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
 
   const chips = [f.chipDeepBack, f.chipElbow, f.chipStraight] as const;
 
-  const continueDisabled = (step === 3 && !deliveryDate.trim()) || finalizing;
+  const continueDisabled =
+    (step === 3 && (!deliveryDate.trim() || deliveryDate < earliestISO)) || finalizing;
   const showBackBtn = step >= 2 && (step < 6 || Boolean(preparedMessage));
   /** Step 2: Continue only for 3+ (explicit count) or reduced-motion; 1–2 auto-advance on tap. */
   const showContinueBtn =
@@ -490,9 +492,12 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
                   <input
                     id="wizard-delivery"
                     type="date"
-                    min={deliveryMin || undefined}
+                    min={earliestISO}
                     value={deliveryDate}
                     onChange={(e) => onDeliveryDateChange(e.target.value)}
+                    onBlur={() =>
+                      setDeliveryDate((prev) => clampIsoDateToMin(prev, earliestISO))
+                    }
                     aria-invalid={dateInvalid}
                     className={`box-border w-full min-w-0 ${inputBase} ${dateInvalid ? inputInvalid : inputNormal} py-3.5 pr-12 [color-scheme:light]`}
                   />

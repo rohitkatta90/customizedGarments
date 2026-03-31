@@ -52,10 +52,6 @@ body {
   font-family: var(--font-playfair), ui-serif, Georgia, "Times New Roman", serif;
 }
 
-html[lang="hi"] .font-display {
-  font-family: var(--font-noto-devanagari), ui-serif, Georgia, serif;
-}
-
 @keyframes fade-up {
   from {
     opacity: 0;

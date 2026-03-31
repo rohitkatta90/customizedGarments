@@ -2,6 +2,7 @@ import type { CatalogItem } from "@/lib/types";
 
 import { alterationTypeLabels } from "@/lib/request-copy";
 
+import { formatIsoDateForWhatsApp, formatRequestIdForWhatsApp } from "./message-formatting";
 import type { Order, OrderItem, StitchingOrderItem } from "./types";
 
 function catalogTitle(catalog: CatalogItem[], catalogId: string | undefined): string {
@@ -33,21 +34,15 @@ export function buildMultiItemOrderMessage(
     requestedDeliveryDate?: string | null;
   },
   extras?: {
-    /** Public tracking URL — appended for WhatsApp sharing */
-    trackingUrl?: string;
-    /** Appended before tracking line — e.g. saved measurements summary */
+    /** Appended after the main request — e.g. saved measurements summary */
     measurementAppend?: string;
   },
 ): string {
   const lines: string[] = [];
 
-  // No emoji in greeting: wa.me?text= often mangles supplementary-plane chars (e.g. U+1F60A) on WhatsApp.
-  lines.push(
-    "Hi :)",
-    "",
-    "I’d like to get the following stitched / serviced. I have attached the reference image(s) here — please use them for the design. (I’m sending the photo(s) in this chat right after this message.)",
-    "",
-  );
+  lines.push("Hi :)", "", "I'd like to get the following stitched / serviced.", "");
+
+  lines.push(`Request ID: ${formatRequestIdForWhatsApp(order.id)}`, "");
 
   if (customer?.name?.trim()) {
     lines.push(`Name: ${customer.name.trim()}`);
@@ -55,18 +50,11 @@ export function buildMultiItemOrderMessage(
   if (customer?.phone?.trim()) {
     lines.push(`Phone: ${customer.phone.trim()}`);
   }
-  if (customer?.requestedDeliveryDate) {
-    lines.push(`Request date: ${customer.requestedDeliveryDate}`);
-  }
-  if (customer?.name?.trim() || customer?.phone?.trim() || customer?.requestedDeliveryDate) {
+  if (customer?.name?.trim() || customer?.phone?.trim()) {
     lines.push("");
   }
 
-  lines.push(
-    `Total items: ${order.items.length}`,
-    `Order reference: ${order.id}`,
-    "",
-  );
+  lines.push(`Items: ${order.items.length}`, "");
 
   order.items.forEach((item, index) => {
     const n = index + 1;
@@ -77,33 +65,32 @@ export function buildMultiItemOrderMessage(
       lines.push(`Design / reference: ${stitchingDesignSummary(s, catalog)}`);
       lines.push(`Notes: ${s.notes.trim() || "—"}`);
       if (s.deliveryPreference) {
-        lines.push(`Preferred delivery date: ${s.deliveryPreference}`);
+        lines.push(
+          `Preferred delivery date: ${formatIsoDateForWhatsApp(s.deliveryPreference)}`,
+        );
       }
     } else {
       lines.push(`Item ${n} — Alteration`);
       lines.push(`Type: ${alterationTypeLabels[item.alterationType]}`);
       if (item.garmentImageName) {
-        lines.push(`Garment photo (I’m attaching in chat where helpful): ${item.garmentImageName}`);
+        lines.push(`Garment photo: ${item.garmentImageName}`);
       }
       lines.push(`Notes: ${item.notes.trim() || "—"}`);
       if (item.deliveryPreference) {
-        lines.push(`Preferred delivery date: ${item.deliveryPreference}`);
+        lines.push(
+          `Preferred delivery date: ${formatIsoDateForWhatsApp(item.deliveryPreference)}`,
+        );
       }
     }
     lines.push("");
   });
 
-  lines.push(
-    "Reminder: WhatsApp couldn’t attach my files from the website — the reference image(s) are the ones I’m sending in this chat.",
-    "Thank you!",
-  );
+  lines.push("I'll share the reference image(s) in this chat next.");
+
   if (extras?.measurementAppend?.trim()) {
     lines.push("", extras.measurementAppend.trim());
   }
-  if (extras?.trackingUrl?.trim()) {
-    lines.push("");
-    lines.push(`Track my order: ${extras.trackingUrl.trim()}`);
-  }
+
   return lines.join("\n");
 }
 

@@ -3,14 +3,17 @@
 import { useMemo, useState } from "react";
 
 import { useI18n } from "@/components/i18n/I18nProvider";
+import { clampIsoDateToMin, todayLocalISODate } from "@/lib/date-today";
 import type { AlterationType } from "@/lib/types";
 import { buildWhatsAppUrl, alterationRequestTemplate } from "@/lib/whatsapp";
 
 import { Button } from "@/components/ui/Button";
 
 export function AlterationForm() {
-  const { locale, dict } = useI18n();
+  const { dict } = useI18n();
   const d = dict.alteration;
+  const pickupMinToday = useMemo(() => todayLocalISODate(), []);
+
   const types = useMemo(
     () =>
       (
@@ -32,17 +35,15 @@ export function AlterationForm() {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!date.trim()) return;
+    const safeDate = clampIsoDateToMin(date, pickupMinToday);
+    if (!safeDate.trim()) return;
     const label = types.find((t) => t.id === alterationType)?.label ?? alterationType;
-    const msg = alterationRequestTemplate(
-      {
-        alterationType: label,
-        garmentImageName: fileName,
-        pickupOrDeliveryDate: date,
-        notes,
-      },
-      locale,
-    );
+    const msg = alterationRequestTemplate({
+      alterationType: label,
+      garmentImageName: fileName,
+      pickupOrDeliveryDate: safeDate,
+      notes,
+    });
     window.location.href = buildWhatsAppUrl(msg);
   }
 
@@ -108,9 +109,11 @@ export function AlterationForm() {
         <input
           id="pickup-date"
           type="date"
+          min={pickupMinToday}
           required
           value={date}
-          onChange={(e) => setDate(e.target.value)}
+          onChange={(e) => setDate(clampIsoDateToMin(e.target.value, pickupMinToday))}
+          onBlur={() => setDate((p) => clampIsoDateToMin(p, pickupMinToday))}
           className="mt-2 w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none ring-accent focus:ring-2"
         />
       </div>

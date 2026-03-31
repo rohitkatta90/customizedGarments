@@ -9,6 +9,7 @@ import {
 import { validateOrderItems } from "@/lib/order/whatsapp";
 import type { OrderItem } from "@/lib/order/types";
 import { createStoredOrder, isFirestoreConfigured } from "@/lib/orders/firestore";
+import { postOrdersSheetWebhook } from "@/lib/orders/sheet-webhook";
 import { siteConfig } from "@/lib/site";
 import { isPhonePlausible } from "@/lib/orders/phone";
 
@@ -119,7 +120,27 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "invalid_items" }, { status: 400 });
   }
 
+  const quickFlow = body.quick === true;
+  const quickPriority =
+    body.quick === true
+      ? {
+          priorityRequested: body.priorityRequested === true,
+          priorityImplied:
+            body.priorityImplied === true && body.priorityRequested !== true,
+        }
+      : { priorityRequested: false, priorityImplied: false };
+
   if (!isFirestoreConfigured()) {
+    await postOrdersSheetWebhook({
+      requestId: body.id,
+      customerName: name,
+      customerPhone: phone,
+      items,
+      requestedDeliveryDate,
+      trackingUrl: null,
+      quickFlow,
+      ...quickPriority,
+    });
     return NextResponse.json({
       ok: true,
       saved: false,
@@ -137,6 +158,16 @@ export async function POST(request: Request) {
     });
     const base = siteConfig.siteUrl.replace(/\/$/, "");
     const trackingUrl = `${base}/track/${trackingToken}`;
+    await postOrdersSheetWebhook({
+      requestId: body.id,
+      customerName: name,
+      customerPhone: phone,
+      items,
+      requestedDeliveryDate,
+      trackingUrl,
+      quickFlow,
+      ...quickPriority,
+    });
     return NextResponse.json({ ok: true, saved: true, id: body.id, trackingUrl });
   } catch (err) {
     return NextResponse.json(

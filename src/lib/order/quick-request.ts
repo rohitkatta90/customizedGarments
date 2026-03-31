@@ -2,6 +2,7 @@ import { todayLocalISODate } from "@/lib/date-today";
 import type { CatalogItem } from "@/lib/types";
 
 import { createAlterationItem, createStitchingItem } from "./factory";
+import { formatIsoDateForWhatsApp, formatRequestIdForWhatsApp } from "./message-formatting";
 import type { Order, OrderItem } from "./types";
 
 export type QuickServiceType = "stitching" | "alteration";
@@ -74,8 +75,7 @@ export function buildQuickStitchWhatsAppMessage(input: {
   preferredDeliveryDate: string;
   notes: string;
   catalogId?: string;
-  trackingUrl?: string;
-  /** Plain-text block appended before tracking URL */
+  /** Plain-text block appended after the main request (e.g. saved measurements). */
   measurementAppend?: string;
   exactPieceCount?: number;
   priorityRequested?: boolean;
@@ -85,57 +85,42 @@ export function buildQuickStitchWhatsAppMessage(input: {
     ? input.catalog.find((c) => c.id === input.catalogId!.trim())
     : undefined;
 
-  const lines: string[] = [];
-  lines.push("Hi 😊", "");
-
+  const reqId = formatRequestIdForWhatsApp(input.order.id);
+  const dateLabel = formatIsoDateForWhatsApp(input.preferredDeliveryDate);
   const serviceLabel = input.serviceType === "stitching" ? "Stitching" : "Alteration";
-  lines.push(
+  const intentLine =
     input.serviceType === "stitching"
-      ? "I'd like to request a stitching service."
-      : "I'd like to request an alteration service.",
-    "",
-  );
+      ? "I'd like to get an outfit stitched."
+      : "I'd like to get an outfit altered.";
 
-  lines.push(
+  const lines: string[] = [
+    "Hi :)",
+    "",
+    intentLine,
+    "",
+    `Request ID: ${reqId}`,
+    "",
     `Service: ${serviceLabel}`,
     `Items: ${itemCountLabelForWhatsApp(input.itemCount, input.exactPieceCount)}`,
-    `Preferred delivery date: ${input.preferredDeliveryDate}`,
+    `Preferred delivery date: ${dateLabel}`,
     `Notes: ${input.notes.trim() || "—"}`,
-    "",
-  );
+  ];
 
   if (cat) {
-    lines.push(`• Design reference: "${cat.title}" (catalog ID: ${cat.id})`, "");
+    lines.push("", `Design: "${cat.title}"`);
   }
 
-  lines.push(`Order reference: ${input.order.id}`, "");
+  lines.push("", "I'll share the reference image in this chat next.");
 
-  lines.push(
-    "I will share the reference image here in this chat.",
-    "",
-    "WhatsApp cannot attach photos from the website — I'll send the picture right after this message.",
-  );
-
-  if (input.priorityRequested) {
-    const premium =
-      input.serviceType === "stitching"
-        ? "⏱️ I may need this on priority. Please let me know if expedited stitching is available and the associated timeline/cost."
-        : "⏱️ I may need this on priority. Please let me know if expedited turnaround is available and the associated timeline/cost.";
-    lines.push("", premium);
-  } else if (input.priorityImplied) {
-    const softer =
-      input.serviceType === "stitching"
-        ? "⏱️ This may be an urgent request — could you please check if priority stitching is possible?"
-        : "⏱️ This may be an urgent request — could you please check if a priority slot is possible?";
-    lines.push("", softer);
+  if (input.priorityRequested || input.priorityImplied) {
+    lines.push(
+      "",
+      "[Priority] I may need this on priority — please let me know if that's possible.",
+    );
   }
 
   if (input.measurementAppend?.trim()) {
     lines.push("", input.measurementAppend.trim());
-  }
-
-  if (input.trackingUrl?.trim()) {
-    lines.push("", `Track my order: ${input.trackingUrl.trim()}`);
   }
 
   return lines.join("\n");

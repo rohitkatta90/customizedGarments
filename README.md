@@ -10,6 +10,7 @@ Deploy with **Vercel** (see [docs/PROJECT_GUIDE.md](./docs/PROJECT_GUIDE.md) §6
 
 | 📄 Document | What’s inside |
 |-------------|----------------|
+| **[docs/PROJECT_TECHNOLOGY.md](./docs/PROJECT_TECHNOLOGY.md)** | **Stack & integrations** — frameworks, libraries, env groups, APIs, Firebase/Sheets/webhooks, repo map |
 | **[docs/PROJECT_GUIDE.md](./docs/PROJECT_GUIDE.md)** | **Living project guide** — setup, env vars, run, deploy (Vercel/Netlify), structure, troubleshooting, maintenance |
 | **[docs/ORDER_MODEL.md](./docs/ORDER_MODEL.md)** | Multi-item **order / order items** model and WhatsApp summary format |
 | **[docs/ORDER_ADMIN_SYSTEM.md](./docs/ORDER_ADMIN_SYSTEM.md)** | **Firestore** order storage, **`/admin/orders`**, env vars, SQL migration path |
