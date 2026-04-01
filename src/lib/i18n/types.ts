@@ -422,6 +422,10 @@ export type Dictionary = {
     termsHint: string;
     all: string;
     empty: string;
+    paginationPrev: string;
+    paginationNext: string;
+    /** Use {{current}} and {{total}} for 1-based page numbers */
+    paginationPageOf: string;
   };
   terms: {
     pageTitle: string;

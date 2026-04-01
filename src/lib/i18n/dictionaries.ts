@@ -701,6 +701,9 @@ export const en: Dictionary = {
       "Photos here are for inspiration. Every piece is made to your measurements and fabric — we’ll confirm price and dates with you on WhatsApp.",
     all: "All",
     empty: "No items in this category yet.",
+    paginationPrev: "Previous",
+    paginationNext: "Next",
+    paginationPageOf: "Page {{current}} of {{total}}",
   },
   terms: {
     pageTitle: "Terms & friendly ordering notes",

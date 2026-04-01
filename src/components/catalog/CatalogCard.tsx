@@ -20,7 +20,7 @@ export function CatalogCard({ item }: Props) {
   const href = buildWhatsAppUrl(message);
 
   return (
-    <article className="masonry-item overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:shadow-md">
+    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:shadow-md">
       <div
         className="relative aspect-[3/4] w-full overflow-hidden bg-stone-100 [color-scheme:light]"
         data-catalog-photo
