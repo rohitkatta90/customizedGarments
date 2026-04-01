@@ -47,7 +47,7 @@ export const en: Dictionary = {
     previewCaption: "Recent stitched looks — tap to start your version",
   },
   homeTrustChips: {
-    fastReply: "Replies in 5–10 mins",
+    fastReply: "Quick replies during business hours",
     noHidden: "No hidden charges",
     trusted: "Trusted by customers",
   },

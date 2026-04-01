@@ -43,7 +43,7 @@ export async function Hero({ previewItems }: Props) {
 
       <div className="page-container py-8 pb-10 md:section-y">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-14 xl:gap-20">
-          {/* Copy column: action-first on mobile; desktop keeps richer lead + left alignment */}
+          {/* Copy column: mobile defers primary WhatsApp to sticky bar; desktop shows hero CTA */}
           <div className="order-1 w-full max-w-xl animate-fade-up md:max-w-none lg:order-1 lg:w-[60%] lg:min-w-0 lg:pr-4">
             {/* Same hierarchy as desktop: tagline (+ service lines on mobile only — md+ shows those in header) → headline */}
             <div className="mb-1 space-y-1 text-center md:mb-2 md:text-left">
@@ -64,7 +64,8 @@ export async function Hero({ previewItems }: Props) {
               {dict.hero.headline}
             </h1>
 
-            <div className="mt-4 md:mt-5">
+            {/* Hero WhatsApp CTA: desktop only — mobile uses sticky bar to avoid duplicate */}
+            <div className="mt-4 hidden md:mt-5 md:block">
               <Button
                 href={wa}
                 external
@@ -75,7 +76,7 @@ export async function Hero({ previewItems }: Props) {
               </Button>
             </div>
 
-            <p className="mx-auto mt-3 max-w-[22rem] text-center text-sm leading-relaxed text-pretty text-muted md:mx-0 md:max-w-xl md:text-left md:text-lg">
+            <p className="mx-auto mt-4 max-w-[22rem] text-center text-sm leading-relaxed text-pretty text-muted md:mt-3 md:mx-0 md:max-w-xl md:text-left md:text-lg">
               {dict.hero.body}
             </p>
 
