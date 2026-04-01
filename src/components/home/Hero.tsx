@@ -50,14 +50,9 @@ export async function Hero({ previewItems }: Props) {
               <p className="font-display text-sm font-normal italic leading-snug text-[#7a756f] sm:text-base md:text-lg">
                 {formatBrandText(dict.site.headerTagline)}
               </p>
-              <div className="space-y-0.5 md:hidden">
-                <p className="mx-auto max-w-[20rem] text-[11px] leading-snug text-pretty text-[#94908c] sm:text-xs">
-                  {dict.site.subtitleLine1}
-                </p>
-                <p className="mx-auto max-w-[18rem] text-[11px] leading-snug text-pretty text-[#94908c] sm:text-xs">
-                  {dict.site.subtitleLine2}
-                </p>
-              </div>
+              <p className="mx-auto max-w-[22rem] text-[11px] leading-snug text-pretty text-[#94908c] sm:text-xs md:hidden">
+                {dict.site.subtitle}
+              </p>
             </div>
 
             <h1 className="text-center font-display text-[1.65rem] font-semibold leading-[1.18] tracking-tight text-pretty text-foreground sm:text-[1.85rem] md:text-left md:text-4xl xl:text-[2.75rem]">

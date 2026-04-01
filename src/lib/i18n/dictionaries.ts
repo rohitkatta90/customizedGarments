@@ -13,8 +13,6 @@ export const en: Dictionary = {
       "{{name}} offers women's custom tailoring and alterations with a calm, personal process over WhatsApp. We also take select girls' wear — party pieces or mom-and-me moments — when it fits our schedule.",
     businessHours: "Mon–Sat, 10:00 – 19:00 IST",
     subtitle: "Women's tailoring · Alterations · Girls' wear on request",
-    subtitleLine1: "Women's tailoring · Alterations",
-    subtitleLine2: "Girls' wear on request",
   },
   nav: {
     home: "Home",

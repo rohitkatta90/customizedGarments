@@ -37,7 +37,7 @@ export function SiteHeader() {
         <div className="min-w-0 flex-1">
           <Link
             href="/"
-            className="group flex items-center gap-2 sm:gap-3"
+            className="group flex items-center gap-1 md:items-end md:gap-6 lg:gap-1"
             aria-label={`${siteConfig.name} — home`}
           >
             <img
@@ -46,20 +46,17 @@ export function SiteHeader() {
               width={677}
               height={369}
               decoding="async"
-              className="h-8 w-auto shrink-0 object-contain transition duration-200 ease-out group-hover:opacity-90 md:h-10"
+              className="h-10 w-auto shrink-0 object-contain transition duration-200 ease-out group-hover:opacity-90 md:h-[calc(1.3*(1.875rem*1.15+0.125rem+1.125rem*1.35))] md:max-h-[5.5rem]"
             />
             <div className="min-w-0 flex max-w-[min(100%,20rem)] flex-col leading-tight sm:max-w-md md:max-w-lg">
-              <span className="font-display text-lg font-semibold tracking-tight text-foreground transition-colors group-hover:text-accent-dark sm:text-xl md:text-2xl">
+              <span className="font-display text-2xl font-semibold tracking-tight text-foreground transition-colors group-hover:text-accent-dark md:text-3xl md:leading-[1.15]">
                 {siteConfig.name}
               </span>
-              <p className="mt-0.5 hidden font-display text-[11px] font-normal italic leading-snug text-[#7a756f] md:block md:text-xs md:leading-relaxed">
+              <p className="mt-0.5 hidden font-display text-[11px] font-normal italic leading-snug text-[#7a756f] md:mt-1 md:block md:text-lg md:leading-snug md:tracking-normal">
                 {formatBrandText(dict.site.headerTagline)}
               </p>
-              <p className="mt-1 hidden text-[10px] font-normal leading-snug tracking-wide text-[#8a8580] md:block md:text-[11px] md:leading-relaxed">
-                {dict.site.subtitleLine1}
-              </p>
-              <p className="mt-0.5 hidden text-[10px] font-normal leading-snug tracking-wide text-[#8a8580] md:block md:text-[11px] md:leading-relaxed">
-                {dict.site.subtitleLine2}
+              <p className="mt-1 hidden text-[10px] font-normal leading-snug tracking-wide text-[#8a8580] md:mt-1.5 md:block md:text-[11px] md:leading-relaxed [overflow-wrap:anywhere]">
+                {dict.site.subtitle}
               </p>
             </div>
           </Link>
