@@ -13,6 +13,8 @@ export const en: Dictionary = {
       "{{name}} offers women's custom tailoring and alterations with a calm, personal process over WhatsApp. We also take select girls' wear — party pieces or mom-and-me moments — when it fits our schedule.",
     businessHours: "Mon–Sat, 10:00 – 19:00 IST",
     subtitle: "Women's tailoring · Alterations · Girls' wear on request",
+    subtitleLine1: "Women's tailoring · Alterations",
+    subtitleLine2: "Girls' wear on request",
   },
   nav: {
     home: "Home",
@@ -32,7 +34,7 @@ export const en: Dictionary = {
     eyebrow: "{{name}}",
     headline: "Stitching & alterations that feel made for you",
     body:
-      "Browse inspiration, send your reference on WhatsApp, and we'll confirm fit, timeline, and a clear quote before you commit.",
+      "Send your reference on WhatsApp — we confirm fit, timeline, and a clear quote before you commit.",
     startWhatsapp: "Start on WhatsApp 💬",
     explore: "Explore Designs",
     requestStitching: "Request stitching",
@@ -45,7 +47,7 @@ export const en: Dictionary = {
     previewCaption: "Recent stitched looks — tap to start your version",
   },
   homeTrustChips: {
-    fastReply: "Replies within 5–10 mins",
+    fastReply: "Replies in 5–10 mins",
     noHidden: "No hidden charges",
     trusted: "Trusted by customers",
   },

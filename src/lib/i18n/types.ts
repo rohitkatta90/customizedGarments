@@ -13,6 +13,9 @@ export type Dictionary = {
     description: string;
     businessHours: string;
     subtitle: string;
+    /** Split service lines (mobile hero + optional header) — avoids awkward wraps */
+    subtitleLine1: string;
+    subtitleLine2: string;
   };
   nav: {
     home: string;

@@ -37,7 +37,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <div className="pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0">
+      <div className="pb-[calc(3.75rem+env(safe-area-inset-bottom))] md:pb-0">
         <Hero previewItems={previewItems} />
         <HomeGalleryPreviewSection items={previewItems} />
         <HomeQuickActionsSection />

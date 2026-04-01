@@ -41,57 +41,104 @@ export async function Hero({ previewItems }: Props) {
         aria-hidden
       />
 
-      <div className="page-container section-y">
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-14 xl:gap-20">
-          {/* Mobile: image first; desktop: text 60%, carousel 40% */}
-          <div className="order-1 w-full lg:order-2 lg:w-[40%] lg:max-w-[440px] lg:shrink-0">
+      <div className="page-container py-8 pb-10 md:section-y">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-14 xl:gap-20">
+          {/* Copy column: action-first on mobile; desktop keeps richer lead + left alignment */}
+          <div className="order-1 w-full max-w-xl animate-fade-up md:max-w-none lg:order-1 lg:w-[60%] lg:min-w-0 lg:pr-4">
+            {/* Same hierarchy as desktop: tagline (+ service lines on mobile only — md+ shows those in header) → headline */}
+            <div className="mb-1 space-y-1 text-center md:mb-2 md:text-left">
+              <p className="font-display text-sm font-normal italic leading-snug text-[#7a756f] sm:text-base md:text-lg">
+                {formatBrandText(dict.site.headerTagline)}
+              </p>
+              <div className="space-y-0.5 md:hidden">
+                <p className="mx-auto max-w-[20rem] text-[11px] leading-snug text-pretty text-[#94908c] sm:text-xs">
+                  {dict.site.subtitleLine1}
+                </p>
+                <p className="mx-auto max-w-[18rem] text-[11px] leading-snug text-pretty text-[#94908c] sm:text-xs">
+                  {dict.site.subtitleLine2}
+                </p>
+              </div>
+            </div>
+
+            <h1 className="text-center font-display text-[1.65rem] font-semibold leading-[1.18] tracking-tight text-pretty text-foreground sm:text-[1.85rem] md:text-left md:text-4xl xl:text-[2.75rem]">
+              {dict.hero.headline}
+            </h1>
+
+            <div className="mt-4 md:mt-5">
+              <Button
+                href={wa}
+                external
+                variant="primary"
+                className="min-h-[52px] w-full rounded-xl px-5 text-base shadow-[0_4px_16px_-2px_rgba(196,138,138,0.55)] md:max-w-md md:rounded-2xl md:px-6"
+              >
+                {dict.hero.startWhatsapp}
+              </Button>
+            </div>
+
+            <p className="mx-auto mt-3 max-w-[22rem] text-center text-sm leading-relaxed text-pretty text-muted md:mx-0 md:max-w-xl md:text-left md:text-lg">
+              {dict.hero.body}
+            </p>
+
+            <div className="mt-4 md:mt-5">
+              <Button
+                href="/gallery"
+                variant="secondary"
+                className="min-h-11 w-full rounded-xl px-5 py-2.5 text-sm md:min-h-12 md:w-auto md:rounded-2xl md:px-6 md:text-sm"
+              >
+                {dict.hero.explore}
+              </Button>
+            </div>
+
+            <TrustChips
+              variant="hero"
+              className="mt-4 justify-center md:justify-start [&_li]:px-2.5 [&_li]:py-1.5 [&_li]:text-[11px] sm:[&_li]:px-3 sm:[&_li]:py-2 sm:[&_li]:text-xs"
+            />
+
+            <div className="mt-5 md:mt-6">
+              <div className="flex flex-col items-center gap-1 sm:hidden">
+                <Link
+                  href="/book"
+                  className="inline-flex min-h-11 items-center justify-center px-2 text-sm font-medium text-accent-dark underline-offset-4 hover:underline"
+                >
+                  {dict.hero.bookFitting}
+                </Link>
+                <a
+                  href={wa}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-11 items-center justify-center px-2 text-sm font-medium text-accent-dark underline-offset-4 hover:underline"
+                >
+                  {dict.hero.messageWa}
+                </a>
+              </div>
+              <p className="hidden flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-xs text-muted sm:flex md:justify-start md:text-left md:text-sm">
+                <Link
+                  href="/book"
+                  className="font-medium text-accent-dark underline-offset-4 hover:underline"
+                >
+                  {dict.hero.bookFitting}
+                </Link>
+                <span aria-hidden className="select-none text-muted">
+                  ·
+                </span>
+                <a
+                  href={wa}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-accent-dark underline-offset-4 hover:underline"
+                >
+                  {dict.hero.messageWa}
+                </a>
+              </p>
+            </div>
+          </div>
+
+          <div className="order-2 w-full lg:w-[40%] lg:max-w-[440px] lg:shrink-0">
             <HeroCarousel
               items={ordered}
               fallbackSrc={FALLBACK_HERO_IMG}
               fallbackAlt={heroAlt}
             />
-          </div>
-
-          <div className="order-2 max-w-none animate-fade-up lg:order-1 lg:w-[60%] lg:min-w-0 lg:pr-4">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-muted">
-              {formatBrandText(dict.hero.eyebrow)}
-            </p>
-            <p className="mt-2 font-display text-sm font-normal italic leading-snug text-[#7a756f] sm:text-base">
-              {formatBrandText(dict.site.headerTagline)}
-            </p>
-            <h1 className="mt-4 font-display text-[2rem] font-semibold leading-[1.15] tracking-tight text-foreground sm:text-4xl xl:text-[2.75rem]">
-              {dict.hero.headline}
-            </h1>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-muted sm:text-lg line-clamp-2 [overflow-wrap:anywhere]">
-              {dict.hero.body}
-            </p>
-
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Button href={wa} external variant="primary" className="min-h-[52px] w-full sm:min-w-[200px] sm:flex-initial">
-                {dict.hero.startWhatsapp}
-              </Button>
-              <Button href="/gallery" variant="secondary" className="min-h-[52px] w-full sm:w-auto">
-                {dict.hero.explore}
-              </Button>
-            </div>
-            <TrustChips variant="hero" className="mt-6" />
-            <p className="mt-5 text-xs text-muted sm:text-sm">
-              <Link
-                href="/book"
-                className="font-medium text-accent-dark underline-offset-4 hover:underline"
-              >
-                {dict.hero.bookFitting}
-              </Link>
-              <span className="mx-2 hidden sm:inline">·</span>
-              <a
-                href={wa}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-medium text-accent-dark underline-offset-4 hover:underline"
-              >
-                {dict.hero.messageWa}
-              </a>
-            </p>
           </div>
         </div>
       </div>

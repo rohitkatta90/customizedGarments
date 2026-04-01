@@ -33,7 +33,7 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/80 bg-[#f7f3f0]/90 backdrop-blur-md">
-      <div className="page-container flex items-center gap-2 py-3 sm:gap-3">
+      <div className="page-container flex items-center gap-2 py-3.5 sm:gap-3 md:py-3">
         <div className="min-w-0 flex-1">
           <Link
             href="/"
@@ -52,11 +52,14 @@ export function SiteHeader() {
               <span className="font-display text-lg font-semibold tracking-tight text-foreground transition-colors group-hover:text-accent-dark sm:text-xl md:text-2xl">
                 {siteConfig.name}
               </span>
-              <p className="mt-0.5 font-display text-[11px] font-normal italic leading-snug text-[#7a756f] sm:text-xs sm:leading-relaxed">
+              <p className="mt-0.5 hidden font-display text-[11px] font-normal italic leading-snug text-[#7a756f] md:block md:text-xs md:leading-relaxed">
                 {formatBrandText(dict.site.headerTagline)}
               </p>
-              <p className="mt-1 text-[10px] font-normal leading-snug tracking-wide text-[#8a8580] sm:text-[11px] sm:leading-relaxed [overflow-wrap:anywhere]">
-                {dict.site.subtitle}
+              <p className="mt-1 hidden text-[10px] font-normal leading-snug tracking-wide text-[#8a8580] md:block md:text-[11px] md:leading-relaxed">
+                {dict.site.subtitleLine1}
+              </p>
+              <p className="mt-0.5 hidden text-[10px] font-normal leading-snug tracking-wide text-[#8a8580] md:block md:text-[11px] md:leading-relaxed">
+                {dict.site.subtitleLine2}
               </p>
             </div>
           </Link>
@@ -86,7 +89,7 @@ export function SiteHeader() {
             href={wa}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden rounded-full bg-accent px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-accent-dark sm:inline-flex"
+            className="hidden rounded-full bg-accent px-3 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-accent-dark md:inline-flex"
           >
             {dict.header.whatsapp}
           </a>
