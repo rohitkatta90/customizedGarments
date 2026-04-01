@@ -56,6 +56,9 @@ export async function Hero({ previewItems }: Props) {
             <p className="text-[11px] font-semibold uppercase tracking-[0.28em] text-muted">
               {formatBrandText(dict.hero.eyebrow)}
             </p>
+            <p className="mt-2 font-display text-sm font-normal italic leading-snug text-[#7a756f] sm:text-base">
+              {formatBrandText(dict.site.headerTagline)}
+            </p>
             <h1 className="mt-4 font-display text-[2rem] font-semibold leading-[1.15] tracking-tight text-foreground sm:text-4xl xl:text-[2.75rem]">
               {dict.hero.headline}
             </h1>

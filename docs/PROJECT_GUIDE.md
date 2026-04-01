@@ -59,7 +59,7 @@ cp .env.example .env.local
 | `FIREBASE_CLIENT_EMAIL` | Optional | Service account email (pair with private key). |
 | `FIREBASE_PRIVATE_KEY` | Optional | PEM string; use `\n` for newlines in `.env.local`. |
 | `ADMIN_PASSWORD` | Optional | Password for `/admin/login` (set with admin token). |
-| `ADMIN_SESSION_TOKEN` | Optional | Secret cookie value; must match between login and middleware. |
+| `ADMIN_SESSION_TOKEN` | Optional | Secret cookie value; must match between login and `src/proxy.ts`. |
 
 All `NEXT_PUBLIC_*` values are **exposed to the browser** — only use non-secret business info. **Never** put Firebase private keys in `NEXT_PUBLIC_*`.
 

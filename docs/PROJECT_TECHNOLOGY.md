@@ -59,7 +59,7 @@ This document is a single reference for **what the stack is**, **which services 
 | Shared UI | `src/components/ui/` | Button, stars, etc. |
 | Business logic | `src/lib/**` | Site config, orders, WhatsApp builders, pricing parsers, i18n, measurements |
 | Static data | `public/data/*.json` | Catalog, reviews, pricing JSON consumed at build/runtime |
-| Access control | `src/middleware.ts` | Protects `/admin/*` (except login) via cookie vs `ADMIN_SESSION_TOKEN` |
+| Access control | `src/proxy.ts` | Protects `/admin/*` (except login) via cookie vs `ADMIN_SESSION_TOKEN` (Next 16 `proxy` convention) |
 
 ---
 
@@ -123,7 +123,7 @@ Never commit **`.env.local`** or real keys.
 ### 5.5 Admin authentication
 
 - **Login:** `POST /api/admin/login` sets httpOnly cookie **`gs_admin`** when password matches `ADMIN_PASSWORD` and token matches `ADMIN_SESSION_TOKEN`.
-- **Gate:** **`src/middleware.ts`** redirects unauthenticated users from `/admin/*` to `/admin/login`.
+- **Gate:** **`src/proxy.ts`** redirects unauthenticated users from `/admin/*` to `/admin/login`.
 - **Logout:** `/api/admin/logout`.
 
 ---

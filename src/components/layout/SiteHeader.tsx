@@ -8,6 +8,8 @@ import { useI18n } from "@/components/i18n/I18nProvider";
 import { formatBrandText, siteConfig } from "@/lib/site";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
 
+const LOGO_SRC = "/images/radha-creations-logo.png";
+
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -33,13 +35,30 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-border/80 bg-[#f7f3f0]/90 backdrop-blur-md">
       <div className="page-container flex items-center gap-2 py-3 sm:gap-3">
         <div className="min-w-0 flex-1">
-          <Link href="/" className="group flex flex-col leading-tight">
-            <span className="truncate font-display text-lg font-semibold tracking-tight text-foreground transition-colors group-hover:text-accent-dark sm:text-xl md:text-2xl">
-              {siteConfig.name}
-            </span>
-            <span className="truncate text-[10px] font-medium uppercase tracking-[0.18em] text-muted sm:text-[11px] sm:tracking-[0.2em]">
-              {formatBrandText(dict.site.subtitle)}
-            </span>
+          <Link
+            href="/"
+            className="group flex items-center gap-2 sm:gap-3"
+            aria-label={`${siteConfig.name} — home`}
+          >
+            <img
+              src={LOGO_SRC}
+              alt=""
+              width={677}
+              height={369}
+              decoding="async"
+              className="h-8 w-auto shrink-0 object-contain transition duration-200 ease-out group-hover:opacity-90 md:h-10"
+            />
+            <div className="min-w-0 flex max-w-[min(100%,20rem)] flex-col leading-tight sm:max-w-md md:max-w-lg">
+              <span className="font-display text-lg font-semibold tracking-tight text-foreground transition-colors group-hover:text-accent-dark sm:text-xl md:text-2xl">
+                {siteConfig.name}
+              </span>
+              <p className="mt-0.5 font-display text-[11px] font-normal italic leading-snug text-[#7a756f] sm:text-xs sm:leading-relaxed">
+                {formatBrandText(dict.site.headerTagline)}
+              </p>
+              <p className="mt-1 text-[10px] font-normal leading-snug tracking-wide text-[#8a8580] sm:text-[11px] sm:leading-relaxed [overflow-wrap:anywhere]">
+                {dict.site.subtitle}
+              </p>
+            </div>
           </Link>
         </div>
 

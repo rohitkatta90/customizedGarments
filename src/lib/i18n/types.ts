@@ -8,6 +8,8 @@ export type Dictionary = {
   meta: { title: string; description: string };
   site: {
     tagline: string;
+    /** Shown under the brand name in the header */
+    headerTagline: string;
     description: string;
     businessHours: string;
     subtitle: string;

@@ -8,10 +8,11 @@ export const en: Dictionary = {
   },
   site: {
     tagline: "{{name}} — stitching & alterations that feel made for you",
+    headerTagline: "Timeless Tradition, Tailored to Perfection.",
     description:
       "{{name}} offers women's custom tailoring and alterations with a calm, personal process over WhatsApp. We also take select girls' wear — party pieces or mom-and-me moments — when it fits our schedule.",
     businessHours: "Mon–Sat, 10:00 – 19:00 IST",
-    subtitle: "{{name}} · women's tailoring · alterations · girls' wear on request",
+    subtitle: "Women's tailoring · Alterations · Girls' wear on request",
   },
   nav: {
     home: "Home",

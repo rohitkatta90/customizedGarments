@@ -1,7 +1,8 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
+/** Next.js 16+ — replaces deprecated `middleware.ts` (same behavior). */
+export function proxy(request: NextRequest) {
   if (request.nextUrl.pathname === "/admin/login") {
     return NextResponse.next();
   }
