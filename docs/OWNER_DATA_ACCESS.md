@@ -97,6 +97,7 @@ These require a valid admin session (same cookie as the admin UI):
 | Topic | Document |
 |--------|----------|
 | Env, deploy, troubleshooting | [PROJECT_GUIDE.md](./PROJECT_GUIDE.md) |
+| Production go-live checklist | [PRODUCTION_DEPLOYMENT.md](./PRODUCTION_DEPLOYMENT.md) |
 | Firestore order fields | [ORDER_ADMIN_SYSTEM.md](./ORDER_ADMIN_SYSTEM.md) |
 | Money workflow | [FINANCIAL_WORKFLOW.md](./FINANCIAL_WORKFLOW.md) |
 | Catalog features | [CATALOG_CAPABILITIES.md](./CATALOG_CAPABILITIES.md) |

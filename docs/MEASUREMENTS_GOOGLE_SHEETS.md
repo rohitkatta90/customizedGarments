@@ -28,7 +28,7 @@ Live implementation: server-side **Google Sheets API** (service account, read-on
 
 - `GOOGLE_SHEETS_SPREADSHEET_ID`
 - `GOOGLE_SHEETS_CLIENT_EMAIL`
-- `GOOGLE_SHEETS_PRIVATE_KEY` (with `\n` newlines in `.env`)
+- `GOOGLE_SHEETS_PRIVATE_KEY` — either the PEM alone or the **full service account JSON** (single line). For PEM in `.env`, use **double-quoted** values and **`\n`** between lines, e.g. `GOOGLE_SHEETS_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nMIIE…\n-----END PRIVATE KEY-----\n"`. If you see `DECODER routines::unsupported`, the key is often mangled (copy the `private_key` field exactly from JSON, or paste the whole JSON as the value; avoid smart quotes or trimming inside the base64 block).
 - `GOOGLE_SHEETS_RANGE` — A1 range including header row, e.g. `Form responses 1!A:L` or `Sheet1!A:L`
 - Optional: `GOOGLE_SHEETS_TAB_NAME` — used only if `GOOGLE_SHEETS_RANGE` is unset (defaults to `Sheet1!A:L`)
 

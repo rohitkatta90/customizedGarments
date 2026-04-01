@@ -12,6 +12,7 @@ Deploy with **Vercel** (see [docs/PROJECT_GUIDE.md](./docs/PROJECT_GUIDE.md) §6
 |-------------|----------------|
 | **[docs/PROJECT_TECHNOLOGY.md](./docs/PROJECT_TECHNOLOGY.md)** | **Stack & integrations** — frameworks, libraries, env groups, APIs, Firebase/Sheets/webhooks, repo map |
 | **[docs/PROJECT_GUIDE.md](./docs/PROJECT_GUIDE.md)** | **Living project guide** — setup, env vars, run, deploy (Vercel/Netlify), structure, troubleshooting, maintenance |
+| **[docs/PRODUCTION_DEPLOYMENT.md](./docs/PRODUCTION_DEPLOYMENT.md)** | **Production go-live** — pre-prod actions, env & Firebase checklist, smoke tests, security |
 | **[docs/ORDER_MODEL.md](./docs/ORDER_MODEL.md)** | Multi-item **order / order items** model and WhatsApp summary format |
 | **[docs/ORDER_ADMIN_SYSTEM.md](./docs/ORDER_ADMIN_SYSTEM.md)** | **Firestore** order storage, **`/admin/orders`**, env vars, SQL migration path |
 | **[docs/ORDER_TRACKING.md](./docs/ORDER_TRACKING.md)** | **Customer `/track`** links, 5-step status, delays, WhatsApp line |
@@ -55,7 +56,7 @@ Open [http://localhost:3000](http://localhost:3000).
 - **Catalog / reviews** in `public/data/*.json`
 - **Production:** `npm run build` must pass locally before deploy
 
-See **[docs/PROJECT_GUIDE.md](./docs/PROJECT_GUIDE.md)** for full deployment steps and checklist.
+See **[docs/PRODUCTION_DEPLOYMENT.md](./docs/PRODUCTION_DEPLOYMENT.md)** for the full production checklist; **[docs/PROJECT_GUIDE.md](./docs/PROJECT_GUIDE.md)** for ongoing setup and deploy notes.
 
 ---
 

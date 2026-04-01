@@ -1,3 +1,5 @@
+import { createPrivateKey } from "node:crypto";
+
 import { google } from "googleapis";
 
 /**
@@ -17,6 +19,38 @@ function extractPrivateKeyFromMaybeJson(raw: string): string {
   return raw;
 }
 
+/** Zero-width / invisible chars often break PEM parsing in OpenSSL 3. */
+function stripInvisible(s: string): string {
+  return s.replace(/[\u200B-\u200D\u2060\uFEFF]/g, "");
+}
+
+/**
+ * Collapse whitespace in the base64 body and re-wrap to 64-char lines.
+ * Fixes single-line keys and shell/dotenv-mangled PEMs (common cause of
+ * `error:1E08010C:DECODER routines::unsupported`).
+ */
+function rewrapServiceAccountPem(pem: string): string {
+  const t = pem.trim().replace(/^\uFEFF/, "");
+  const m = t.match(
+    /^(-----BEGIN (?:RSA )?PRIVATE KEY-----)\s*([\s\S]*?)\s*(-----END (?:RSA )?PRIVATE KEY-----)/,
+  );
+  if (!m) return pem;
+  const [, begin, bodyRaw, end] = m;
+  const body = bodyRaw.replace(/\s+/g, "");
+  if (body.length < 80 || !/^[A-Za-z0-9+/=]+$/.test(body)) return pem;
+  const lines = body.match(/.{1,64}/g) ?? [];
+  return `${begin}\n${lines.join("\n")}\n${end}\n`;
+}
+
+function pemLooksValidForNode(pem: string): boolean {
+  try {
+    createPrivateKey({ key: pem, format: "pem" });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Normalize a service-account PEM from .env (quoted strings, `\n` escapes, CRLF).
  * Bad formatting often surfaces as OpenSSL `ERR_OSSL_UNSUPPORTED` / DECODER routines.
@@ -29,12 +63,31 @@ export function normalizeGoogleServiceAccountPrivateKey(raw: string): string {
   ) {
     k = k.slice(1, -1).trim();
   }
-  for (let i = 0; i < 3; i++) {
-    const next = k.replace(/\\n/g, "\n").replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  for (let i = 0; i < 12; i++) {
+    const next = stripInvisible(k)
+      .replace(/\\n/g, "\n")
+      .replace(/\r\n/g, "\n")
+      .replace(/\r/g, "\n");
     if (next === k) break;
     k = next;
   }
+  k = stripInvisible(k);
   k = k.replace(/\u201c|\u201d/g, '"');
+
+  if (
+    k.includes("BEGIN PRIVATE KEY") ||
+    k.includes("BEGIN RSA PRIVATE KEY")
+  ) {
+    const wrapped = rewrapServiceAccountPem(k);
+    if (pemLooksValidForNode(wrapped)) {
+      k = wrapped;
+    } else if (pemLooksValidForNode(k)) {
+      /* keep k */
+    } else {
+      k = wrapped;
+    }
+  }
+
   if (!k.endsWith("\n")) {
     k += "\n";
   }
@@ -81,7 +134,8 @@ async function getAuthorizedSheetsClient() {
     ) {
       throw new Error(
         `GOOGLE_SHEETS_PRIVATE_KEY is not a valid PEM for this Node/OpenSSL. ${msg} ` +
-          `Use the exact "private_key" from the service account JSON (in .env use one line with \\n between PEM lines), paste the whole JSON as the value, or regenerate the key in Google Cloud. On Node 20+, try NODE_OPTIONS=--openssl-legacy-provider if needed.`,
+          `Copy the exact "private_key" from the service account JSON, or set GOOGLE_SHEETS_PRIVATE_KEY to the whole JSON string. In .env use double quotes and real \\n between PEM lines, e.g. GOOGLE_SHEETS_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\\nMIIE...\\n-----END PRIVATE KEY-----\\n". ` +
+          `Regenerate the key in Google Cloud if it may be truncated. See docs/MEASUREMENTS_GOOGLE_SHEETS.md.`,
       );
     }
     throw e;

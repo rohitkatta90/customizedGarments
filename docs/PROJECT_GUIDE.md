@@ -107,6 +107,8 @@ npm run lint
 
 ### 6.1 Vercel (recommended for Next.js)
 
+**Full go-live checklist (env, Firebase, admin, smoke tests):** [PRODUCTION_DEPLOYMENT.md](./PRODUCTION_DEPLOYMENT.md).
+
 1. Push the project to **GitHub / GitLab / Bitbucket**.
 2. In [Vercel](https://vercel.com): **Add New Project** → import the repo.
 3. **Framework preset:** Next.js (auto-detected).
@@ -161,6 +163,8 @@ GarmentServicesProject/
 │   ├── PROJECT_GUIDE.md      # This file
 │   ├── ORDER_MODEL.md        # Order / order-items model + WhatsApp summary
 │   ├── ORDER_ADMIN_SYSTEM.md # Firestore, admin routes, migration path
+│   ├── ADMIN_OPERATIONS_RUNBOOK.md # Staff: routes, buttons, fields by business workflow
+│   ├── PRODUCTION_DEPLOYMENT.md  # Pre- and post-prod checklist, env, Firebase, smoke tests
 │   ├── ORDER_TRACKING.md     # Status lifecycle, /track URLs, delays
 │   ├── ANALYTICS.md          # KPI definitions, data for insights, dashboard concept
 │   ├── EDGE_CASES.md         # Rush, cancel, delays, rework, multi-item; rules + fields
@@ -184,7 +188,7 @@ GarmentServicesProject/
 
 **Primary customer flow:** `/request` (multi-item stitching + alteration). Legacy URLs `/stitching` and `/alteration` redirect to `/request` with query hints.
 
-**Order admin (optional):** `/admin/login` → `/admin/orders` — requires `ADMIN_PASSWORD` + `ADMIN_SESSION_TOKEN` and Firebase env vars to persist. Details: [ORDER_ADMIN_SYSTEM.md](./ORDER_ADMIN_SYSTEM.md).
+**Order admin (optional):** `/admin/login` → `/admin/orders` — requires `ADMIN_PASSWORD` + `ADMIN_SESSION_TOKEN` and Firebase env vars to persist. Technical details: [ORDER_ADMIN_SYSTEM.md](./ORDER_ADMIN_SYSTEM.md). **Staff runbook (which screen / button for each job):** [ADMIN_OPERATIONS_RUNBOOK.md](./ADMIN_OPERATIONS_RUNBOOK.md).
 
 **Deep dives:** [ARCHITECTURE.md](./ARCHITECTURE.md) — i18n, WhatsApp templates, data schemas, component map.
 

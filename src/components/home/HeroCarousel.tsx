@@ -30,7 +30,7 @@ export function HeroCarousel({ items, fallbackSrc, fallbackAlt }: Props) {
     if (len <= 1) return;
     const id = window.setInterval(() => {
       setIndex((i) => (i + 1) % len);
-    }, 4000);
+    }, 3000);
     return () => window.clearInterval(id);
   }, [len]);
 
