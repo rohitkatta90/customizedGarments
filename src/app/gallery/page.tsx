@@ -23,18 +23,25 @@ export default async function GalleryPage() {
 
   return (
     <div className="py-10 sm:py-14">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-dark">
-          {formatBrandText(dict.gallery.eyebrow)}
-        </p>
-        <h1 className="mt-2 font-display text-4xl font-semibold text-foreground sm:text-5xl">
-          {dict.gallery.title}
-        </h1>
-        <p className="mt-3 max-w-2xl text-muted">
-          {dict.gallery.subtitlePrefix} {siteConfig.name}. {dict.gallery.subtitleSuffix}
-        </p>
+      <div className="mx-auto flex max-w-6xl flex-col px-4 sm:px-6">
+        <header className="order-1">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-dark">
+            {formatBrandText(dict.gallery.eyebrow)}
+          </p>
+          <h1 className="mt-2 font-display text-4xl font-semibold text-foreground sm:text-5xl">
+            {dict.gallery.title}
+          </h1>
+          <p className="mt-3 max-w-2xl text-muted">
+            {dict.gallery.subtitlePrefix} {siteConfig.name}. {dict.gallery.subtitleSuffix}
+          </p>
+        </header>
 
-        <div className="mt-5 max-w-2xl space-y-4 rounded-2xl border border-border/80 bg-card/50 px-4 py-4 sm:px-5">
+        {/* Mobile: audience, filters, and grid directly under the hero; md+: keep below pricing + craftsmanship */}
+        <div className="order-2 mt-8 md:order-4 md:mt-10">
+          <GalleryClient items={items} />
+        </div>
+
+        <div className="order-3 mt-8 max-w-2xl space-y-4 rounded-2xl border border-border/80 bg-card/50 px-4 py-4 sm:px-5 md:order-2 md:mt-5">
           <div>
             <p className="text-xs font-semibold uppercase tracking-wide text-muted">
               {dict.styling.categoryLabel}
@@ -52,10 +59,8 @@ export default async function GalleryPage() {
           </div>
         </div>
 
-        <CraftsmanshipSection variant="compact" />
-
-        <div className="mt-10">
-          <GalleryClient items={items} />
+        <div className="order-4 md:order-3 md:mt-5">
+          <CraftsmanshipSection variant="compact" />
         </div>
       </div>
     </div>
