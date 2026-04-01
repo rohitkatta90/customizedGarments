@@ -61,6 +61,11 @@ export type Dictionary = {
   homeGalleryPreview: {
     title: string;
     subtitle: string;
+    /** Mobile-only teaser line 1: before / after hyperlink (`nav.gallery` → /gallery) */
+    mobileTeaserLine1Before: string;
+    mobileTeaserLine1After: string;
+    /** Mobile-only teaser second paragraph */
+    mobileTeaserLine2: string;
   };
   stickyCta: {
     whatsapp: string;
