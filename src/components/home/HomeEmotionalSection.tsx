@@ -5,7 +5,7 @@ export async function HomeEmotionalSection() {
   const s = dict.homeEmotional;
 
   return (
-    <section className="border-b border-border/50 bg-card py-20 md:py-24 lg:py-[100px]">
+    <section className="section-y border-b border-border/50 bg-card">
       <div className="page-container">
         <h2 className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           {s.title}

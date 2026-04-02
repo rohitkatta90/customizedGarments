@@ -8,7 +8,7 @@ export async function HomeTransparencySection() {
   const s = dict.homeTransparency;
 
   return (
-    <section className="border-b border-border/50 bg-background py-20 md:py-24 lg:py-[100px]">
+    <section className="section-y border-b border-border/50 bg-background">
       <div className="page-container">
         <h2 className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           {s.title}

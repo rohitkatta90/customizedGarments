@@ -32,7 +32,7 @@ export async function HomeGalleryPreviewSection({ items }: Props) {
   return (
     <>
       <section
-        className="border-b border-border/50 bg-gradient-to-b from-[#fdf8f6] to-card py-12 md:hidden"
+        className="border-b border-border/50 bg-gradient-to-b from-[#fdf8f6] to-card py-6 md:hidden"
         aria-labelledby="home-gallery-teaser-heading"
       >
         <div className="page-container">
@@ -56,7 +56,7 @@ export async function HomeGalleryPreviewSection({ items }: Props) {
       </section>
 
       {showDesktop ? (
-        <section className="hidden border-b border-border/50 bg-card py-20 md:block md:py-24 lg:py-[100px]">
+        <section className="section-y hidden border-b border-border/50 bg-card md:block">
           <div className="page-container">
             <h2 className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
               {s.title}

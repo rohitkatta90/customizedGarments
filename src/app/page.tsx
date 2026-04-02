@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/Button";
 import { getCatalog, getReviews } from "@/lib/data";
 import { getDictionary } from "@/lib/i18n/server";
 import { siteConfig, telHref } from "@/lib/site";
-import type { CatalogItem } from "@/lib/types";
+import type { CatalogItem, Review } from "@/lib/types";
 
 function womenFirstCatalog(catalog: CatalogItem[]) {
   return [...catalog].sort((a, b) => {
@@ -29,7 +29,7 @@ function womenFirstCatalog(catalog: CatalogItem[]) {
 
 export default async function HomePage() {
   const [reviews, catalog, dict] = await Promise.all([
-    getReviews(),
+    siteConfig.showClientReviews ? getReviews() : Promise.resolve([] as Review[]),
     getCatalog(),
     getDictionary(),
   ]);
@@ -44,11 +44,11 @@ export default async function HomePage() {
         <HomeEmotionalSection />
         <HomeServicesSection />
         <CraftsmanshipSection />
-        <TestimonialsPreview reviews={reviews} />
+        {siteConfig.showClientReviews ? <TestimonialsPreview reviews={reviews} /> : null}
         <HomeHowItWorksSection />
         <HomeTransparencySection />
 
-        <section className="border-b border-border/50 bg-background py-20 md:py-24 lg:py-[100px]">
+        <section className="section-y border-b border-border/50 bg-background">
           <div className="page-container">
             <div className="ds-card flex flex-col gap-6 bg-gradient-to-br from-card to-[#fdf8f6] p-8 sm:flex-row sm:items-center sm:justify-between sm:p-10">
               <div>
@@ -104,7 +104,7 @@ export default async function HomePage() {
         </section>
 
         <PaymentOptions />
-        <ReviewsSection reviews={reviews} />
+        {siteConfig.showClientReviews ? <ReviewsSection reviews={reviews} /> : null}
         <HomeFinalCtaSection />
       </div>
       <StickyMobileCta />

@@ -77,7 +77,7 @@ export async function CraftsmanshipSection({ variant = "full" }: Props) {
   }
 
   return (
-    <section className="border-b border-border/50 bg-background py-20 md:py-24 lg:py-[100px]">
+    <section className="section-y border-b border-border/50 bg-background">
       <div className="page-container">
         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent-dark">{s.eyebrow}</p>
         <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">

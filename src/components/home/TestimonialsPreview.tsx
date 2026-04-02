@@ -16,7 +16,7 @@ export async function TestimonialsPreview({ reviews }: Props) {
   const list = top.length ? top : reviews.slice(0, 3);
 
   return (
-    <section className="border-b border-border/50 bg-background py-20 md:py-24 lg:py-[100px]">
+    <section className="section-y border-b border-border/50 bg-background">
       <div className="page-container">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>

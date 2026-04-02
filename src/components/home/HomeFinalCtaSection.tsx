@@ -10,7 +10,7 @@ export async function HomeFinalCtaSection() {
   const wa = buildWhatsAppUrl(dict.wa.hero.replace("{{name}}", siteConfig.name));
 
   return (
-    <section className="bg-gradient-to-b from-[#f5ebe6]/80 to-background py-20 md:py-24 lg:py-[100px]">
+    <section className="section-y bg-gradient-to-b from-[#f5ebe6]/80 to-background">
       <div className="page-container max-w-3xl text-center">
         <h2 className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           {s.title}

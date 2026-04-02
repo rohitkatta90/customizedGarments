@@ -20,7 +20,7 @@ export const en: Dictionary = {
     request: "Request",
     pricing: "Pricing",
     faq: "FAQ",
-    book: "Book",
+    book: "Appointment",
   },
   header: {
     whatsapp: "WhatsApp",

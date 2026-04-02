@@ -17,6 +17,11 @@ export const siteConfig = {
    * `/pricing` remains reachable by direct URL (e.g. staff). Set env to `"true"` to show again.
    */
   showPublicPricing: process.env.NEXT_PUBLIC_SHOW_PRICING === "true",
+  /**
+   * When false, home page hides "Loved by clients" (testimonials preview + full reviews block).
+   * Set NEXT_PUBLIC_SHOW_CLIENT_REVIEWS=true when you have genuine feedback and a collection plan.
+   */
+  showClientReviews: process.env.NEXT_PUBLIC_SHOW_CLIENT_REVIEWS === "true",
 } as const;
 
 /** Interpolate `{{name}}` in dictionary strings so UI matches `NEXT_PUBLIC_BUSINESS_NAME` / header. */

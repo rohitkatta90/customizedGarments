@@ -16,7 +16,7 @@ export async function ReviewsSection({ reviews }: Props) {
   });
 
   return (
-    <section id="reviews" className="scroll-mt-24 border-b border-border/50 bg-card py-20 md:py-24 lg:py-[100px]">
+    <section id="reviews" className="section-y scroll-mt-24 border-b border-border/50 bg-card">
       <div className="page-container">
         <h2 className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           {dict.reviews.title}

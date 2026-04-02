@@ -41,7 +41,7 @@ export async function Hero({ previewItems }: Props) {
         aria-hidden
       />
 
-      <div className="page-container py-8 pb-10 md:section-y">
+      <div className="page-container py-6 pb-6 md:section-y">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-14 xl:gap-20">
           {/* Copy column: mobile defers primary WhatsApp to sticky bar; desktop shows hero CTA */}
           <div className="order-1 w-full max-w-xl animate-fade-up md:max-w-none lg:order-1 lg:w-[60%] lg:min-w-0 lg:pr-4">

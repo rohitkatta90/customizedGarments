@@ -39,8 +39,9 @@ body {
     @apply mx-auto w-full max-w-[1200px] px-6 lg:px-12;
   }
 
+  /* Section vertical padding: mobile-first (narrow screens stack 2× padding between blocks) */
   .section-y {
-    @apply py-20 md:py-24 lg:py-[100px];
+    @apply py-6 md:py-10 lg:py-12;
   }
 
   .ds-card {
