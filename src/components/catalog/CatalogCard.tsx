@@ -20,9 +20,9 @@ export function CatalogCard({ item }: Props) {
   const href = buildWhatsAppUrl(message);
 
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:shadow-md">
+    <article className="flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition hover:shadow-md">
       <div
-        className="relative aspect-[3/4] w-full overflow-hidden bg-stone-100 [color-scheme:light]"
+        className="relative aspect-[3/4] w-full shrink-0 overflow-hidden bg-stone-100 [color-scheme:light]"
         data-catalog-photo
       >
         {/* Native img avoids next/image optimizer issues (black tiles on some devices / hosts). */}
@@ -36,14 +36,16 @@ export function CatalogCard({ item }: Props) {
           className="absolute inset-0 h-full w-full object-cover"
         />
       </div>
-      <div className="p-4">
-        <h3 className="font-display text-lg font-semibold leading-snug text-foreground">
-          {item.title}
-        </h3>
-        <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted">
-          {item.description}
-        </p>
-        <div className="mt-4 flex flex-col gap-2">
+      <div className="flex min-h-0 flex-1 flex-col p-4">
+        <div className="flex min-h-0 flex-1 flex-col">
+          <h3 className="font-display text-lg font-semibold leading-snug text-foreground">
+            {item.title}
+          </h3>
+          <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted">
+            {item.description}
+          </p>
+        </div>
+        <div className="mt-auto flex w-full shrink-0 flex-col gap-2 pt-4">
           <Link
             href={`/request?catalog=${encodeURIComponent(item.id)}&service=stitching`}
             className="flex min-h-12 w-full items-center justify-center rounded-2xl bg-accent px-4 text-sm font-semibold text-white shadow-[0_2px_12px_-2px_rgba(196,138,138,0.4)] transition hover:bg-accent-dark"
