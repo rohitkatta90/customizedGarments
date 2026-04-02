@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import { useI18n } from "@/components/i18n/I18nProvider";
 import { allCategories } from "@/lib/categories";
@@ -12,7 +12,26 @@ type Props = {
   items: CatalogItem[];
 };
 
-const PAGE_SIZE = 4;
+/** Mobile: 2×2 grid. md+: 2 rows × 4 columns = 8 designs per page. */
+const PAGE_SIZE_MOBILE = 4;
+const PAGE_SIZE_DESKTOP = 8;
+
+const MD_MIN_WIDTH = "(min-width: 768px)";
+
+function subscribeMd(cb: () => void) {
+  const mq = window.matchMedia(MD_MIN_WIDTH);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+}
+
+function getMdMatches() {
+  return window.matchMedia(MD_MIN_WIDTH).matches;
+}
+
+/** Matches Tailwind `md`; server snapshot false to align with mobile-first SSR. */
+function useIsMdBreakpoint() {
+  return useSyncExternalStore(subscribeMd, getMdMatches, () => false);
+}
 
 /** English-only gallery collection labels (site may still use Hindi elsewhere). */
 const GALLERY_AUDIENCE = {
@@ -34,6 +53,10 @@ function formatPageOf(template: string, current: number, total: number): string 
 
 export function GalleryClient({ items }: Props) {
   const { dict } = useI18n();
+  const isMd = useIsMdBreakpoint();
+  const pageSize = isMd ? PAGE_SIZE_DESKTOP : PAGE_SIZE_MOBILE;
+  const prevPageSizeRef = useRef(pageSize);
+
   const [audience, setAudience] = useState<CatalogAudience>("women");
   const [active, setActive] = useState<CatalogCategory | "all">("all");
   const [page, setPage] = useState(0);
@@ -48,14 +71,22 @@ export function GalleryClient({ items }: Props) {
     return audienceItems.filter((i) => i.category === active);
   }, [active, audienceItems]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const currentPage = Math.min(page, totalPages - 1);
-  const start = currentPage * PAGE_SIZE;
-  const pageItems = filtered.slice(start, start + PAGE_SIZE);
+  const start = currentPage * pageSize;
+  const pageItems = filtered.slice(start, start + pageSize);
 
   useEffect(() => {
     setPage(0);
   }, [audience, active]);
+
+  useEffect(() => {
+    const prev = prevPageSizeRef.current;
+    if (prev !== pageSize) {
+      prevPageSizeRef.current = pageSize;
+      setPage((p) => Math.floor((p * prev) / pageSize));
+    }
+  }, [pageSize]);
 
   useEffect(() => {
     setPage((p) => Math.min(p, Math.max(0, totalPages - 1)));
