@@ -112,6 +112,10 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
   const [childAgeInput, setChildAgeInput] = useState("");
   const [childAgeError, setChildAgeError] = useState(false);
   const [kidsWearIntent, setKidsWearIntent] = useState(forKidsFromUrl);
+  const [momAndMeEnabled, setMomAndMeEnabled] = useState(false);
+  const [momAndMeChildDetail, setMomAndMeChildDetail] = useState("");
+  const [momAndMePreference, setMomAndMePreference] = useState<"same" | "variation" | null>(null);
+  const [momAndMeError, setMomAndMeError] = useState(false);
 
   const step1AdvanceRef = useRef<number | null>(null);
 
@@ -133,6 +137,12 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
   }, [forKidsFromUrl]);
 
   const isKidsPath = kidsWearIntent && serviceType === "stitching";
+  const isAdultStitchPath = serviceType === "stitching" && !kidsWearIntent;
+
+  const momAndMeStep3Incomplete =
+    isAdultStitchPath &&
+    momAndMeEnabled &&
+    (!momAndMeChildDetail.trim() || momAndMePreference === null);
 
   const childAgeParsed = useMemo(() => {
     const t = childAgeInput.trim();
@@ -148,6 +158,15 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
       setChildAgeError(false);
     }
   }, [isKidsPath]);
+
+  useEffect(() => {
+    if (!isAdultStitchPath) {
+      setMomAndMeEnabled(false);
+      setMomAndMeChildDetail("");
+      setMomAndMePreference(null);
+      setMomAndMeError(false);
+    }
+  }, [isAdultStitchPath]);
 
   const [reduceMotion, setReduceMotion] = useState(false);
   useEffect(() => {
@@ -204,6 +223,22 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
     return `/request?${p.toString()}`;
   }, [catalogIdFromUrl, serviceType, kidsWearIntent]);
 
+  const momAndMeSubmitPayload = useMemo(() => {
+    if (
+      !isAdultStitchPath ||
+      !momAndMeEnabled ||
+      !momAndMeChildDetail.trim() ||
+      momAndMePreference === null
+    ) {
+      return null;
+    }
+    return {
+      momAndMe: true as const,
+      momAndMeChildDetail: momAndMeChildDetail.trim(),
+      momAndMePreference: momAndMePreference,
+    };
+  }, [isAdultStitchPath, momAndMeEnabled, momAndMeChildDetail, momAndMePreference]);
+
   const finalize = useCallback(async () => {
     if (!deliveryDate.trim() || deliveryDate < earliestISO) return;
     setFinalizing(true);
@@ -226,6 +261,7 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
           ...(isPhonePlausible(customerPhone) ? { customerPhone: customerPhone.trim() } : {}),
           ...(isKidsPath && childAgeParsed != null ? { childAgeYears: childAgeParsed } : {}),
           ...(isKidsPath ? { kidsWear: true } : {}),
+          ...(momAndMeSubmitPayload ?? {}),
         }),
       });
     } catch {
@@ -249,6 +285,14 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
       measurementAppend: measurementAppend ?? undefined,
       ...(childAgeParsed != null ? { childAgeYears: childAgeParsed } : {}),
       ...(isKidsPath ? { kidsWear: true } : {}),
+      ...(momAndMeSubmitPayload
+        ? {
+            momAndMe: {
+              childAgeOrSize: momAndMeSubmitPayload.momAndMeChildDetail,
+              preference: momAndMeSubmitPayload.momAndMePreference,
+            },
+          }
+        : {}),
     });
     setPreparedMessage(msg);
     setStep(6);
@@ -269,6 +313,7 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
     earliestISO,
     childAgeParsed,
     isKidsPath,
+    momAndMeSubmitPayload,
   ]);
 
   function scheduleAdvanceFromStep1() {
@@ -335,6 +380,11 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
     if (step === 3) {
       setDateTouched(true);
       if (!deliveryDate.trim() || deliveryDate < earliestISO) return;
+      if (momAndMeStep3Incomplete) {
+        setMomAndMeError(true);
+        return;
+      }
+      setMomAndMeError(false);
       setStep(4);
       return;
     }
@@ -557,6 +607,93 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
               <h2 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">
                 {f.screen3Title}
               </h2>
+              {isAdultStitchPath ? (
+                <div className="space-y-4 rounded-2xl border border-rose-200/55 bg-gradient-to-b from-rose-50/50 to-transparent px-4 py-4 shadow-sm sm:px-5 sm:py-5">
+                  <p className="text-sm font-medium leading-snug text-foreground">{f.momAndMeHook}</p>
+                  <label className="flex cursor-pointer items-start gap-3 rounded-xl bg-white/70 px-3 py-3 ring-1 ring-rose-100/80">
+                    <input
+                      type="checkbox"
+                      checked={momAndMeEnabled}
+                      onChange={(e) => {
+                        const on = e.target.checked;
+                        setMomAndMeEnabled(on);
+                        setMomAndMeError(false);
+                        if (!on) {
+                          setMomAndMeChildDetail("");
+                          setMomAndMePreference(null);
+                        }
+                      }}
+                      className="mt-0.5 h-4 w-4 shrink-0 rounded border-border accent-accent"
+                    />
+                    <span className="text-sm font-medium text-foreground">{f.momAndMeCheckbox}</span>
+                  </label>
+                  {momAndMeEnabled ? (
+                    <div className="space-y-4 border-t border-rose-100/80 pt-4">
+                      <div>
+                        <label
+                          htmlFor="wizard-mom-me-child"
+                          className="mb-2 block text-sm font-medium text-foreground"
+                        >
+                          {f.momAndMeChildLabel}
+                          <span className="text-red-600"> *</span>
+                        </label>
+                        <input
+                          id="wizard-mom-me-child"
+                          type="text"
+                          value={momAndMeChildDetail}
+                          onChange={(e) => {
+                            setMomAndMeChildDetail(e.target.value);
+                            setMomAndMeError(false);
+                          }}
+                          placeholder={f.momAndMeChildPlaceholder}
+                          aria-invalid={momAndMeError && !momAndMeChildDetail.trim()}
+                          className={`box-border w-full min-w-0 ${inputBase} ${momAndMeError && !momAndMeChildDetail.trim() ? inputInvalid : inputNormal}`}
+                        />
+                      </div>
+                      <fieldset className="space-y-2">
+                        <legend className="mb-2 text-sm font-medium text-foreground">
+                          {f.momAndMePreferenceLabel}
+                          <span className="text-red-600"> *</span>
+                        </legend>
+                        <label className="flex cursor-pointer items-start gap-3 rounded-xl bg-white/70 px-3 py-2.5 ring-1 ring-rose-100/60">
+                          <input
+                            type="radio"
+                            name="momAndMePreference"
+                            value="same"
+                            checked={momAndMePreference === "same"}
+                            onChange={() => {
+                              setMomAndMePreference("same");
+                              setMomAndMeError(false);
+                            }}
+                            className="mt-1 h-4 w-4 shrink-0 border-border accent-accent"
+                          />
+                          <span className="text-sm text-foreground">{f.momAndMeSame}</span>
+                        </label>
+                        <label className="flex cursor-pointer items-start gap-3 rounded-xl bg-white/70 px-3 py-2.5 ring-1 ring-rose-100/60">
+                          <input
+                            type="radio"
+                            name="momAndMePreference"
+                            value="variation"
+                            checked={momAndMePreference === "variation"}
+                            onChange={() => {
+                              setMomAndMePreference("variation");
+                              setMomAndMeError(false);
+                            }}
+                            className="mt-1 h-4 w-4 shrink-0 border-border accent-accent"
+                          />
+                          <span className="text-sm text-foreground">{f.momAndMeVariation}</span>
+                        </label>
+                      </fieldset>
+                      {momAndMeError ? (
+                        <p className="text-sm text-red-700" role="alert">
+                          {f.momAndMeIncomplete}
+                        </p>
+                      ) : null}
+                      <p className="text-xs leading-relaxed text-muted">{f.momAndMeHelper}</p>
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
               <p className="text-sm text-muted">
                 <span className="font-medium text-foreground">{f.earliestLabel}</span>{" "}
                 <span className="text-accent-dark">{earliestDisplay}</span>

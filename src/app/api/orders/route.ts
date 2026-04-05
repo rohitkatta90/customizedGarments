@@ -5,6 +5,7 @@ import {
   isQuickKidsWearRequest,
   quickRequestCustomerForApi,
   type QuickItemCount,
+  type QuickMomAndMePreference,
   type QuickServiceType,
 } from "@/lib/order/quick-request";
 import { validateOrderItems } from "@/lib/order/whatsapp";
@@ -43,6 +44,10 @@ type QuickBody = {
   childAgeYears?: number;
   /** True when the customer chose kids wear in the quick flow (alternative to note chip). */
   kidsWear?: boolean;
+  /** Adult stitching: optional Mom & Me — requires child detail + preference when true. */
+  momAndMe?: boolean;
+  momAndMeChildDetail?: string;
+  momAndMePreference?: QuickMomAndMePreference;
 };
 
 type Body = StandardBody | QuickBody;
@@ -68,6 +73,9 @@ export async function POST(request: Request) {
   let requestedDeliveryDate: string | null;
   /** Set only for validated quick girls' wear requests */
   let quickPersistedChildAge: number | null = null;
+  let quickMomAndMe:
+    | { childAgeOrSize: string; preference: QuickMomAndMePreference }
+    | undefined;
 
   if (body.quick === true) {
     if (
@@ -103,6 +111,20 @@ export async function POST(request: Request) {
       childAgeYears = age;
       quickPersistedChildAge = age;
     }
+
+    if (body.momAndMe === true) {
+      if (body.serviceType !== "stitching") {
+        return NextResponse.json({ ok: false, error: "invalid_quick_request" }, { status: 400 });
+      }
+      const detail =
+        typeof body.momAndMeChildDetail === "string" ? body.momAndMeChildDetail.trim() : "";
+      const pref = body.momAndMePreference;
+      if (!detail || detail.length > 240 || (pref !== "same" && pref !== "variation")) {
+        return NextResponse.json({ ok: false, error: "invalid_mom_and_me" }, { status: 400 });
+      }
+      quickMomAndMe = { childAgeOrSize: detail, preference: pref };
+    }
+
     items = buildQuickOrderLineItems({
       serviceType: body.serviceType,
       itemCount: body.itemCount,
@@ -113,6 +135,7 @@ export async function POST(request: Request) {
       priorityRequested: body.priorityRequested === true,
       priorityImplied: body.priorityImplied === true && body.priorityRequested !== true,
       ...(childAgeYears !== undefined ? { childAgeYears } : {}),
+      ...(quickMomAndMe ? { momAndMe: quickMomAndMe } : {}),
     });
     const cust = quickRequestCustomerForApi();
     name = cust.customerName;

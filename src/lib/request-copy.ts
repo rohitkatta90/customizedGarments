@@ -129,6 +129,17 @@ export const quickFlowCopy = {
   piecesManyHint: "We'll confirm timeline based on number of pieces",
   piecesManyTapContinue: "Tap Continue → when your count looks right.",
   screen3Title: "When do you need it?",
+  /** Adult stitching only — optional block at top of step 3 */
+  momAndMeHook: "✨ Want matching outfits for you and your little one?",
+  momAndMeCheckbox: "Yes — Mom & Me set",
+  momAndMeHelper:
+    "We'll plan both looks together on WhatsApp. If you haven't already, choose enough pieces on the previous step (often two — yours + hers).",
+  momAndMeChildLabel: "Her age or dress size",
+  momAndMeChildPlaceholder: "e.g. 7 years, or kids' size 28",
+  momAndMePreferenceLabel: "How closely should they match?",
+  momAndMeSame: "Same design",
+  momAndMeVariation: "Slight variation",
+  momAndMeIncomplete: "Please add her age or size and pick a matching style.",
   earliestLabel: "Earliest available:",
   dateHelper: "We'll confirm exact timeline on WhatsApp",
   selectDate: "Select date",

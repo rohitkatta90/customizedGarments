@@ -40,7 +40,7 @@ export function buildMultiItemOrderMessage(
 ): string {
   const lines: string[] = [];
 
-  lines.push("Hi :)", "", "I'd like to get the following stitched / serviced.", "");
+  lines.push("Hi RC 😊", "", "I'd like to get the following stitched / serviced.", "");
 
   lines.push(`Request ID: ${formatRequestIdForWhatsApp(order.id)}`, "");
 

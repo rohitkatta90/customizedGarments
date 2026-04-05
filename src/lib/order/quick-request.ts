@@ -8,6 +8,7 @@ import type { Order, OrderItem } from "./types";
 
 export type QuickServiceType = "stitching" | "alteration";
 export type QuickItemCount = "1" | "2" | "3plus";
+export type QuickMomAndMePreference = "same" | "variation";
 
 const QUICK_CUSTOMER_NAME = "Quick request (website)";
 /** Placeholder until staff captures the real number from WhatsApp. */
@@ -39,6 +40,11 @@ export function buildQuickOrderLineItems(input: {
   priorityImplied?: boolean;
   /** Girls' quick wear: whole years, 5–12 — echoed in line-item notes for staff. */
   childAgeYears?: number;
+  /** Adult stitching: optional matching mother + daughter outfits. */
+  momAndMe?: {
+    childAgeOrSize: string;
+    preference: QuickMomAndMePreference;
+  };
 }): OrderItem[] {
   const pieces = `Pieces (quick request): ${itemCountLabelForWhatsApp(input.itemCount, input.exactPieceCount)}`;
   const userNotes = input.notes.trim();
@@ -56,6 +62,12 @@ export function buildQuickOrderLineItems(input: {
   } else if (input.priorityImplied) {
     combinedNotes +=
       "\n[Priority] Preferred date is before typical standard lead — customer may need a quicker timeline; confirm in WhatsApp.";
+  }
+
+  if (input.momAndMe && input.serviceType === "stitching") {
+    const prefLabel =
+      input.momAndMe.preference === "same" ? "Same design" : "Slight variation";
+    combinedNotes += `\n[Mom & Me] Matching outfits for mother + daughter.\nChild age or size: ${input.momAndMe.childAgeOrSize.trim()}\nStyle preference: ${prefLabel}`;
   }
 
   if (input.serviceType === "alteration") {
@@ -122,6 +134,11 @@ export function buildQuickStitchWhatsAppMessage(input: {
   childAgeYears?: number;
   /** Set when the customer chose the kids wear card (no note chip required). */
   kidsWear?: boolean;
+  /** Adult stitching: Mom & Me matching set. */
+  momAndMe?: {
+    childAgeOrSize: string;
+    preference: QuickMomAndMePreference;
+  };
 }): string {
   const cat = input.catalogId?.trim()
     ? input.catalog.find((c) => c.id === input.catalogId!.trim())
@@ -138,7 +155,7 @@ export function buildQuickStitchWhatsAppMessage(input: {
       ? "I'd like to get an outfit stitched."
       : "I'd like to get an outfit altered.";
 
-  const lines: string[] = ["Hi :)", "", intentLine];
+  const lines: string[] = ["Hi RC 😊", "", intentLine];
 
   if (
     kidsGirls &&
@@ -148,6 +165,24 @@ export function buildQuickStitchWhatsAppMessage(input: {
     input.childAgeYears <= 12
   ) {
     lines.push("", `Child's age (as entered): ${input.childAgeYears} years.`);
+  }
+
+  if (
+    !kidsGirls &&
+    input.serviceType === "stitching" &&
+    input.momAndMe &&
+    input.momAndMe.childAgeOrSize.trim()
+  ) {
+    const detail = input.momAndMe.childAgeOrSize.trim();
+    const pref =
+      input.momAndMe.preference === "same" ? "Same design" : "Slight variation";
+    lines.push(
+      "",
+      "💖 This is a Mom & Me request",
+      `For me + my daughter (age: ${detail})`,
+      "",
+      `Style preference: ${pref}`,
+    );
   }
 
   lines.push(

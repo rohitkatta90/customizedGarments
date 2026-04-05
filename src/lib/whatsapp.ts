@@ -3,10 +3,8 @@ import { siteConfig, whatsappDigits } from "./site";
 export { buildOrderConfirmationWhatsAppMessage } from "@/lib/order/order-confirmation-message";
 
 /**
- * Opens WhatsApp with a prefilled message. `encodeURIComponent` is correct UTF-8;
- * many WhatsApp clients still corrupt supplementary-plane characters (most emoji)
- * in the `text` query and show U+FFFD. Prefer ASCII / BMP punctuation in `message`
- * for reliable display — see quick-request / buildMultiItemOrderMessage.
+ * Opens WhatsApp with a prefilled message. `encodeURIComponent` uses UTF-8; current
+ * WhatsApp clients generally render emoji in `text=` correctly (same as in-message).
  */
 export function buildWhatsAppUrl(message: string): string {
   const phone = whatsappDigits();
