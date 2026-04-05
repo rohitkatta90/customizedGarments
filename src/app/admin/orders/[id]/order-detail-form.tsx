@@ -260,6 +260,12 @@ export function OrderDetailForm({ order: initial, catalog }: Props) {
 
       <h1 className="mt-4 font-display text-3xl font-semibold text-foreground">Order</h1>
       <p className="mt-1 font-mono text-sm text-muted">{order.id}</p>
+      {order.quickChildAgeYears != null ? (
+        <p className="mt-3 rounded-xl border border-accent/25 bg-[#fff9f8] px-4 py-3 text-sm text-foreground">
+          <span className="font-semibold text-accent-dark">Child age (quick intake):</span>{" "}
+          {order.quickChildAgeYears} years (girls&apos; wear band 5–12)
+        </p>
+      ) : null}
 
       {message ? (
         <p className="mt-4 text-sm text-muted" role="status">

@@ -1,4 +1,5 @@
 import { todayLocalISODate } from "@/lib/date-today";
+import { quickFlowCopy } from "@/lib/request-copy";
 import type { CatalogItem } from "@/lib/types";
 
 import { createAlterationItem, createStitchingItem } from "./factory";
@@ -36,10 +37,20 @@ export function buildQuickOrderLineItems(input: {
   exactPieceCount?: number;
   priorityRequested?: boolean;
   priorityImplied?: boolean;
+  /** Girls' quick wear: whole years, 5–12 — echoed in line-item notes for staff. */
+  childAgeYears?: number;
 }): OrderItem[] {
   const pieces = `Pieces (quick request): ${itemCountLabelForWhatsApp(input.itemCount, input.exactPieceCount)}`;
   const userNotes = input.notes.trim();
   let combinedNotes = userNotes ? `${pieces}\n${userNotes}` : pieces;
+  if (
+    typeof input.childAgeYears === "number" &&
+    Number.isInteger(input.childAgeYears) &&
+    input.childAgeYears >= 5 &&
+    input.childAgeYears <= 12
+  ) {
+    combinedNotes += `\nChild age (years): ${input.childAgeYears}`;
+  }
   if (input.priorityRequested) {
     combinedNotes += "\n[Priority] Customer asked about expedited / priority stitching — confirm availability and fees in WhatsApp.";
   } else if (input.priorityImplied) {
@@ -67,6 +78,33 @@ export function buildQuickOrderLineItems(input: {
   return [stitching];
 }
 
+/** Notes still carry the kids chip for older clients / pasted text. */
+function notesIndicateKidsGirlsWear(notes: string): boolean {
+  const n = notes.toLowerCase();
+  return (
+    n.includes(quickFlowCopy.kidsNoteChip.toLowerCase()) ||
+    n.includes(quickFlowCopy.kidsNoteChipLegacy.toLowerCase())
+  );
+}
+
+/**
+ * True for girls' kids-wear quick stitching when explicitly flagged or when legacy note chips are present.
+ */
+export function isQuickKidsWearRequest(
+  serviceType: QuickServiceType,
+  notes: string,
+  kidsWear?: boolean,
+): boolean {
+  if (serviceType !== "stitching") return false;
+  if (kidsWear === true) return true;
+  return notesIndicateKidsGirlsWear(notes);
+}
+
+/** @deprecated Prefer `isQuickKidsWearRequest` with explicit `kidsWear` when available. */
+export function isKidsGirlsStitchQuickRequest(serviceType: QuickServiceType, notes: string): boolean {
+  return isQuickKidsWearRequest(serviceType, notes, false);
+}
+
 export function buildQuickStitchWhatsAppMessage(input: {
   order: Order;
   catalog: CatalogItem[];
@@ -80,6 +118,10 @@ export function buildQuickStitchWhatsAppMessage(input: {
   exactPieceCount?: number;
   priorityRequested?: boolean;
   priorityImplied?: boolean;
+  /** Confirmed child age for girls' wear quick path (5–12). */
+  childAgeYears?: number;
+  /** Set when the customer chose the kids wear card (no note chip required). */
+  kidsWear?: boolean;
 }): string {
   const cat = input.catalogId?.trim()
     ? input.catalog.find((c) => c.id === input.catalogId!.trim())
@@ -88,15 +130,27 @@ export function buildQuickStitchWhatsAppMessage(input: {
   const reqId = formatRequestIdForWhatsApp(input.order.id);
   const dateLabel = formatIsoDateForWhatsApp(input.preferredDeliveryDate);
   const serviceLabel = input.serviceType === "stitching" ? "Stitching" : "Alteration";
-  const intentLine =
-    input.serviceType === "stitching"
+  const kidsGirls = isQuickKidsWearRequest(input.serviceType, input.notes, input.kidsWear);
+
+  const intentLine = kidsGirls
+    ? "I'd like stitching for a little girl — party or festive girls' wear (not adult women's sizing)."
+    : input.serviceType === "stitching"
       ? "I'd like to get an outfit stitched."
       : "I'd like to get an outfit altered.";
 
-  const lines: string[] = [
-    "Hi :)",
-    "",
-    intentLine,
+  const lines: string[] = ["Hi :)", "", intentLine];
+
+  if (
+    kidsGirls &&
+    typeof input.childAgeYears === "number" &&
+    Number.isInteger(input.childAgeYears) &&
+    input.childAgeYears >= 5 &&
+    input.childAgeYears <= 12
+  ) {
+    lines.push("", `Child's age (as entered): ${input.childAgeYears} years.`);
+  }
+
+  lines.push(
     "",
     `Request ID: ${reqId}`,
     "",
@@ -104,7 +158,7 @@ export function buildQuickStitchWhatsAppMessage(input: {
     `Items: ${itemCountLabelForWhatsApp(input.itemCount, input.exactPieceCount)}`,
     `Preferred delivery date: ${dateLabel}`,
     `Notes: ${input.notes.trim() || "—"}`,
-  ];
+  );
 
   if (cat) {
     lines.push("", `Design: "${cat.title}"`);

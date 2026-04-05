@@ -74,7 +74,8 @@ export const en: Dictionary = {
     alterTitle: "Alter an existing dress",
     alterBody: "Hems, take-ins, zips, reshaping — we assess before we promise dates.",
     kidsTitle: "Kids wear request",
-    kidsBody: "Party or festive girls' wear when our schedule allows — always quoted clearly.",
+    kidsBody:
+      "Stitching for little girls (about ages 5–12) — party or festive wear when our schedule allows; always quoted clearly.",
   },
   homeEmotional: {
     title: "Clothes that feel like you",
@@ -209,6 +210,9 @@ export const en: Dictionary = {
       "Add stitching, alteration, or both in one go — we confirm everything in chat.",
     cardBookTitle: "Book a visit or call",
     cardBookText: "Pick a slot; we'll confirm details on WhatsApp.",
+    cardKidsTitle: "Kids' wear request",
+    cardKidsText:
+      "Stitching for little girls (ages 5–12): party or festive looks when our schedule allows — share a reference; we quote clearly on WhatsApp.",
     open: "Open →",
   },
   testimonials: {

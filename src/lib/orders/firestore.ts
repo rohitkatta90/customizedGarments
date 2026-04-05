@@ -156,6 +156,13 @@ function mapDocToStoredOrder(id: string, d: DocumentData): StoredOrder {
     paymentAuditLog: parsePaymentAuditLog(d.paymentAuditLog),
     designAssetsFolderUrl: (d.designAssetsFolderUrl as string | null) ?? null,
     tailorHandoffNotesInternal: (d.tailorHandoffNotesInternal as string | null) ?? null,
+    quickChildAgeYears:
+      typeof d.quickChildAgeYears === "number" &&
+      Number.isInteger(d.quickChildAgeYears) &&
+      d.quickChildAgeYears >= 5 &&
+      d.quickChildAgeYears <= 12
+        ? d.quickChildAgeYears
+        : null,
   };
 }
 
@@ -165,6 +172,8 @@ export async function createStoredOrder(input: {
   customerPhone: string;
   requestedDeliveryDate: string | null;
   items: OrderItem[];
+  /** Quick girls' wear: whole years 5–12; omit or null otherwise */
+  quickChildAgeYears?: number | null;
 }): Promise<{ trackingToken: string }> {
   const firestore = db();
   const now = FieldValue.serverTimestamp();
@@ -202,6 +211,13 @@ export async function createStoredOrder(input: {
     paymentAuditLog: [],
     designAssetsFolderUrl: null,
     tailorHandoffNotesInternal: null,
+    quickChildAgeYears:
+      typeof input.quickChildAgeYears === "number" &&
+      Number.isInteger(input.quickChildAgeYears) &&
+      input.quickChildAgeYears >= 5 &&
+      input.quickChildAgeYears <= 12
+        ? input.quickChildAgeYears
+        : null,
   });
 
   return { trackingToken };

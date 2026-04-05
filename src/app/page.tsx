@@ -67,7 +67,7 @@ export default async function HomePage() {
               </div>
             </div>
 
-            <div className="mt-10 grid gap-5 sm:grid-cols-3">
+            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
               {[
                 {
                   title: dict.home.cardGalleryTitle,
@@ -78,6 +78,11 @@ export default async function HomePage() {
                   title: dict.home.cardRequestTitle,
                   text: dict.home.cardRequestText,
                   href: "/request",
+                },
+                {
+                  title: dict.home.cardKidsTitle,
+                  text: dict.home.cardKidsText,
+                  href: "/request?service=stitching&for=kids",
                 },
                 {
                   title: dict.home.cardBookTitle,

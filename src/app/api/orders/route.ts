@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import {
   buildQuickOrderLineItems,
+  isQuickKidsWearRequest,
   quickRequestCustomerForApi,
   type QuickItemCount,
   type QuickServiceType,
@@ -38,6 +39,10 @@ type QuickBody = {
   exactPieceCount?: number;
   priorityRequested?: boolean;
   priorityImplied?: boolean;
+  /** Required when quick stitching notes indicate girls' wear (5–12 years). */
+  childAgeYears?: number;
+  /** True when the customer chose kids wear in the quick flow (alternative to note chip). */
+  kidsWear?: boolean;
 };
 
 type Body = StandardBody | QuickBody;
@@ -61,6 +66,8 @@ export async function POST(request: Request) {
   let name: string;
   let phone: string;
   let requestedDeliveryDate: string | null;
+  /** Set only for validated quick girls' wear requests */
+  let quickPersistedChildAge: number | null = null;
 
   if (body.quick === true) {
     if (
@@ -81,15 +88,31 @@ export async function POST(request: Request) {
         return NextResponse.json({ ok: false, error: "invalid_quick_request" }, { status: 400 });
       }
     }
+    const rawNotes = typeof body.notes === "string" ? body.notes : "";
+    const needsChildAge = isQuickKidsWearRequest(
+      body.serviceType,
+      rawNotes,
+      body.kidsWear === true,
+    );
+    let childAgeYears: number | undefined;
+    if (needsChildAge) {
+      const age = body.childAgeYears;
+      if (typeof age !== "number" || !Number.isInteger(age) || age < 5 || age > 12) {
+        return NextResponse.json({ ok: false, error: "invalid_child_age" }, { status: 400 });
+      }
+      childAgeYears = age;
+      quickPersistedChildAge = age;
+    }
     items = buildQuickOrderLineItems({
       serviceType: body.serviceType,
       itemCount: body.itemCount,
       preferredDeliveryDate: body.preferredDeliveryDate.trim(),
-      notes: typeof body.notes === "string" ? body.notes : "",
+      notes: rawNotes,
       catalogId: typeof body.catalogId === "string" ? body.catalogId : undefined,
       exactPieceCount: exact,
       priorityRequested: body.priorityRequested === true,
       priorityImplied: body.priorityImplied === true && body.priorityRequested !== true,
+      ...(childAgeYears !== undefined ? { childAgeYears } : {}),
     });
     const cust = quickRequestCustomerForApi();
     name = cust.customerName;
@@ -140,6 +163,7 @@ export async function POST(request: Request) {
       trackingUrl: null,
       quickFlow,
       ...quickPriority,
+      quickChildAgeYears: quickPersistedChildAge,
     });
     return NextResponse.json({
       ok: true,
@@ -155,6 +179,7 @@ export async function POST(request: Request) {
       customerPhone: phone,
       requestedDeliveryDate,
       items,
+      quickChildAgeYears: quickPersistedChildAge,
     });
     const base = siteConfig.siteUrl.replace(/\/$/, "");
     const trackingUrl = `${base}/track/${trackingToken}`;
@@ -167,6 +192,7 @@ export async function POST(request: Request) {
       trackingUrl,
       quickFlow,
       ...quickPriority,
+      quickChildAgeYears: quickPersistedChildAge,
     });
     return NextResponse.json({ ok: true, saved: true, id: body.id, trackingUrl });
   } catch (err) {

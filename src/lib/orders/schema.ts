@@ -76,6 +76,10 @@ export type StoredOrder = {
    * Structured bullet notes for tailor / cutting master (normalized spec). Staff-only.
    */
   tailorHandoffNotesInternal: string | null;
+  /**
+   * Quick flow, girls' wear: customer-entered age in whole years (5–12). Null when not applicable.
+   */
+  quickChildAgeYears: number | null;
 };
 
 /** Minimal shape for the public tracking page (no PII beyond first name optional). */

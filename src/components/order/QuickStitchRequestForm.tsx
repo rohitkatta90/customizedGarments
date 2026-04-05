@@ -31,8 +31,8 @@ type Props = {
 };
 
 const EARLIEST_LEAD_DAYS = 7;
-/** Auto-advance after quick pick 1 or 2 pieces (step 2). */
-const STEP2_QUICK_ADVANCE_MS = 280;
+/** Brief delay before advancing after choosing a service on step 1. */
+const STEP1_QUICK_ADVANCE_MS = 280;
 
 function newOrderId(): string {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
@@ -82,11 +82,20 @@ function appendNoteChip(current: string, chip: string): string {
   return `${t}, ${chip}`;
 }
 
+function stripNoteChip(current: string, chip: string): string {
+  return current
+    .split(",")
+    .map((s) => s.trim())
+    .filter((s) => s.length > 0 && s.toLowerCase() !== chip.toLowerCase())
+    .join(", ");
+}
+
 export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const catalogIdFromUrl = searchParams.get("catalog") ?? undefined;
   const serviceFromUrl = searchParams.get("service") === "alteration" ? "alteration" : "stitching";
+  const forKidsFromUrl = searchParams.get("for") === "kids";
 
   const [orderId] = useState(newOrderId);
   const [step, setStep] = useState(1);
@@ -100,19 +109,45 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
   const [measurementPayload, setMeasurementPayload] = useState<MeasurementSelectionPayload | null>(null);
   const [preparedMessage, setPreparedMessage] = useState<string | null>(null);
   const [finalizing, setFinalizing] = useState(false);
+  const [childAgeInput, setChildAgeInput] = useState("");
+  const [childAgeError, setChildAgeError] = useState(false);
+  const [kidsWearIntent, setKidsWearIntent] = useState(forKidsFromUrl);
 
-  const step2AdvanceRef = useRef<number | null>(null);
+  const step1AdvanceRef = useRef<number | null>(null);
 
-  const clearStep2Advance = useCallback(() => {
-    if (step2AdvanceRef.current != null) {
-      window.clearTimeout(step2AdvanceRef.current);
-      step2AdvanceRef.current = null;
+  const clearStep1Advance = useCallback(() => {
+    if (step1AdvanceRef.current != null) {
+      window.clearTimeout(step1AdvanceRef.current);
+      step1AdvanceRef.current = null;
     }
   }, []);
 
   useEffect(() => {
-    if (step !== 2) clearStep2Advance();
-  }, [step, clearStep2Advance]);
+    if (step !== 1) clearStep1Advance();
+  }, [step, clearStep1Advance]);
+
+  useEffect(() => {
+    if (!forKidsFromUrl) return;
+    setServiceType("stitching");
+    setKidsWearIntent(true);
+  }, [forKidsFromUrl]);
+
+  const isKidsPath = kidsWearIntent && serviceType === "stitching";
+
+  const childAgeParsed = useMemo(() => {
+    const t = childAgeInput.trim();
+    if (!t) return null;
+    const n = parseInt(t, 10);
+    if (!Number.isInteger(n) || n < 5 || n > 12) return null;
+    return n;
+  }, [childAgeInput]);
+
+  useEffect(() => {
+    if (!isKidsPath) {
+      setChildAgeInput("");
+      setChildAgeError(false);
+    }
+  }, [isKidsPath]);
 
   const [reduceMotion, setReduceMotion] = useState(false);
   useEffect(() => {
@@ -165,8 +200,9 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
     p.set("full", "1");
     if (catalogIdFromUrl) p.set("catalog", catalogIdFromUrl);
     p.set("service", serviceType);
+    if (kidsWearIntent && serviceType === "stitching") p.set("for", "kids");
     return `/request?${p.toString()}`;
-  }, [catalogIdFromUrl, serviceType]);
+  }, [catalogIdFromUrl, serviceType, kidsWearIntent]);
 
   const finalize = useCallback(async () => {
     if (!deliveryDate.trim() || deliveryDate < earliestISO) return;
@@ -188,6 +224,8 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
           notes,
           catalogId: selectedCatalogItem?.id,
           ...(isPhonePlausible(customerPhone) ? { customerPhone: customerPhone.trim() } : {}),
+          ...(isKidsPath && childAgeParsed != null ? { childAgeYears: childAgeParsed } : {}),
+          ...(isKidsPath ? { kidsWear: true } : {}),
         }),
       });
     } catch {
@@ -209,6 +247,8 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
       notes,
       catalogId: selectedCatalogItem?.id,
       measurementAppend: measurementAppend ?? undefined,
+      ...(childAgeParsed != null ? { childAgeYears: childAgeParsed } : {}),
+      ...(isKidsPath ? { kidsWear: true } : {}),
     });
     setPreparedMessage(msg);
     setStep(6);
@@ -227,33 +267,55 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
     priorityRequestedForPayload,
     priorityImpliedForPayload,
     earliestISO,
+    childAgeParsed,
+    isKidsPath,
   ]);
+
+  function scheduleAdvanceFromStep1() {
+    clearStep1Advance();
+    if (reduceMotion) {
+      setStep(2);
+      return;
+    }
+    step1AdvanceRef.current = window.setTimeout(() => {
+      step1AdvanceRef.current = null;
+      setStep((s) => (s === 1 ? 2 : s));
+    }, STEP1_QUICK_ADVANCE_MS);
+  }
 
   function chooseQuickPieceCount(n: 1 | 2) {
     if (step !== 2) return;
-    clearStep2Advance();
     setPieces(n);
-    if (reduceMotion) return;
-    step2AdvanceRef.current = window.setTimeout(() => {
-      step2AdvanceRef.current = null;
-      setStep((s) => (s === 2 ? 3 : s));
-    }, STEP2_QUICK_ADVANCE_MS);
   }
 
   function chooseManyPiecesMode() {
     if (step !== 2) return;
-    clearStep2Advance();
     setPieces((p) => (p < 3 ? 3 : p));
   }
 
   function bumpManyPieces(delta: number) {
     if (step !== 2) return;
-    clearStep2Advance();
     setPieces((p) => Math.max(3, p + delta));
   }
 
-  function selectService(type: QuickServiceType) {
-    setServiceType(type);
+  function selectAdultStitching() {
+    setKidsWearIntent(false);
+    setServiceType("stitching");
+    setNotes((n) => stripNoteChip(stripNoteChip(n, f.kidsNoteChip), f.kidsNoteChipLegacy));
+    scheduleAdvanceFromStep1();
+  }
+
+  function selectKidsWearStitching() {
+    setKidsWearIntent(true);
+    setServiceType("stitching");
+    scheduleAdvanceFromStep1();
+  }
+
+  function selectAlteration() {
+    setKidsWearIntent(false);
+    setServiceType("alteration");
+    setNotes((n) => stripNoteChip(stripNoteChip(n, f.kidsNoteChip), f.kidsNoteChipLegacy));
+    scheduleAdvanceFromStep1();
   }
 
   function onDeliveryDateChange(value: string) {
@@ -277,6 +339,13 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
       return;
     }
     if (step === 4) {
+      if (isKidsPath) {
+        if (childAgeParsed === null) {
+          setChildAgeError(true);
+          return;
+        }
+        setChildAgeError(false);
+      }
       setStep(5);
       return;
     }
@@ -286,7 +355,7 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
   }
 
   function goBack() {
-    clearStep2Advance();
+    clearStep1Advance();
     if (step > 1 && step < 6) {
       setStep((s) => s - 1);
     }
@@ -302,11 +371,8 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
   const continueDisabled =
     (step === 3 && (!deliveryDate.trim() || deliveryDate < earliestISO)) || finalizing;
   const showBackBtn = step >= 2 && (step < 6 || Boolean(preparedMessage));
-  /** Step 2: Continue only for 3+ (explicit count) or reduced-motion; 1–2 auto-advance on tap. */
-  const showContinueBtn =
-    step >= 1 &&
-    step <= 5 &&
-    (step !== 2 || reduceMotion || pieces >= 3);
+  /** Step 1 advances on card tap; from step 2 onward use Continue for a consistent pattern. */
+  const showContinueBtn = step >= 2 && step <= 5;
   const showWhatsappBtn = step === 6 && Boolean(preparedMessage);
   const showNavRow = showBackBtn || showContinueBtn || showWhatsappBtn;
 
@@ -353,12 +419,12 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
               <h2 className="font-display text-2xl font-semibold text-foreground sm:text-3xl">
                 {f.screen1Title}
               </h2>
-              <div className="grid gap-4 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                 <button
                   type="button"
-                  onClick={() => selectService("stitching")}
+                  onClick={selectAdultStitching}
                   className={`flex min-h-[120px] w-full flex-col items-start rounded-2xl border-2 p-6 text-left shadow-sm transition-all duration-200 ease-out active:scale-[0.98] motion-reduce:transition-none motion-reduce:active:scale-100 ${
-                    serviceType === "stitching"
+                    serviceType === "stitching" && !kidsWearIntent
                       ? "border-accent bg-[#fff9f8] shadow-lg ring-2 ring-accent/25"
                       : "border-border bg-card hover:border-accent/35 hover:shadow-md"
                   }`}
@@ -371,10 +437,7 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
                   </span>
                   <span className="mt-2 text-sm text-muted">{f.stitchCardBody}</span>
                 </button>
-                <button
-                  type="button"
-                  onClick={() => selectService("alteration")}
-                  className={`flex min-h-[120px] w-full flex-col items-start rounded-2xl border-2 p-6 text-left shadow-sm transition-all duration-200 ease-out active:scale-[0.98] motion-reduce:transition-none motion-reduce:active:scale-100 ${
+                <button type="button" onClick={selectAlteration} className={`flex min-h-[120px] w-full flex-col items-start rounded-2xl border-2 p-6 text-left shadow-sm transition-all duration-200 ease-out active:scale-[0.98] motion-reduce:transition-none motion-reduce:active:scale-100 ${
                     serviceType === "alteration"
                       ? "border-accent bg-[#fff9f8] shadow-lg ring-2 ring-accent/25"
                       : "border-border bg-card hover:border-accent/35 hover:shadow-md"
@@ -387,6 +450,23 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
                     {f.alterCardTitle}
                   </span>
                   <span className="mt-2 text-sm text-muted">{f.alterCardBody}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={selectKidsWearStitching}
+                  className={`flex min-h-[120px] w-full flex-col items-start rounded-2xl border-2 p-6 text-left shadow-sm transition-all duration-200 ease-out active:scale-[0.98] motion-reduce:transition-none motion-reduce:active:scale-100 ${
+                    serviceType === "stitching" && kidsWearIntent
+                      ? "border-accent bg-[#fff9f8] shadow-lg ring-2 ring-accent/25"
+                      : "border-border bg-card hover:border-accent/35 hover:shadow-md"
+                  }`}
+                >
+                  <span className="text-2xl" aria-hidden>
+                    👗
+                  </span>
+                  <span className="mt-3 font-display text-lg font-semibold text-foreground">
+                    {f.kidsCardTitle}
+                  </span>
+                  <span className="mt-2 text-sm text-muted">{f.kidsCardBody}</span>
                 </button>
               </div>
             </div>
@@ -543,6 +623,39 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
                 {f.screen4Title}{" "}
                 <span className="text-base font-normal text-muted">{f.screen4Optional}</span>
               </h2>
+              {isKidsPath ? (
+                <div>
+                  <label
+                    htmlFor="wizard-child-age"
+                    className="mb-2 block text-sm font-medium text-foreground"
+                  >
+                    {f.screen4ChildAgeLabel}
+                    <span className="text-red-600"> *</span>
+                  </label>
+                  <input
+                    id="wizard-child-age"
+                    type="number"
+                    inputMode="numeric"
+                    min={5}
+                    max={12}
+                    step={1}
+                    value={childAgeInput}
+                    onChange={(e) => {
+                      setChildAgeInput(e.target.value);
+                      setChildAgeError(false);
+                    }}
+                    placeholder="e.g. 7"
+                    aria-invalid={childAgeError}
+                    className={`box-border w-full min-w-0 ${inputBase} ${childAgeError ? inputInvalid : inputNormal}`}
+                  />
+                  <p className="mt-1.5 text-xs text-muted">{f.screen4ChildAgeHint}</p>
+                  {childAgeError ? (
+                    <p className="mt-2 text-sm text-red-700" role="alert">
+                      {f.screen4ChildAgeError}
+                    </p>
+                  ) : null}
+                </div>
+              ) : null}
               <textarea
                 rows={4}
                 value={notes}
@@ -550,21 +663,23 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
                 placeholder={q.notesPh}
                 className={`${inputBase} ${inputNormal}`}
               />
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-muted">{f.quickAdd}</p>
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {chips.map((c) => (
-                    <button
-                      key={c}
-                      type="button"
-                      onClick={() => setNotes((n) => appendNoteChip(n, c))}
-                      className="rounded-full border border-accent/30 bg-[#fff9f8] px-4 py-2.5 text-sm font-medium text-accent-dark transition-all duration-200 hover:border-accent hover:shadow-sm active:scale-[0.98] motion-reduce:active:scale-100"
-                    >
-                      {c}
-                    </button>
-                  ))}
+              {!isKidsPath ? (
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted">{f.quickAdd}</p>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    {chips.map((c) => (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => setNotes((n) => appendNoteChip(n, c))}
+                        className="rounded-full border border-accent/30 bg-[#fff9f8] px-4 py-2.5 text-sm font-medium text-accent-dark transition-all duration-200 hover:border-accent hover:shadow-sm active:scale-[0.98] motion-reduce:active:scale-100"
+                      >
+                        {c}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              ) : null}
             </div>
           ) : null}
 

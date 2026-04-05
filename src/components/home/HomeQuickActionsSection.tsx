@@ -25,7 +25,7 @@ export async function HomeQuickActionsSection() {
     {
       title: q.kidsTitle,
       body: q.kidsBody,
-      href: "/request",
+      href: "/request?service=stitching&for=kids",
     },
   ] as const;
 
@@ -49,7 +49,7 @@ export async function HomeQuickActionsSection() {
         <div className="mt-12 grid gap-5 sm:grid-cols-3">
           {cards.map((c) => (
             <Link
-              key={c.href + c.title}
+              key={c.href}
               href={c.href}
               className="group ds-card transition hover:border-accent/35 hover:shadow-[0_8px_32px_-8px_rgba(43,43,43,0.12)]"
             >

@@ -104,6 +104,45 @@
     }
   },
   {
+    "id": "ww-001",
+    "audience": "women",
+    "category": "custom-designs",
+    "title": "Western casual — powder blue linen co-ord",
+    "description": "Inspiration: relaxed two-piece set (asymmetric tunic + wide-leg trousers), linen-look weave. Western wear, casual, summer. Filter: Custom designs — bring your fabric or reference.",
+    "image": {
+      "src": "/images/catalog/her-styles-western/western-casual-blue-linen-coord-set.png",
+      "alt": "Model in powder blue linen-style co-ordinated top and wide-leg trousers",
+      "width": 736,
+      "height": 981
+    }
+  },
+  {
+    "id": "ww-002",
+    "audience": "women",
+    "category": "custom-designs",
+    "title": "Western formal — chocolate blazer & cream trousers",
+    "description": "Inspiration: tailored blazer, tank, and creased wide-leg trousers — office and smart events. Western wear, formal, business. Filter: Custom designs.",
+    "image": {
+      "src": "/images/catalog/her-styles-western/western-formal-brown-blazer-cream-trousers.png",
+      "alt": "Brown blazer with cream wide-leg trousers, flat-lay and mirror styling",
+      "width": 668,
+      "height": 1024
+    }
+  },
+  {
+    "id": "ww-003",
+    "audience": "women",
+    "category": "dresses",
+    "title": "Western casual — floral duster over black jumpsuit",
+    "description": "Inspiration: sleeveless black jumpsuit with long floral kimono-style layer. Western wear, casual, smart casual, street style. Filter: Dresses.",
+    "image": {
+      "src": "/images/catalog/her-styles-western/western-casual-floral-kimono-black-jumpsuit.png",
+      "alt": "Woman in black jumpsuit with long floral print kimono on a city street",
+      "width": 558,
+      "height": 1024
+    }
+  },
+  {
     "id": "gp-001",
     "audience": "girls",
     "category": "dresses",

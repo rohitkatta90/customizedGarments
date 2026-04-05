@@ -108,6 +108,16 @@ export const quickFlowCopy = {
   stitchCardBody: "Create something from a design or idea",
   alterCardTitle: "Alter an existing dress",
   alterCardBody: "Fix fitting, length, or styling",
+  kidsCardTitle: "Kids' wear stitching",
+  kidsCardBody:
+    "Party or festive looks for little girls (about ages 5–12) — we quote clearly when our schedule allows",
+  /**
+   * Added to the quick-request notes when the kids tile or ?for=kids is used.
+   * WhatsApp copy also keys off this (and the legacy shorter tag) to add age context.
+   */
+  kidsNoteChip: "[Kids / girls' wear · stitching for little girls · ages 5–12]",
+  /** Legacy marker still recognised so older bookmarks / pasted notes trigger kids WhatsApp lines */
+  kidsNoteChipLegacy: "[Kids / girls' wear]",
   screen2Title: "How many pieces?",
   piecesQuick1: "1 piece",
   piecesQuick2: "2 pieces",
@@ -124,6 +134,9 @@ export const quickFlowCopy = {
   selectDate: "Select date",
   screen4Title: "Anything we should know?",
   screen4Optional: "(optional)",
+  screen4ChildAgeLabel: "Child's age (years)",
+  screen4ChildAgeHint: "Whole years — our girls' wear band is about 5–12.",
+  screen4ChildAgeError: "Please enter her age in years (5–12).",
   quickAdd: "Quick add:",
   chipDeepBack: "Deep back",
   chipElbow: "Elbow sleeves",

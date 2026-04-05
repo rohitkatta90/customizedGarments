@@ -1,4 +1,4 @@
-export type Locale = "en";
+export type Locale = "en" | "hi";
 
 export type FaqItem = { id: string; q: string; a: string };
 
@@ -138,6 +138,8 @@ export type Dictionary = {
     cardRequestText: string;
     cardBookTitle: string;
     cardBookText: string;
+    cardKidsTitle: string;
+    cardKidsText: string;
     open: string;
   };
   testimonials: {

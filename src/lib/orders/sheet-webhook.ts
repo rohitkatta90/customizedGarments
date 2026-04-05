@@ -33,6 +33,8 @@ export type OrdersSheetWebhookPayload = {
   priorityRequested: boolean;
   /** Quick flow only: date is earlier than standard lead (and not overridden by checkbox). */
   priorityImplied: boolean;
+  /** Quick girls' wear: whole years 5–12, or null */
+  quickChildAgeYears: number | null;
 };
 
 function deriveServiceTypeLabel(items: OrderItem[]): string {
@@ -76,6 +78,7 @@ export async function postOrdersSheetWebhook(args: {
   priorityRequested: boolean;
   /** Always set; false when not quick flow. */
   priorityImplied: boolean;
+  quickChildAgeYears?: number | null;
 }): Promise<void> {
   const url = process.env.ORDERS_SHEET_WEBHOOK_URL?.trim();
   if (!url) return;
@@ -97,6 +100,13 @@ export async function postOrdersSheetWebhook(args: {
     quickFlow: args.quickFlow,
     priorityRequested: args.priorityRequested === true,
     priorityImplied: args.priorityImplied === true,
+    quickChildAgeYears:
+      typeof args.quickChildAgeYears === "number" &&
+      Number.isInteger(args.quickChildAgeYears) &&
+      args.quickChildAgeYears >= 5 &&
+      args.quickChildAgeYears <= 12
+        ? args.quickChildAgeYears
+        : null,
   };
 
   const useForm =
