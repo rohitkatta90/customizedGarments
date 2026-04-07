@@ -428,6 +428,10 @@ export type Dictionary = {
     paginationNext: string;
     /** Use {{current}} and {{total}} for 1-based page numbers */
     paginationPageOf: string;
+    /** Gallery filter by title, description, and searchKeywords */
+    searchLabel: string;
+    searchPlaceholder: string;
+    searchNoMatches: string;
   };
   terms: {
     pageTitle: string;
@@ -439,6 +443,7 @@ export type Dictionary = {
     blouses: string;
     kurtis: string;
     dresses: string;
+    southIndian: string;
     customDesigns: string;
   };
   /** Singular labels for gallery / cards (e.g. "Blouse") */
@@ -446,6 +451,7 @@ export type Dictionary = {
     blouses: string;
     kurtis: string;
     dresses: string;
+    southIndian: string;
     customDesigns: string;
   };
   catalog: {

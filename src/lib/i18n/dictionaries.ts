@@ -708,6 +708,9 @@ export const en: Dictionary = {
     paginationPrev: "Previous",
     paginationNext: "Next",
     paginationPageOf: "Page {{current}} of {{total}}",
+    searchLabel: "Search looks",
+    searchPlaceholder: "Try kurti, plazo, linen…",
+    searchNoMatches: "No looks match that search — try another word or clear the box.",
   },
   terms: {
     pageTitle: "Terms & friendly ordering notes",
@@ -764,12 +767,14 @@ export const en: Dictionary = {
     blouses: "Blouses",
     kurtis: "Kurtis",
     dresses: "Dresses",
+    southIndian: "South Indian",
     customDesigns: "Custom Designs",
   },
   categoriesSingular: {
     blouses: "Blouse",
     kurtis: "Kurti",
     dresses: "Dress",
+    southIndian: "South Indian",
     customDesigns: "Custom",
   },
   catalog: {

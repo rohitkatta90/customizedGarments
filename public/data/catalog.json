@@ -1,106 +1,44 @@
 [
   {
-    "id": "bl-001",
-    "audience": "women",
-    "category": "blouses",
-    "title": "Pearl-button silk blouse",
-    "description": "Soft ivory silk with pearl accents — ideal for festive pairings.",
-    "image": {
-      "src": "https://images.unsplash.com/photo-1564257631407-4deb1f99d992?w=800&q=80",
-      "alt": "Ivory silk blouse on hanger",
-      "width": 800,
-      "height": 1000
-    }
-  },
-  {
-    "id": "bl-002",
-    "audience": "women",
-    "category": "blouses",
-    "title": "Minimal wrap blouse",
-    "description": "Clean lines, breathable cotton — everyday elegance.",
-    "image": {
-      "src": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=800&q=80",
-      "alt": "Minimal wrap blouse styling",
-      "width": 800,
-      "height": 1100
-    }
-  },
-  {
-    "id": "ku-001",
+    "id": "ku-003",
     "audience": "women",
     "category": "kurtis",
-    "title": "Hand-block printed kurti",
-    "description": "Light cotton with artisan prints — summer comfort.",
+    "title": "Powder blue embroidered kurti & plazo set",
+    "description": "Sleeveless kurti with dense white floral embroidery, matching wide-leg plazo (palazzo), and a sheer dupatta with lace trim — soft blue-grey, party or festive.",
+    "searchKeywords": ["kurti", "plazo"],
     "image": {
-      "src": "https://images.unsplash.com/photo-1618939304347-91c2a7d6b9c5?w=800&q=80",
-      "alt": "Printed cotton kurti",
-      "width": 800,
-      "height": 1050
+      "src": "/images/catalog/her-styles-ethnic/kurti-plazo-powder-blue-embroidery.png",
+      "alt": "Woman in powder blue embroidered sleeveless kurti with matching plazo trousers and dupatta",
+      "width": 804,
+      "height": 1024
     }
   },
   {
-    "id": "ku-002",
+    "id": "ku-004",
     "audience": "women",
     "category": "kurtis",
-    "title": "Anarkali-inspired silhouette",
-    "description": "Flowing flare with delicate neckline detail.",
+    "title": "Farshi salwar suit — kurti & voluminous plazo",
+    "description": "Traditional Farshi salwar silhouette: hip-length kurti with very wide, floor-pooling plazo trousers and dupatta. Reference shows olive-gold (long sleeves, V-neck) and magenta (sleeveless halter-style) — same dramatic cut, different necklines and colours. Festive or wedding-adjacent.",
+    "searchKeywords": ["kurti", "plazo", "farshi salwar", "traditional"],
     "image": {
-      "src": "https://images.unsplash.com/photo-1583496661160-fb5886a0aa63?w=800&q=80",
-      "alt": "Anarkali style dress",
-      "width": 800,
-      "height": 1200
+      "src": "/images/catalog/her-styles-ethnic/farshi-salwar-dual-olive-magenta.png",
+      "alt": "Two women in matching-line Farshi salwar suits, olive green and magenta, with wide plazo and dupattas",
+      "width": 676,
+      "height": 1024
     }
   },
   {
-    "id": "dr-001",
+    "id": "ku-005",
     "audience": "women",
-    "category": "dresses",
-    "title": "Midi wrap dress",
-    "description": "Versatile wrap — office to evening with a soft drape.",
+    "category": "kurtis",
+    "title": "Anarkali kurti & navy palazzo — blue floral block print",
+    "description": "Two-piece ethnic set: flared Anarkali-style kurti in off-white / cream with blue floral block print, mandarin collar, navy button placket, elbow sleeves with navy cuffs; paired with solid deep navy wide-leg palazzo (plazo). Outdoor or festive-ready. Filter: Kurtis.",
+    "searchKeywords": ["kurti", "plazo", "palazzo", "anarkali", "floral", "ethnic", "block print"],
     "image": {
-      "src": "https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=800&q=80",
-      "alt": "Midi wrap dress",
-      "width": 800,
-      "height": 1000
-    }
-  },
-  {
-    "id": "dr-002",
-    "audience": "women",
-    "category": "dresses",
-    "title": "Evening pleated gown",
-    "description": "Structured pleats with a refined silhouette.",
-    "image": {
-      "src": "https://images.unsplash.com/photo-1566174053873-0e53e9c7e6b8?w=800&q=80",
-      "alt": "Evening pleated gown",
-      "width": 800,
-      "height": 1150
-    }
-  },
-  {
-    "id": "cu-001",
-    "audience": "women",
-    "category": "custom-designs",
-    "title": "Client sketch → finished piece",
-    "description": "From your Pinterest board or sketch to tailored fit.",
-    "image": {
-      "src": "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=800&q=80",
-      "alt": "Fashion design sketch and fabric",
-      "width": 800,
-      "height": 900
-    }
-  },
-  {
-    "id": "cu-002",
-    "audience": "women",
-    "category": "custom-designs",
-    "title": "Bridal blouse custom work",
-    "description": "Zardozi-inspired detailing per your reference images.",
-    "image": {
-      "src": "https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=800&q=80",
-      "alt": "Ornate bridal blouse detail",
-      "width": 800,
-      "height": 1000
+      "src": "/images/catalog/her-styles-ethnic/anarkali-floral-kurti-navy-palazzo-set.png",
+      "alt": "Woman in cream and blue floral Anarkali kurti with navy mandarin collar and matching navy palazzo trousers",
+      "width": 528,
+      "height": 958
     }
   },
   {
@@ -139,6 +77,284 @@
       "src": "/images/catalog/her-styles-western/western-casual-floral-kimono-black-jumpsuit.png",
       "alt": "Woman in black jumpsuit with long floral print kimono on a city street",
       "width": 558,
+      "height": 1024
+    }
+  },
+  {
+    "id": "ww-004",
+    "audience": "women",
+    "category": "custom-designs",
+    "title": "Western fusion — brocade crop top, jacket & wide plazo",
+    "description": "Three-piece western / fusion co-ord: square-neck crop top, structured open-front cropped jacket with long sleeves, and high-waist wide-leg plazo (skirt-like drape). Rich dark brocade with gold and silver floral-paisley motifs — party or evening. Filter: Custom designs.",
+    "searchKeywords": ["western", "plazo", "palazzo", "crop top", "jacket", "brocade", "fusion", "coord"],
+    "image": {
+      "src": "/images/catalog/her-styles-western/fusion-brocade-crop-jacket-wide-plazo-coord-set.png",
+      "alt": "Model in dark brocade fusion set: crop top, cropped jacket, and wide-leg plazo trousers with metallic gold pattern",
+      "width": 467,
+      "height": 1024
+    }
+  },
+  {
+    "id": "ww-005",
+    "audience": "women",
+    "category": "dresses",
+    "title": "Western one-piece — burgundy satin halter gown",
+    "description": "Floor-length western evening gown in deep wine / burgundy satin: halter with draped cowl neckline, sleeveless, fitted bodice and waist with soft hip detail, flowing skirt. Formal events, receptions, or cocktail-to-black-tie depending on fabric finish. Filter: Dresses.",
+    "searchKeywords": [
+      "western",
+      "one-piece",
+      "evening gown",
+      "burgundy",
+      "satin",
+      "halter",
+      "formal",
+      "gown"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-western/western-burgundy-satin-halter-evening-gown.png",
+      "alt": "Woman in floor-length burgundy satin halter evening gown with cowl neckline, outdoor garden setting",
+      "width": 300,
+      "height": 450
+    }
+  },
+  {
+    "id": "ww-006",
+    "audience": "women",
+    "category": "dresses",
+    "title": "Western short dress — yellow floral, V-neck & puff sleeves",
+    "description": "Mini-length western dress: cream / off-white base with yellow and tan floral print, deep V-neck, long gathered puff sleeves, fitted waistband, slight flare at hem, pearl-style buttons down the front. Brunch, day events, or casual parties. Filter: Dresses.",
+    "searchKeywords": [
+      "short dress",
+      "western",
+      "mini dress",
+      "floral",
+      "v-neck",
+      "puff sleeves",
+      "yellow",
+      "casual"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-western/western-floral-vneck-puff-sleeve-mini-dress.png",
+      "alt": "Woman in short western floral dress with V-neck, long puff sleeves, and front buttons",
+      "width": 588,
+      "height": 922
+    }
+  },
+  {
+    "id": "ww-007",
+    "audience": "women",
+    "category": "dresses",
+    "title": "Long dress — mustard A-line with collar & striped trim",
+    "description": "Ankle-length A-line dress in mustard yellow textured cotton or linen look: collared neckline, button placket to the waist, three-quarter sleeves. Black-and-white striped detail on collar edges, placket lining, sleeve cuffs, and wide hem border. Garden or daytime events. Filter: Dresses.",
+    "searchKeywords": [
+      "long dress",
+      "maxi",
+      "mustard",
+      "A-line",
+      "collar",
+      "striped",
+      "shirt dress",
+      "western",
+      "casual"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-western/long-mustard-a-line-collar-dress-striped-trim.png",
+      "alt": "Woman in ankle-length mustard yellow collared dress with black and white striped collar, cuffs, and hem",
+      "width": 736,
+      "height": 981
+    }
+  },
+  {
+    "id": "ww-008",
+    "audience": "women",
+    "category": "dresses",
+    "title": "Long dress — taupe geometric print & striped border maxi",
+    "description": "Floor-length A-line maxi with small white geometric print on taupe / brown-grey: V-neck, decorative striped placket with buttons (white, black, grey, orange), three-quarter sleeves with matching striped cuffs, wide vertical-striped hem border. Fusion / maxi-kurti feel. Filter: Dresses.",
+    "searchKeywords": [
+      "long dress",
+      "maxi",
+      "geometric",
+      "striped",
+      "fusion",
+      "kurti",
+      "taupe",
+      "western",
+      "one-piece"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-western/long-taupe-geometric-maxi-striped-border-placket.png",
+      "alt": "Woman in floor-length taupe geometric-print dress with multi-colour striped placket, cuffs, and hem",
+      "width": 274,
+      "height": 564
+    }
+  },
+  {
+    "id": "ww-009",
+    "audience": "women",
+    "category": "custom-designs",
+    "title": "Western fusion — emerald plazo set with tunic & dupatta",
+    "description": "Indo-western two-piece with dramatic wide plazo (sharara-style drape): sleeveless mid-thigh tunic with spaghetti straps, sweetheart neckline, gold floral embroidery on bodice and hem; matching forest-green sheer dupatta with gold border. Silk-satin look — sangeet, reception, or festive evening. Filter: Custom designs.",
+    "searchKeywords": [
+      "western",
+      "plazo",
+      "palazzo",
+      "fusion",
+      "indo western",
+      "emerald",
+      "dupatta",
+      "party",
+      "formal"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-western/fusion-emerald-gold-plazo-tunic-dupatta-set.png",
+      "alt": "Woman in emerald green fusion outfit: sleeveless embroidered tunic, very wide gold-print plazo, and sheer dupatta",
+      "width": 522,
+      "height": 1024
+    }
+  },
+  {
+    "id": "ww-010",
+    "audience": "women",
+    "category": "custom-designs",
+    "title": "Mom & me — casual western polka dot dresses",
+    "description": "Coordinated mother–daughter summer dresses: cream / beige with black polka dots, lightweight flowy fabric. Women’s midi with ruffled neckline, cap sleeves, side tie belt, A-line skirt and ruffled hem; girl’s knee-length with Peter Pan collar and bow, matching cap sleeves and flounce. Beach, vacation, or weekend casual — we size both. Filter: Custom designs.",
+    "searchKeywords": [
+      "mom and me",
+      "mommy and me",
+      "mother daughter",
+      "matching",
+      "casual dress",
+      "polka dot",
+      "western",
+      "summer",
+      "beach",
+      "girls"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-western/mom-daughter-polka-casual-midi-dresses-beach.png",
+      "alt": "Mother and daughter on a beach in matching cream polka-dot casual western dresses",
+      "width": 581,
+      "height": 1024
+    }
+  },
+  {
+    "id": "ww-011",
+    "audience": "women",
+    "category": "custom-designs",
+    "title": "Mom & me — casual tiered dresses, dusty rose & floral yoke",
+    "description": "Matching mother–daughter western casual dresses in muted rose / mauve: round neck, three-quarter sleeves, delicate multicolour floral embroidery across the yoke, high-waist gathered skirt with a tiered seam toward the hem (midi-to-maxi on mom, scaled for her). Linen or cotton-slub feel — travel, outings, or everyday twinning. We size both. Filter: Custom designs.",
+    "searchKeywords": [
+      "mom and me",
+      "mommy and me",
+      "mother daughter",
+      "matching",
+      "casual dress",
+      "western",
+      "tiered",
+      "embroidery",
+      "summer",
+      "girls"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-western/mom-daughter-dusty-rose-tiered-embroidery-dresses.png",
+      "alt": "Mother and daughter holding hands in matching dusty rose tiered dresses with floral embroidered yokes, mountain path and waterfall behind",
+      "width": 683,
+      "height": 1024
+    }
+  },
+  {
+    "id": "si-001",
+    "audience": "women",
+    "category": "south-indian",
+    "title": "South Indian — Langa Voni (half saree), magenta & gold",
+    "description": "Traditional three-piece Langa Voni: magenta choli with gold embroidery and beadwork, long pleated skirt in gold-olive with wide pink zari border, sheer matching dupatta (voni) with gold motifs and waist drape, ornate belt and side latkans. Festive, half-saree ceremony, or wedding guest. Filter: South Indian.",
+    "searchKeywords": [
+      "south indian",
+      "langa voni",
+      "half saree",
+      "festive",
+      "traditional",
+      "zari",
+      "silk",
+      "wedding"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-ethnic/south-indian-langa-voni-magenta-gold-skirt.png",
+      "alt": "Woman in South Indian Langa Voni with magenta blouse, gold pleated skirt, and draped dupatta with traditional jewellery",
+      "width": 576,
+      "height": 1024
+    }
+  },
+  {
+    "id": "si-002",
+    "audience": "women",
+    "category": "south-indian",
+    "title": "South Indian — Langa Voni, emerald & maroon zari",
+    "description": "Classic half-saree set: floor-length pleated skirt in maroon with gold and green brocade motifs and deep green zari border; emerald green blouse with gold sleeve embroidery; dark green voni dupatta with scalloped gold edge, vaddanam belt. Ceremonial and wedding-season styling. Filter: South Indian.",
+    "searchKeywords": [
+      "south indian",
+      "langa voni",
+      "half saree",
+      "festive",
+      "traditional",
+      "zari",
+      "brocade",
+      "wedding"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-ethnic/south-indian-langa-voni-emerald-maroon-zari.png",
+      "alt": "Woman in South Indian Langa Voni with maroon brocade skirt, emerald blouse, and green draped dupatta",
+      "width": 822,
+      "height": 1024
+    }
+  },
+  {
+    "id": "si-003",
+    "audience": "women",
+    "category": "south-indian",
+    "title": "Mom & daughter — matching Langa Odhani (half saree)",
+    "description": "Coordinated South Indian Langa Odhani / Langa Voni for mother and child: bright yellow pleated langa with teal-green zari border, yellow choli with teal elbow sleeves and cuffs, teal voni dupatta with scalloped gold border. Matching festive jewellery styling — half-saree functions, festivals, or portraits. We tailor both sizes. Filter: South Indian.",
+    "searchKeywords": [
+      "mom and me",
+      "mother daughter",
+      "langa odhani",
+      "langa voni",
+      "half saree",
+      "south indian",
+      "matching",
+      "festive",
+      "traditional",
+      "girls"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-ethnic/mom-daughter-langa-odhani-yellow-teal-matching.png",
+      "alt": "Mother and daughter in matching yellow and teal South Indian Langa Odhani with traditional jewellery",
+      "width": 705,
+      "height": 1024
+    }
+  },
+  {
+    "id": "si-004",
+    "audience": "women",
+    "category": "south-indian",
+    "title": "Mom & daughter — South Indian long frock (Anarkali)",
+    "description": "Matching mother–daughter floor-length gowns in deep plum / purple silk-look fabric: fitted bodice with square neck, wide gold-and-red traditional border (elephant and temple motifs), slight puff at shoulder and matching cuff bands, full pleated skirt with ornate peacock-and-elephant hem border. Festive long-frock / Anarkali feel for weddings, functions, or portraits — we cut both sizes. Filter: South Indian.",
+    "searchKeywords": [
+      "mom and me",
+      "mother daughter",
+      "south indian",
+      "anarkali",
+      "long frock",
+      "matching",
+      "festive",
+      "traditional",
+      "girls",
+      "wedding"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-ethnic/mom-daughter-south-indian-purple-anarkali-gold-border.png",
+      "alt": "Mother and daughter in matching deep purple South Indian long frocks with gold and red woven borders",
+      "width": 682,
       "height": 1024
     }
   },

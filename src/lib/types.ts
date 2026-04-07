@@ -2,6 +2,7 @@ export type CatalogCategory =
   | "blouses"
   | "kurtis"
   | "dresses"
+  | "south-indian"
   | "custom-designs";
 
 /** Who the piece is for — drives gallery grouping. Defaults to women when omitted in JSON. */
@@ -14,6 +15,8 @@ export type CatalogItem = {
   audience?: CatalogAudience;
   title: string;
   description: string;
+  /** Lowercase-friendly tokens for gallery search (e.g. kurti, plazo). */
+  searchKeywords?: string[];
   image: {
     src: string;
     alt: string;

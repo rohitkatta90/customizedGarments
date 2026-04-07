@@ -9,6 +9,16 @@ import type { Order, OrderItem } from "./types";
 export type QuickServiceType = "stitching" | "alteration";
 export type QuickItemCount = "1" | "2" | "3plus";
 export type QuickMomAndMePreference = "same" | "variation";
+export type QuickMomAndMeChildKind = "age" | "size";
+
+export type QuickMomAndMeData = {
+  childKind: QuickMomAndMeChildKind;
+  /** Whole years when childKind is "age". */
+  ageYears?: number;
+  /** Free text when childKind is "size". */
+  sizeText?: string;
+  preference: QuickMomAndMePreference;
+};
 
 const QUICK_CUSTOMER_NAME = "Quick request (website)";
 /** Placeholder until staff captures the real number from WhatsApp. */
@@ -41,10 +51,7 @@ export function buildQuickOrderLineItems(input: {
   /** Girls' quick wear: whole years, 5–12 — echoed in line-item notes for staff. */
   childAgeYears?: number;
   /** Adult stitching: optional matching mother + daughter outfits. */
-  momAndMe?: {
-    childAgeOrSize: string;
-    preference: QuickMomAndMePreference;
-  };
+  momAndMe?: QuickMomAndMeData;
 }): OrderItem[] {
   const pieces = `Pieces (quick request): ${itemCountLabelForWhatsApp(input.itemCount, input.exactPieceCount)}`;
   const userNotes = input.notes.trim();
@@ -67,7 +74,15 @@ export function buildQuickOrderLineItems(input: {
   if (input.momAndMe && input.serviceType === "stitching") {
     const prefLabel =
       input.momAndMe.preference === "same" ? "Same design" : "Slight variation";
-    combinedNotes += `\n[Mom & Me] Matching outfits for mother + daughter.\nChild age or size: ${input.momAndMe.childAgeOrSize.trim()}\nStyle preference: ${prefLabel}`;
+    const childNote =
+      input.momAndMe.childKind === "age" && typeof input.momAndMe.ageYears === "number"
+        ? `Child age (years): ${input.momAndMe.ageYears}`
+        : input.momAndMe.childKind === "size" && input.momAndMe.sizeText?.trim()
+          ? `Child size: ${input.momAndMe.sizeText.trim()}`
+          : "";
+    if (childNote) {
+      combinedNotes += `\n[Mom & Me] Matching outfits for mother + daughter.\n${childNote}\nStyle preference: ${prefLabel}`;
+    }
   }
 
   if (input.serviceType === "alteration") {
@@ -135,10 +150,7 @@ export function buildQuickStitchWhatsAppMessage(input: {
   /** Set when the customer chose the kids wear card (no note chip required). */
   kidsWear?: boolean;
   /** Adult stitching: Mom & Me matching set. */
-  momAndMe?: {
-    childAgeOrSize: string;
-    preference: QuickMomAndMePreference;
-  };
+  momAndMe?: QuickMomAndMeData;
 }): string {
   const cat = input.catalogId?.trim()
     ? input.catalog.find((c) => c.id === input.catalogId!.trim())
@@ -167,22 +179,18 @@ export function buildQuickStitchWhatsAppMessage(input: {
     lines.push("", `Child's age (as entered): ${input.childAgeYears} years.`);
   }
 
-  if (
-    !kidsGirls &&
-    input.serviceType === "stitching" &&
-    input.momAndMe &&
-    input.momAndMe.childAgeOrSize.trim()
-  ) {
-    const detail = input.momAndMe.childAgeOrSize.trim();
-    const pref =
-      input.momAndMe.preference === "same" ? "Same design" : "Slight variation";
-    lines.push(
-      "",
-      "💖 This is a Mom & Me request",
-      `For me + my daughter (age: ${detail})`,
-      "",
-      `Style preference: ${pref}`,
-    );
+  if (!kidsGirls && input.serviceType === "stitching" && input.momAndMe) {
+    const m = input.momAndMe;
+    const daughterLine =
+      m.childKind === "age" && typeof m.ageYears === "number"
+        ? `For me + my daughter (age: ${m.ageYears})`
+        : m.childKind === "size" && m.sizeText?.trim()
+          ? `For me + my daughter (size: ${m.sizeText.trim()})`
+          : "";
+    if (daughterLine) {
+      const pref = m.preference === "same" ? "Same design" : "Slight variation";
+      lines.push("", "💖 This is a Mom & Me request", daughterLine, "", `Style preference: ${pref}`);
+    }
   }
 
   lines.push(

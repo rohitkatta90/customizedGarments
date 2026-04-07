@@ -51,6 +51,20 @@ function formatPageOf(template: string, current: number, total: number): string 
   return template.replace(/\{\{current\}\}/g, String(current)).replace(/\{\{total\}\}/g, String(total));
 }
 
+function catalogSearchHaystack(item: CatalogItem): string {
+  const parts = [item.title, item.description, ...(item.searchKeywords ?? [])];
+  return parts.join(" ").toLowerCase();
+}
+
+/** Every whitespace-separated term must appear somewhere in title, description, or keywords. */
+function matchesCatalogSearch(item: CatalogItem, raw: string): boolean {
+  const q = raw.trim().toLowerCase();
+  if (!q) return true;
+  const hay = catalogSearchHaystack(item);
+  const terms = q.split(/\s+/).filter(Boolean);
+  return terms.every((t) => hay.includes(t));
+}
+
 export function GalleryClient({ items }: Props) {
   const { dict } = useI18n();
   const isMd = useIsMdBreakpoint();
@@ -59,6 +73,7 @@ export function GalleryClient({ items }: Props) {
 
   const [audience, setAudience] = useState<CatalogAudience>("women");
   const [active, setActive] = useState<CatalogCategory | "all">("all");
+  const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState(0);
 
   const audienceItems = useMemo(
@@ -66,10 +81,15 @@ export function GalleryClient({ items }: Props) {
     [items, audience],
   );
 
+  const searchFiltered = useMemo(
+    () => audienceItems.filter((i) => matchesCatalogSearch(i, searchQuery)),
+    [audienceItems, searchQuery],
+  );
+
   const filtered = useMemo(() => {
-    if (active === "all") return audienceItems;
-    return audienceItems.filter((i) => i.category === active);
-  }, [active, audienceItems]);
+    if (active === "all") return searchFiltered;
+    return searchFiltered.filter((i) => i.category === active);
+  }, [active, searchFiltered]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const currentPage = Math.min(page, totalPages - 1);
@@ -78,7 +98,7 @@ export function GalleryClient({ items }: Props) {
 
   useEffect(() => {
     setPage(0);
-  }, [audience, active]);
+  }, [audience, active, searchQuery]);
 
   useEffect(() => {
     const prev = prevPageSizeRef.current;
@@ -101,6 +121,8 @@ export function GalleryClient({ items }: Props) {
         return c.kurtis;
       case "dresses":
         return c.dresses;
+      case "south-indian":
+        return c.southIndian;
       case "custom-designs":
         return c.customDesigns;
       default:
@@ -139,6 +161,21 @@ export function GalleryClient({ items }: Props) {
             </button>
           );
         })}
+      </div>
+
+      <div className="mt-8">
+        <label htmlFor="gallery-search" className="mb-2 block text-sm font-medium text-foreground">
+          {g.searchLabel}
+        </label>
+        <input
+          id="gallery-search"
+          type="search"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          placeholder={g.searchPlaceholder}
+          autoComplete="off"
+          className="w-full rounded-2xl border border-border bg-card px-4 py-3 text-base text-foreground outline-none ring-accent transition-colors placeholder:text-muted focus:ring-2 sm:text-sm"
+        />
       </div>
 
       <div className="mt-8 flex flex-wrap gap-2">
@@ -217,7 +254,11 @@ export function GalleryClient({ items }: Props) {
           the piece.
         </p>
       ) : filtered.length === 0 ? (
-        <p className="mt-8 text-center text-sm text-muted">{dict.gallery.empty}</p>
+        <p className="mt-8 text-center text-sm text-muted">
+          {searchQuery.trim() && searchFiltered.length === 0
+            ? g.searchNoMatches
+            : dict.gallery.empty}
+        </p>
       ) : null}
     </div>
   );

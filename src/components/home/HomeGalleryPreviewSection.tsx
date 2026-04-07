@@ -17,6 +17,8 @@ function categoryLabel(category: CatalogCategory, dict: Dictionary) {
       return s.kurtis;
     case "dresses":
       return s.dresses;
+    case "south-indian":
+      return s.southIndian;
     case "custom-designs":
     default:
       return s.customDesigns;

@@ -15,6 +15,8 @@ import { formatMeasurementsForWhatsApp } from "@/lib/measurements/format-whatsap
 import {
   buildQuickStitchWhatsAppMessage,
   type QuickItemCount,
+  type QuickMomAndMeChildKind,
+  type QuickMomAndMeData,
   type QuickServiceType,
 } from "@/lib/order/quick-request";
 import { isPreferredDateEarlierThanStandardLead } from "@/lib/order/priority";
@@ -113,7 +115,9 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
   const [childAgeError, setChildAgeError] = useState(false);
   const [kidsWearIntent, setKidsWearIntent] = useState(forKidsFromUrl);
   const [momAndMeEnabled, setMomAndMeEnabled] = useState(false);
-  const [momAndMeChildDetail, setMomAndMeChildDetail] = useState("");
+  const [momAndMeChildKind, setMomAndMeChildKind] = useState<QuickMomAndMeChildKind | null>(null);
+  const [momAndMeAgeInput, setMomAndMeAgeInput] = useState("");
+  const [momAndMeSizeInput, setMomAndMeSizeInput] = useState("");
   const [momAndMePreference, setMomAndMePreference] = useState<"same" | "variation" | null>(null);
   const [momAndMeError, setMomAndMeError] = useState(false);
 
@@ -139,10 +143,21 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
   const isKidsPath = kidsWearIntent && serviceType === "stitching";
   const isAdultStitchPath = serviceType === "stitching" && !kidsWearIntent;
 
+  const momAndMeAgeParsed = useMemo(() => {
+    const t = momAndMeAgeInput.trim();
+    if (!t) return null;
+    const n = parseInt(t, 10);
+    if (!Number.isInteger(n) || n < 1 || n > 18) return null;
+    return n;
+  }, [momAndMeAgeInput]);
+
   const momAndMeStep3Incomplete =
     isAdultStitchPath &&
     momAndMeEnabled &&
-    (!momAndMeChildDetail.trim() || momAndMePreference === null);
+    (momAndMeChildKind === null ||
+      momAndMePreference === null ||
+      (momAndMeChildKind === "age" && momAndMeAgeParsed === null) ||
+      (momAndMeChildKind === "size" && !momAndMeSizeInput.trim()));
 
   const childAgeParsed = useMemo(() => {
     const t = childAgeInput.trim();
@@ -162,7 +177,9 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
   useEffect(() => {
     if (!isAdultStitchPath) {
       setMomAndMeEnabled(false);
-      setMomAndMeChildDetail("");
+      setMomAndMeChildKind(null);
+      setMomAndMeAgeInput("");
+      setMomAndMeSizeInput("");
       setMomAndMePreference(null);
       setMomAndMeError(false);
     }
@@ -223,21 +240,51 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
     return `/request?${p.toString()}`;
   }, [catalogIdFromUrl, serviceType, kidsWearIntent]);
 
-  const momAndMeSubmitPayload = useMemo(() => {
+  const momAndMeDataForSubmit = useMemo((): QuickMomAndMeData | null => {
     if (
       !isAdultStitchPath ||
       !momAndMeEnabled ||
-      !momAndMeChildDetail.trim() ||
+      momAndMeChildKind === null ||
       momAndMePreference === null
     ) {
       return null;
     }
+    if (momAndMeChildKind === "age") {
+      if (momAndMeAgeParsed === null) return null;
+      return {
+        childKind: "age",
+        ageYears: momAndMeAgeParsed,
+        preference: momAndMePreference,
+      };
+    }
+    const size = momAndMeSizeInput.trim();
+    if (!size) return null;
+    return {
+      childKind: "size",
+      sizeText: size,
+      preference: momAndMePreference,
+    };
+  }, [
+    isAdultStitchPath,
+    momAndMeEnabled,
+    momAndMeChildKind,
+    momAndMePreference,
+    momAndMeAgeParsed,
+    momAndMeSizeInput,
+  ]);
+
+  const momAndMeApiPayload = useMemo(() => {
+    if (!momAndMeDataForSubmit) return null;
+    const d = momAndMeDataForSubmit;
     return {
       momAndMe: true as const,
-      momAndMeChildDetail: momAndMeChildDetail.trim(),
-      momAndMePreference: momAndMePreference,
+      momAndMeChildKind: d.childKind,
+      ...(d.childKind === "age"
+        ? { momAndMeChildAgeYears: d.ageYears }
+        : { momAndMeChildSize: d.sizeText }),
+      momAndMePreference: d.preference,
     };
-  }, [isAdultStitchPath, momAndMeEnabled, momAndMeChildDetail, momAndMePreference]);
+  }, [momAndMeDataForSubmit]);
 
   const finalize = useCallback(async () => {
     if (!deliveryDate.trim() || deliveryDate < earliestISO) return;
@@ -261,7 +308,7 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
           ...(isPhonePlausible(customerPhone) ? { customerPhone: customerPhone.trim() } : {}),
           ...(isKidsPath && childAgeParsed != null ? { childAgeYears: childAgeParsed } : {}),
           ...(isKidsPath ? { kidsWear: true } : {}),
-          ...(momAndMeSubmitPayload ?? {}),
+          ...(momAndMeApiPayload ?? {}),
         }),
       });
     } catch {
@@ -285,14 +332,7 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
       measurementAppend: measurementAppend ?? undefined,
       ...(childAgeParsed != null ? { childAgeYears: childAgeParsed } : {}),
       ...(isKidsPath ? { kidsWear: true } : {}),
-      ...(momAndMeSubmitPayload
-        ? {
-            momAndMe: {
-              childAgeOrSize: momAndMeSubmitPayload.momAndMeChildDetail,
-              preference: momAndMeSubmitPayload.momAndMePreference,
-            },
-          }
-        : {}),
+      ...(momAndMeDataForSubmit ? { momAndMe: momAndMeDataForSubmit } : {}),
     });
     setPreparedMessage(msg);
     setStep(6);
@@ -313,7 +353,8 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
     earliestISO,
     childAgeParsed,
     isKidsPath,
-    momAndMeSubmitPayload,
+    momAndMeApiPayload,
+    momAndMeDataForSubmit,
   ]);
 
   function scheduleAdvanceFromStep1() {
@@ -619,7 +660,9 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
                         setMomAndMeEnabled(on);
                         setMomAndMeError(false);
                         if (!on) {
-                          setMomAndMeChildDetail("");
+                          setMomAndMeChildKind(null);
+                          setMomAndMeAgeInput("");
+                          setMomAndMeSizeInput("");
                           setMomAndMePreference(null);
                         }
                       }}
@@ -629,27 +672,92 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
                   </label>
                   {momAndMeEnabled ? (
                     <div className="space-y-4 border-t border-rose-100/80 pt-4">
-                      <div>
-                        <label
-                          htmlFor="wizard-mom-me-child"
-                          className="mb-2 block text-sm font-medium text-foreground"
-                        >
-                          {f.momAndMeChildLabel}
+                      <fieldset className="space-y-2">
+                        <legend className="mb-2 text-sm font-medium text-foreground">
+                          {f.momAndMeFitLabel}
                           <span className="text-red-600"> *</span>
+                        </legend>
+                        <label className="flex cursor-pointer items-start gap-3 rounded-xl bg-white/70 px-3 py-2.5 ring-1 ring-rose-100/60">
+                          <input
+                            type="radio"
+                            name="momAndMeChildKind"
+                            value="age"
+                            checked={momAndMeChildKind === "age"}
+                            onChange={() => {
+                              setMomAndMeChildKind("age");
+                              setMomAndMeSizeInput("");
+                              setMomAndMeError(false);
+                            }}
+                            className="mt-1 h-4 w-4 shrink-0 border-border accent-accent"
+                          />
+                          <span className="text-sm text-foreground">{f.momAndMeByAge}</span>
                         </label>
-                        <input
-                          id="wizard-mom-me-child"
-                          type="text"
-                          value={momAndMeChildDetail}
-                          onChange={(e) => {
-                            setMomAndMeChildDetail(e.target.value);
-                            setMomAndMeError(false);
-                          }}
-                          placeholder={f.momAndMeChildPlaceholder}
-                          aria-invalid={momAndMeError && !momAndMeChildDetail.trim()}
-                          className={`box-border w-full min-w-0 ${inputBase} ${momAndMeError && !momAndMeChildDetail.trim() ? inputInvalid : inputNormal}`}
-                        />
-                      </div>
+                        <label className="flex cursor-pointer items-start gap-3 rounded-xl bg-white/70 px-3 py-2.5 ring-1 ring-rose-100/60">
+                          <input
+                            type="radio"
+                            name="momAndMeChildKind"
+                            value="size"
+                            checked={momAndMeChildKind === "size"}
+                            onChange={() => {
+                              setMomAndMeChildKind("size");
+                              setMomAndMeAgeInput("");
+                              setMomAndMeError(false);
+                            }}
+                            className="mt-1 h-4 w-4 shrink-0 border-border accent-accent"
+                          />
+                          <span className="text-sm text-foreground">{f.momAndMeBySize}</span>
+                        </label>
+                      </fieldset>
+                      {momAndMeChildKind === "age" ? (
+                        <div>
+                          <label
+                            htmlFor="wizard-mom-me-age"
+                            className="mb-2 block text-sm font-medium text-foreground"
+                          >
+                            {f.momAndMeAgeLabel}
+                            <span className="text-red-600"> *</span>
+                          </label>
+                          <input
+                            id="wizard-mom-me-age"
+                            type="number"
+                            inputMode="numeric"
+                            min={1}
+                            max={18}
+                            step={1}
+                            value={momAndMeAgeInput}
+                            onChange={(e) => {
+                              setMomAndMeAgeInput(e.target.value);
+                              setMomAndMeError(false);
+                            }}
+                            placeholder={f.momAndMeAgePlaceholder}
+                            aria-invalid={momAndMeError && momAndMeChildKind === "age" && momAndMeAgeParsed === null}
+                            className={`box-border w-full min-w-0 ${inputBase} ${momAndMeError && momAndMeChildKind === "age" && momAndMeAgeParsed === null ? inputInvalid : inputNormal}`}
+                          />
+                        </div>
+                      ) : null}
+                      {momAndMeChildKind === "size" ? (
+                        <div>
+                          <label
+                            htmlFor="wizard-mom-me-size"
+                            className="mb-2 block text-sm font-medium text-foreground"
+                          >
+                            {f.momAndMeSizeLabel}
+                            <span className="text-red-600"> *</span>
+                          </label>
+                          <input
+                            id="wizard-mom-me-size"
+                            type="text"
+                            value={momAndMeSizeInput}
+                            onChange={(e) => {
+                              setMomAndMeSizeInput(e.target.value);
+                              setMomAndMeError(false);
+                            }}
+                            placeholder={f.momAndMeSizePlaceholder}
+                            aria-invalid={momAndMeError && !momAndMeSizeInput.trim()}
+                            className={`box-border w-full min-w-0 ${inputBase} ${momAndMeError && !momAndMeSizeInput.trim() ? inputInvalid : inputNormal}`}
+                          />
+                        </div>
+                      ) : null}
                       <fieldset className="space-y-2">
                         <legend className="mb-2 text-sm font-medium text-foreground">
                           {f.momAndMePreferenceLabel}

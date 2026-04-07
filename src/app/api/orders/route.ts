@@ -5,6 +5,8 @@ import {
   isQuickKidsWearRequest,
   quickRequestCustomerForApi,
   type QuickItemCount,
+  type QuickMomAndMeChildKind,
+  type QuickMomAndMeData,
   type QuickMomAndMePreference,
   type QuickServiceType,
 } from "@/lib/order/quick-request";
@@ -44,9 +46,13 @@ type QuickBody = {
   childAgeYears?: number;
   /** True when the customer chose kids wear in the quick flow (alternative to note chip). */
   kidsWear?: boolean;
-  /** Adult stitching: optional Mom & Me — requires child detail + preference when true. */
+  /** Adult stitching: optional Mom & Me — requires kind + value + preference when true. */
   momAndMe?: boolean;
-  momAndMeChildDetail?: string;
+  momAndMeChildKind?: QuickMomAndMeChildKind;
+  /** Required when momAndMeChildKind is "age". Whole years (1–18). */
+  momAndMeChildAgeYears?: number;
+  /** Required when momAndMeChildKind is "size". */
+  momAndMeChildSize?: string;
   momAndMePreference?: QuickMomAndMePreference;
 };
 
@@ -73,9 +79,7 @@ export async function POST(request: Request) {
   let requestedDeliveryDate: string | null;
   /** Set only for validated quick girls' wear requests */
   let quickPersistedChildAge: number | null = null;
-  let quickMomAndMe:
-    | { childAgeOrSize: string; preference: QuickMomAndMePreference }
-    | undefined;
+  let quickMomAndMe: QuickMomAndMeData | undefined;
 
   if (body.quick === true) {
     if (
@@ -116,13 +120,32 @@ export async function POST(request: Request) {
       if (body.serviceType !== "stitching") {
         return NextResponse.json({ ok: false, error: "invalid_quick_request" }, { status: 400 });
       }
-      const detail =
-        typeof body.momAndMeChildDetail === "string" ? body.momAndMeChildDetail.trim() : "";
       const pref = body.momAndMePreference;
-      if (!detail || detail.length > 240 || (pref !== "same" && pref !== "variation")) {
+      if (pref !== "same" && pref !== "variation") {
         return NextResponse.json({ ok: false, error: "invalid_mom_and_me" }, { status: 400 });
       }
-      quickMomAndMe = { childAgeOrSize: detail, preference: pref };
+      const kind = body.momAndMeChildKind;
+      if (kind === "age") {
+        const age = body.momAndMeChildAgeYears;
+        if (
+          typeof age !== "number" ||
+          !Number.isInteger(age) ||
+          age < 1 ||
+          age > 18
+        ) {
+          return NextResponse.json({ ok: false, error: "invalid_mom_and_me" }, { status: 400 });
+        }
+        quickMomAndMe = { childKind: "age", ageYears: age, preference: pref };
+      } else if (kind === "size") {
+        const size =
+          typeof body.momAndMeChildSize === "string" ? body.momAndMeChildSize.trim() : "";
+        if (!size || size.length > 120) {
+          return NextResponse.json({ ok: false, error: "invalid_mom_and_me" }, { status: 400 });
+        }
+        quickMomAndMe = { childKind: "size", sizeText: size, preference: pref };
+      } else {
+        return NextResponse.json({ ok: false, error: "invalid_mom_and_me" }, { status: 400 });
+      }
     }
 
     items = buildQuickOrderLineItems({
