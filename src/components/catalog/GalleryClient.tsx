@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import { useI18n } from "@/components/i18n/I18nProvider";
@@ -52,16 +53,34 @@ function formatPageOf(template: string, current: number, total: number): string 
 }
 
 function catalogSearchHaystack(item: CatalogItem): string {
-  const parts = [item.title, item.description, ...(item.searchKeywords ?? [])];
+  const cat = item.category;
+  /** e.g. south-indian → also match "south indian" */
+  const catSpaced = cat.replace(/-/g, " ");
+  const parts = [
+    item.title,
+    item.description,
+    cat,
+    catSpaced,
+    ...(item.searchKeywords ?? []),
+  ];
   return parts.join(" ").toLowerCase();
 }
 
-/** Every whitespace-separated term must appear somewhere in title, description, or keywords. */
+/** Strip wrapping punctuation so "kurti," or pasted "linen…" still match. */
+function normalizeSearchToken(t: string): string {
+  return t.replace(/^[,;.…'"«»]+|[,;.…'"«»]+$/g, "").toLowerCase();
+}
+
+/** Every whitespace-separated term must appear somewhere in title, description, category, or keywords. */
 function matchesCatalogSearch(item: CatalogItem, raw: string): boolean {
   const q = raw.trim().toLowerCase();
   if (!q) return true;
   const hay = catalogSearchHaystack(item);
-  const terms = q.split(/\s+/).filter(Boolean);
+  const terms = q
+    .split(/\s+/)
+    .map(normalizeSearchToken)
+    .filter((t) => t.length > 0);
+  if (terms.length === 0) return true;
   return terms.every((t) => hay.includes(t));
 }
 
@@ -254,11 +273,41 @@ export function GalleryClient({ items }: Props) {
           the piece.
         </p>
       ) : filtered.length === 0 ? (
-        <p className="mt-8 text-center text-sm text-muted">
-          {searchQuery.trim() && searchFiltered.length === 0
-            ? g.searchNoMatches
-            : dict.gallery.empty}
-        </p>
+        searchQuery.trim() ? (
+          <div
+            className="mt-8 rounded-2xl border border-border/80 bg-[#fdf8f6] px-5 py-8 text-center sm:px-8"
+            role="status"
+          >
+            <p className="font-display text-lg font-semibold text-foreground sm:text-xl">
+              {g.searchNoResultsTitle}
+            </p>
+            <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-muted sm:text-base">
+              {g.searchNoResultsBody}
+            </p>
+            <p className="mt-6">
+              <Link
+                href="/request"
+                className="inline-flex min-h-11 items-center justify-center rounded-full bg-accent px-6 text-sm font-semibold text-white shadow-sm transition hover:bg-accent-dark"
+              >
+                {g.searchNoResultsCta}
+              </Link>
+            </p>
+            <p className="mt-4 text-xs text-muted">
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery("");
+                  setActive("all");
+                }}
+                className="font-medium text-accent-dark underline-offset-4 hover:underline"
+              >
+                {g.searchClearFilters}
+              </button>
+            </p>
+          </div>
+        ) : (
+          <p className="mt-8 text-center text-sm text-muted">{dict.gallery.empty}</p>
+        )
       ) : null}
     </div>
   );

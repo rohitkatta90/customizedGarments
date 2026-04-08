@@ -431,7 +431,12 @@ export type Dictionary = {
     /** Gallery filter by title, description, and searchKeywords */
     searchLabel: string;
     searchPlaceholder: string;
-    searchNoMatches: string;
+    /** When search (and optional filters) return nothing */
+    searchNoResultsTitle: string;
+    searchNoResultsBody: string;
+    /** Short link label under empty search — usually goes to /request */
+    searchNoResultsCta: string;
+    searchClearFilters: string;
   };
   terms: {
     pageTitle: string;

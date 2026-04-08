@@ -710,7 +710,11 @@ export const en: Dictionary = {
     paginationPageOf: "Page {{current}} of {{total}}",
     searchLabel: "Search looks",
     searchPlaceholder: "Try kurti, plazo, linen…",
-    searchNoMatches: "No looks match that search — try another word or clear the box.",
+    searchNoResultsTitle: "No designs found",
+    searchNoResultsBody:
+      "Don’t see your idea here? Tell us what you have in mind — we love stitching one-of-a-kind pieces made just for you.",
+    searchNoResultsCta: "Start a stitching request",
+    searchClearFilters: "Clear search & show all categories",
   },
   terms: {
     pageTitle: "Terms & friendly ordering notes",
