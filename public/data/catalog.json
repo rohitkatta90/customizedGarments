@@ -42,6 +42,31 @@
     }
   },
   {
+    "id": "ku-006",
+    "audience": "women",
+    "category": "kurtis",
+    "title": "Navy sequin short kurti & draped lungi skirt",
+    "description": "Two-piece party set in deep navy: short kurti with V-neck, long sleeves, and all-over geometric sequin embroidery, mirror-style teardrop fringe along the hem; paired with a matching satin-finish draped lungi skirt with front overlap and tulip hem. Filter: Kurtis.",
+    "searchKeywords": [
+      "lungi",
+      "short kurti",
+      "kurti",
+      "navy",
+      "sequin",
+      "embroidered",
+      "draped skirt",
+      "party",
+      "festive",
+      "ethnic"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-ethnic/navy-sequin-short-kurti-lungi-skirt.png",
+      "alt": "Woman in navy blue sequined short kurti with mirror fringe hem and matching draped lungi-style skirt",
+      "width": 433,
+      "height": 1024
+    }
+  },
+  {
     "id": "ww-001",
     "audience": "women",
     "category": "custom-designs",
@@ -359,55 +384,80 @@
     }
   },
   {
-    "id": "gp-001",
+    "id": "gp-005",
+    "audience": "girls",
+    "category": "skirt-top",
+    "title": "Cream lace skirt-top set",
+    "description": "Formal two-piece: cropped button-down shirt with delicate white lace pattern, floral brooch, and a matching high-waist pleated skirt with a crystal-embellished bow — pale yellow / cream, party or portrait-ready. Filter: Skirt & top.",
+    "searchKeywords": [
+      "skirt top",
+      "skirt",
+      "top",
+      "two piece",
+      "lace",
+      "cream",
+      "yellow",
+      "formal",
+      "party",
+      "festive",
+      "girls"
+    ],
+    "image": {
+      "src": "/images/catalog/little-princess/girls-cream-lace-skirt-top-set.png",
+      "alt": "Young girl in a pale cream lace skirt-top set with pleated skirt and bow, formal garden setting",
+      "width": 680,
+      "height": 1024
+    }
+  },
+  {
+    "id": "gp-006",
     "audience": "girls",
     "category": "dresses",
-    "title": "Festive twirl dress",
-    "description": "Party-ready silhouettes with soft linings — comfortable through long celebrations.",
+    "title": "Pink sparkly tulle party frock",
+    "description": "Sleeveless knee-length party dress: structured bodice in pink and white iridescent mermaid-scale pattern with thin straps and large iridescent bows at the front, full flared tulle skirt in soft pink with fine glitter and sequin sparkle — birthdays, portraits, or celebrations. Filter: Dresses.",
+    "searchKeywords": [
+      "party dress",
+      "frock",
+      "pink",
+      "tulle",
+      "sparkly",
+      "sequins",
+      "mermaid",
+      "bows",
+      "sleeveless",
+      "festive",
+      "girls"
+    ],
     "image": {
-      "src": "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?w=800&q=80",
-      "alt": "Young girl in a colourful dress",
-      "width": 800,
-      "height": 1000
+      "src": "/images/catalog/little-princess/girls-pink-sparkly-tulle-party-frock.png",
+      "alt": "Young girl in a pastel pink sparkly tulle party dress with mermaid-scale bodice and white bows",
+      "width": 811,
+      "height": 1024
     }
   },
   {
-    "id": "gp-002",
-    "audience": "girls",
-    "category": "kurtis",
-    "title": "Printed cotton kurti set",
-    "description": "Breathable everyday sets — matching or contrast dupatta on request.",
-    "image": {
-      "src": "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=800&q=80",
-      "alt": "Child wearing bright casual clothing",
-      "width": 800,
-      "height": 1000
-    }
-  },
-  {
-    "id": "gp-003",
-    "audience": "girls",
-    "category": "custom-designs",
-    "title": "Mommy & me / bespoke girls' look",
-    "description": "Coordinate with your outfit or bring a reference — we size and finish for her age.",
-    "image": {
-      "src": "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?w=800&q=80",
-      "alt": "Mother and daughter in coordinated outfits",
-      "width": 800,
-      "height": 1000
-    }
-  },
-  {
-    "id": "gp-004",
+    "id": "gp-007",
     "audience": "girls",
     "category": "dresses",
-    "title": "Party dress",
-    "description": "Soft fit, custom design — birthdays and special occasions.",
+    "title": "Fuchsia bodice floral party frock",
+    "description": "One-piece girls' party dress / frock: sleeveless hot-pink bodice with layered shoulder ruffles, white A-line skirt with large pink rose print and green-grey leaves, oversized bow at the waist in matching floral fabric — portraits, birthdays, or celebrations. Filter: Dresses.",
+    "searchKeywords": [
+      "frock",
+      "party dress",
+      "dress",
+      "one piece",
+      "pink",
+      "floral",
+      "ruffles",
+      "bow",
+      "girls",
+      "festive"
+    ],
     "image": {
-      "src": "https://images.unsplash.com/photo-1514093513312-44a09a25bdfb?w=800&q=80",
-      "alt": "Child in a party dress outdoors",
-      "width": 800,
-      "height": 1000
+      "src": "/images/catalog/little-princess/girls-fuchsia-floral-skirt-frock-bow.png",
+      "alt": "Young girl in a one-piece party frock with fuchsia ruffle bodice, white floral skirt, and large waist bow on a white staircase",
+      "width": 539,
+      "height": 1024
     }
   }
 ]

@@ -100,6 +100,13 @@ export function GalleryClient({ items }: Props) {
     [items, audience],
   );
 
+  /** Little Princess has no blouse-only looks — hide that chip so the row matches available items. */
+  const categoryFilters = useMemo(
+    () =>
+      audience === "girls" ? allCategories.filter((c) => c !== "blouses") : allCategories,
+    [audience],
+  );
+
   const searchFiltered = useMemo(
     () => audienceItems.filter((i) => matchesCatalogSearch(i, searchQuery)),
     [audienceItems, searchQuery],
@@ -118,6 +125,10 @@ export function GalleryClient({ items }: Props) {
   useEffect(() => {
     setPage(0);
   }, [audience, active, searchQuery]);
+
+  useEffect(() => {
+    if (audience === "girls" && active === "blouses") setActive("all");
+  }, [audience, active]);
 
   useEffect(() => {
     const prev = prevPageSizeRef.current;
@@ -140,6 +151,8 @@ export function GalleryClient({ items }: Props) {
         return c.kurtis;
       case "dresses":
         return c.dresses;
+      case "skirt-top":
+        return c.skirtTop;
       case "south-indian":
         return c.southIndian;
       case "custom-designs":
@@ -209,7 +222,7 @@ export function GalleryClient({ items }: Props) {
         >
           {dict.gallery.all}
         </button>
-        {allCategories.map((c) => (
+        {categoryFilters.map((c) => (
           <button
             key={c}
             type="button"

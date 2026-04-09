@@ -2,6 +2,7 @@ export type CatalogCategory =
   | "blouses"
   | "kurtis"
   | "dresses"
+  | "skirt-top"
   | "south-indian"
   | "custom-designs";
 

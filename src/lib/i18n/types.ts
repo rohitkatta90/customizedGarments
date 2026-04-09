@@ -448,6 +448,7 @@ export type Dictionary = {
     blouses: string;
     kurtis: string;
     dresses: string;
+    skirtTop: string;
     southIndian: string;
     customDesigns: string;
   };
@@ -456,6 +457,7 @@ export type Dictionary = {
     blouses: string;
     kurtis: string;
     dresses: string;
+    skirtTop: string;
     southIndian: string;
     customDesigns: string;
   };
