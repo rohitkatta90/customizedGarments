@@ -3,15 +3,17 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/Button";
-import type { GarmentMeasurementChoice } from "@/lib/measurements/format-whatsapp";
+import {
+  buildMeasurementSelectionPayload,
+  type GarmentMeasurementChoice,
+  type MeasurementSelectionPayload,
+} from "@/lib/measurements/format-whatsapp";
 import { measurementUiCopy as m } from "@/lib/measurements/ui-copy";
+import { MEASUREMENT_FIELD_KEYS } from "@/lib/measurements/sheet-parse";
 import type { LatestMeasurementByGarment } from "@/lib/measurements/types";
 import { isPhonePlausible, normalizePhone } from "@/lib/orders/phone";
 
-export type MeasurementSelectionPayload = {
-  items: LatestMeasurementByGarment[];
-  choices: Record<string, GarmentMeasurementChoice>;
-};
+export type { MeasurementSelectionPayload };
 
 type Props = {
   phone: string;
@@ -23,20 +25,30 @@ type Props = {
   embedded?: boolean;
 };
 
-const MEAS_KEY_ORDER = [
-  "Bust",
-  "Waist",
-  "Garment_Length",
-  "Hip",
-  "Shoulder",
-  "Sleeve_Length",
-  "Neck_Style",
-  "Notes",
-] as const;
+/** Same order as sheet schema; keeps gallery/request readout aligned with your master sheet. */
+const MEAS_KEY_ORDER: readonly string[] = MEASUREMENT_FIELD_KEYS;
 
+/** Friendly labels when showing on-file measurements (masters use codes in the sheet). */
 function displayLabelForKey(key: string): string {
-  if (key === "Garment_Length") return "Length";
-  if (key === "Sleeve_Length") return "Sleeve length";
+  const labels: Record<string, string> = {
+    BP: "BP",
+    LW: "LW",
+    L: "Length (L)",
+    B: "Bust (B)",
+    W: "Waist (W)",
+    H: "Hip (H)",
+    SH: "Shoulder (SH)",
+    SL: "Sleeve length (SL)",
+    SR: "Sleeve round (SR)",
+    N: "Neck (N)",
+    XF: "XF",
+    XB: "XB",
+    AH: "Armhole (AH)",
+    "SALWAR L": "Salwar length",
+    "SKIRT L": "Skirt length",
+    "PANT L": "Pant length",
+  };
+  if (labels[key]) return labels[key];
   return key.replace(/_/g, " ");
 }
 
@@ -68,6 +80,8 @@ export function MeasurementLookupPanel({
   const [softIssue, setSoftIssue] = useState<SoftIssue>(null);
   const [snapDigits, setSnapDigits] = useState("");
 
+  const abortRef = useRef<AbortController | null>(null);
+
   const valid = isPhonePlausible(phone);
   const digits = normalizePhone(phone);
   const stale = Boolean(snapDigits && digits !== snapDigits);
@@ -75,16 +89,11 @@ export function MeasurementLookupPanel({
   const onSelectionChangeRef = useRef(onSelectionChange);
   onSelectionChangeRef.current = onSelectionChange;
 
-  function emit(list: LatestMeasurementByGarment[], ch: Record<string, GarmentMeasurementChoice>) {
-    if (!list.length) {
-      onSelectionChangeRef.current(null);
-      return;
-    }
-    onSelectionChangeRef.current({ items: list, choices: ch });
-  }
-
   const lookup = useCallback(async () => {
     if (!isPhonePlausible(phone)) return;
+    abortRef.current?.abort();
+    const ac = new AbortController();
+    abortRef.current = ac;
     const d = normalizePhone(phone);
     setPhase("loading");
     setSoftIssue(null);
@@ -95,6 +104,7 @@ export function MeasurementLookupPanel({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone }),
+        signal: ac.signal,
       });
       const data = (await res.json()) as {
         ok?: boolean;
@@ -122,17 +132,33 @@ export function MeasurementLookupPanel({
       setConfigured(true);
       const list = Array.isArray(data.latestByGarment) ? data.latestByGarment : [];
       setItems(list);
-      const init: Record<string, GarmentMeasurementChoice> = {};
-      for (const it of list) init[it.garmentType] = "use";
-      setChoices(init);
+      setChoices({});
       setPhase("ready");
       setSnapDigits(d);
-      emit(list, init);
-    } catch {
+    } catch (e) {
+      if (e instanceof DOMException && e.name === "AbortError") return;
       setSoftIssue("generic");
       setPhase("idle");
     }
   }, [phone]);
+
+  useEffect(() => {
+    return () => {
+      abortRef.current?.abort();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (valid) return;
+    abortRef.current?.abort();
+    setPhase("idle");
+    setConfigured(true);
+    setItems([]);
+    setChoices({});
+    setSoftIssue(null);
+    setSnapDigits("");
+    onSelectionChangeRef.current(null);
+  }, [valid]);
 
   useEffect(() => {
     if (!autoLookup || !valid) return;
@@ -142,12 +168,15 @@ export function MeasurementLookupPanel({
     return () => window.clearTimeout(id);
   }, [autoLookup, valid, digits, lookup]);
 
+  /** Never call `onSelectionChange` from inside a `setState` updater — it updates the parent during render. */
+  useEffect(() => {
+    if (phase !== "ready" || !configured) return;
+    const payload = buildMeasurementSelectionPayload(items, choices);
+    onSelectionChangeRef.current(payload);
+  }, [phase, configured, items, choices]);
+
   function setChoice(garmentType: string, c: GarmentMeasurementChoice) {
-    setChoices((prev) => {
-      const next = { ...prev, [garmentType]: c };
-      emit(items, next);
-      return next;
-    });
+    setChoices((prev) => ({ ...prev, [garmentType]: c }));
   }
 
   const hasKids = items.some((i) => i.garmentType.startsWith("Kids"));
@@ -164,6 +193,9 @@ export function MeasurementLookupPanel({
         <>
           <h3 className="font-display text-base font-semibold text-foreground">{m.sectionTitle}</h3>
           <p className="mt-1 text-xs text-muted">{m.sectionHint}</p>
+          {autoLookup ? (
+            <p className="mt-2 text-xs leading-relaxed text-muted">{m.autoLookupHint}</p>
+          ) : null}
         </>
       ) : null}
 
@@ -183,7 +215,7 @@ export function MeasurementLookupPanel({
           ) : null}
         </div>
       ) : (
-        <div className="mt-1 min-h-[1.25rem] text-xs text-muted">
+        <div className="mt-1 min-h-[1.25rem] text-xs text-muted" aria-live="polite">
           {valid && phase === "loading" ? <span>{m.searching}</span> : null}
           {autoLookup && stale && phase === "ready" ? (
             <button
@@ -269,7 +301,7 @@ export function MeasurementLookupPanel({
           ) : null}
 
           {items.map((row) => {
-            const choice = choices[row.garmentType] ?? "use";
+            const choice = choices[row.garmentType];
             const entries = orderedMeasurementEntries(row.measurements);
             return (
               <div
@@ -301,7 +333,7 @@ export function MeasurementLookupPanel({
                     className="min-h-[48px] flex-1 text-sm font-semibold"
                     onClick={() => setChoice(row.garmentType, "use")}
                   >
-                    {m.useThese}
+                    {m.useSavedMeasurements}
                   </Button>
                   <Button
                     type="button"
@@ -309,9 +341,20 @@ export function MeasurementLookupPanel({
                     className="min-h-[48px] flex-1 text-sm font-semibold"
                     onClick={() => setChoice(row.garmentType, "update")}
                   >
-                    {m.updateMeasurements}
+                    {m.updateRemeasure}
                   </Button>
                 </div>
+                {choice === "use" ? (
+                  <p className="mt-3 text-sm font-medium leading-snug text-emerald-900/90">
+                    {m.confirmedUseSaved}
+                  </p>
+                ) : null}
+                {choice === "update" ? (
+                  <div className="mt-3 space-y-2">
+                    <p className="text-sm font-medium leading-snug text-foreground">{m.confirmedUpdate}</p>
+                    <p className="text-xs leading-relaxed text-muted">{m.updateHelperBeforeStitching}</p>
+                  </div>
+                ) : null}
               </div>
             );
           })}

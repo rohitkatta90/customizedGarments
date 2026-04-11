@@ -437,6 +437,15 @@ export type Dictionary = {
     /** Short link label under empty search — usually goes to /request */
     searchNoResultsCta: string;
     searchClearFilters: string;
+    /** Subtle line under Her Styles card — Mom & Me availability */
+    herStylesMomMeHint: string;
+    /** Subtle line under Little Princess card */
+    littlePrincessMomMeHint: string;
+    /** Decorative emoji + heading (emoji should be wrapped aria-hidden in UI) */
+    momMeMomentsTitle: string;
+    momMeMomentsBody: string;
+    momMeMomentsCta: string;
+    momMeMomentsImageAlt: string;
   };
   terms: {
     pageTitle: string;

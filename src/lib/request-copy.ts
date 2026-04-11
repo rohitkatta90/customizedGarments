@@ -168,6 +168,8 @@ export const quickFlowCopy = {
   trustNoHidden: "No hidden charges",
   stickyContinue: "Continue →",
   stickyContinueWhatsapp: "Continue to WhatsApp 💬",
+  /** Step 5: saved measurements shown but no Use / Update choice yet */
+  measurementPickToContinue: "Choose “Use saved measurements” or “Update / re-measure” above to continue.",
   dateRequiredToast: "Please pick a delivery date to continue.",
   backStep: "Back",
   dateStickyHint: "Pick a delivery date above, then tap Continue →.",
@@ -192,6 +194,8 @@ export const requestValidationMessages: ServiceRequestValidationMessages = {
   catalogRequired: "Please select a design from the catalog.",
   uploadRequired: "Please choose a reference image from your device.",
   deliveryRequired: "Please choose a preferred delivery date.",
+  measurementChoiceRequired:
+    "Please choose “Use saved measurements” or “Update / re-measure” for each garment listed above.",
 };
 
 export const alterationTypeLabels: Record<AlterationType, string> = {

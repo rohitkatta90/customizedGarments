@@ -8,31 +8,36 @@ import {
   type SheetMeasurementRecord,
 } from "./types";
 
-/** Expected column headers (row 1). Matching is case-insensitive; spaces/underscores normalized. */
+/**
+ * Women’s measurement columns — entered directly in Google Sheets (no customer data-entry UI).
+ * Headers are matched case-insensitively; spaces and underscores are equivalent (e.g. `SALWAR L` / `SALWAR_L`).
+ */
+export const MEASUREMENT_FIELD_KEYS = [
+  "BP",
+  "LW",
+  "L",
+  "B",
+  "W",
+  "H",
+  "SH",
+  "SL",
+  "SR",
+  "N",
+  "XF",
+  "XB",
+  "AH",
+  "SALWAR L",
+  "SKIRT L",
+  "PANT L",
+] as const;
+
+/** Row 1 headers the parser recognises (metadata + measurement columns). */
 export const EXPECTED_HEADERS = [
   "Timestamp",
   "Phone_Number",
   "Customer_Name",
   "Garment_Type",
-  "Bust",
-  "Waist",
-  "Hip",
-  "Shoulder",
-  "Sleeve_Length",
-  "Garment_Length",
-  "Neck_Style",
-  "Notes",
-] as const;
-
-const MEASUREMENT_FIELD_KEYS = [
-  "Bust",
-  "Waist",
-  "Hip",
-  "Shoulder",
-  "Sleeve_Length",
-  "Garment_Length",
-  "Neck_Style",
-  "Notes",
+  ...MEASUREMENT_FIELD_KEYS,
 ] as const;
 
 function normHeader(h: string): string {

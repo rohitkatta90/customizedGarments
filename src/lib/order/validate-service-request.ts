@@ -1,3 +1,4 @@
+import type { MeasurementSelectionPayload } from "@/lib/measurements/format-whatsapp";
 import { isPhonePlausible } from "@/lib/orders/phone";
 
 import type { OrderItem, StitchingOrderItem } from "./types";
@@ -5,6 +6,8 @@ import type { OrderItem, StitchingOrderItem } from "./types";
 export type CustomerErrors = {
   name?: string;
   phone?: string;
+  /** Saved-measurement step: must pick Use or Update for each garment returned */
+  measurement?: string;
 };
 
 export type ItemErrors = {
@@ -19,6 +22,7 @@ export type ServiceRequestValidationMessages = {
   catalogRequired: string;
   uploadRequired: string;
   deliveryRequired: string;
+  measurementChoiceRequired: string;
 };
 
 export function validateServiceRequestForm(
@@ -26,6 +30,7 @@ export function validateServiceRequestForm(
   customerPhone: string,
   items: OrderItem[],
   m: ServiceRequestValidationMessages,
+  measurementPayload?: MeasurementSelectionPayload | null,
 ): { ok: boolean; customer: CustomerErrors; itemErrors: Record<string, ItemErrors> } {
   const customer: CustomerErrors = {};
   const trimmedName = customerName.trim();
@@ -38,6 +43,14 @@ export function validateServiceRequestForm(
     customer.phone = m.phoneRequired;
   } else if (!isPhonePlausible(customerPhone)) {
     customer.phone = m.phoneInvalid;
+  }
+
+  if (
+    measurementPayload &&
+    measurementPayload.items.length > 0 &&
+    !measurementPayload.selectionComplete
+  ) {
+    customer.measurement = m.measurementChoiceRequired;
   }
 
   const itemErrors: Record<string, ItemErrors> = {};

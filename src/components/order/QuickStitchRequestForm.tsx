@@ -6,12 +6,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { addCalendarDaysLocal, clampIsoDateToMin, todayLocalISODate } from "@/lib/date-today";
 
-import {
-  MeasurementLookupPanel,
-  type MeasurementSelectionPayload,
-} from "@/components/measurements/MeasurementLookupPanel";
-import { Button } from "@/components/ui/Button";
+import { MeasurementLookupPanel } from "@/components/measurements/MeasurementLookupPanel";
 import { formatMeasurementsForWhatsApp } from "@/lib/measurements/format-whatsapp";
+import type { MeasurementSelectionPayload } from "@/lib/measurements/format-whatsapp";
+import { Button } from "@/components/ui/Button";
 import {
   buildQuickStitchWhatsAppMessage,
   type QuickItemCount,
@@ -122,6 +120,7 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
   const [momAndMeError, setMomAndMeError] = useState(false);
 
   const step1AdvanceRef = useRef<number | null>(null);
+  const momMeUrlAppliedRef = useRef(false);
 
   const clearStep1Advance = useCallback(() => {
     if (step1AdvanceRef.current != null) {
@@ -184,6 +183,12 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
       setMomAndMeError(false);
     }
   }, [isAdultStitchPath]);
+
+  useEffect(() => {
+    if (!isAdultStitchPath || searchParams.get("momAndMe") !== "1" || momMeUrlAppliedRef.current) return;
+    momMeUrlAppliedRef.current = true;
+    setMomAndMeEnabled(true);
+  }, [isAdultStitchPath, searchParams]);
 
   const [reduceMotion, setReduceMotion] = useState(false);
   useEffect(() => {
@@ -309,6 +314,19 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
           ...(isKidsPath && childAgeParsed != null ? { childAgeYears: childAgeParsed } : {}),
           ...(isKidsPath ? { kidsWear: true } : {}),
           ...(momAndMeApiPayload ?? {}),
+          ...(measurementPayload?.selectionComplete
+            ? {
+                measurementPreferences: Object.fromEntries(
+                  measurementPayload.items.map((i) => [
+                    i.garmentType,
+                    measurementPayload.choices[i.garmentType] === "use"
+                      ? "USE_SAVED"
+                      : "UPDATE_REQUIRED",
+                  ]),
+                ) as Record<string, "USE_SAVED" | "UPDATE_REQUIRED">,
+                measurementLastSavedAt: measurementPayload.lastMeasurementDatesByGarment,
+              }
+            : {}),
         }),
       });
     } catch {
@@ -316,8 +334,9 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
     }
 
     const measurementAppend =
-      measurementPayload &&
-      formatMeasurementsForWhatsApp(measurementPayload.items, measurementPayload.choices);
+      measurementPayload?.selectionComplete
+        ? formatMeasurementsForWhatsApp(measurementPayload.items, measurementPayload.choices)
+        : null;
     const msg = buildQuickStitchWhatsAppMessage({
       order,
       catalog,
@@ -459,8 +478,16 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
 
   const chips = [f.chipDeepBack, f.chipElbow, f.chipStraight] as const;
 
+  const measurementStepNeedsChoice =
+    step === 5 &&
+    measurementPayload != null &&
+    measurementPayload.items.length > 0 &&
+    !measurementPayload.selectionComplete;
+
   const continueDisabled =
-    (step === 3 && (!deliveryDate.trim() || deliveryDate < earliestISO)) || finalizing;
+    (step === 3 && (!deliveryDate.trim() || deliveryDate < earliestISO)) ||
+    finalizing ||
+    measurementStepNeedsChoice;
   const showBackBtn = step >= 2 && (step < 6 || Boolean(preparedMessage));
   /** Step 1 advances on card tap; from step 2 onward use Continue for a consistent pattern. */
   const showContinueBtn = step >= 2 && step <= 5;
@@ -980,6 +1007,10 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
           ) : null}
         </div>
       </div>
+
+      {step === 5 && measurementStepNeedsChoice ? (
+        <p className="mt-6 text-center text-sm text-muted">{f.measurementPickToContinue}</p>
+      ) : null}
 
       {showNavRow ? (
         <div

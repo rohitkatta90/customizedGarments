@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { buildMeasurementPreferenceOrderNotes } from "@/lib/measurements/format-whatsapp";
 import {
   buildQuickOrderLineItems,
   isQuickKidsWearRequest,
@@ -26,6 +27,9 @@ type StandardBody = {
   customerPhone?: string;
   requestedDeliveryDate?: string | null;
   items?: OrderItem[];
+  /** When customer completed saved-measurement step (catalog / full request). */
+  measurementPreferences?: Record<string, string>;
+  measurementLastSavedAt?: Record<string, string>;
 };
 
 type QuickBody = {
@@ -54,9 +58,25 @@ type QuickBody = {
   /** Required when momAndMeChildKind is "size". */
   momAndMeChildSize?: string;
   momAndMePreference?: QuickMomAndMePreference;
+  measurementPreferences?: Record<string, string>;
+  measurementLastSavedAt?: Record<string, string>;
 };
 
 type Body = StandardBody | QuickBody;
+
+function mergeMeasurementPreferenceIntoItemsNotes(
+  items: OrderItem[],
+  prefs: Record<string, string> | undefined,
+  lastSavedAt: Record<string, string> | undefined,
+): OrderItem[] {
+  if (!prefs || items.length === 0) return items;
+  const block = buildMeasurementPreferenceOrderNotes(prefs, lastSavedAt);
+  if (!block) return items;
+  const [first, ...rest] = items;
+  const base = first.notes?.trim() ?? "";
+  const nextNotes = base ? `${base}\n\n${block}` : block;
+  return [{ ...first, notes: nextNotes }, ...rest];
+}
 
 function isValidIsoDate(d: string): boolean {
   const t = d.trim();
@@ -188,6 +208,16 @@ export async function POST(request: Request) {
   if (!validateOrderItems(items)) {
     return NextResponse.json({ ok: false, error: "invalid_items" }, { status: 400 });
   }
+
+  const measurementPrefs =
+    body.measurementPreferences && typeof body.measurementPreferences === "object"
+      ? body.measurementPreferences
+      : undefined;
+  const measurementLastAt =
+    body.measurementLastSavedAt && typeof body.measurementLastSavedAt === "object"
+      ? body.measurementLastSavedAt
+      : undefined;
+  items = mergeMeasurementPreferenceIntoItemsNotes(items, measurementPrefs, measurementLastAt);
 
   const quickFlow = body.quick === true;
   const quickPriority =

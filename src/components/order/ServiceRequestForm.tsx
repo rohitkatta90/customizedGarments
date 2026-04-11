@@ -5,12 +5,13 @@ import { useCallback, useEffect, useMemo, useState, type ChangeEvent } from "rea
 
 import { clampIsoDateToMin, todayLocalISODate } from "@/lib/date-today";
 
+import { MeasurementLookupPanel } from "@/components/measurements/MeasurementLookupPanel";
 import {
-  MeasurementLookupPanel,
-  type MeasurementSelectionPayload,
-} from "@/components/measurements/MeasurementLookupPanel";
+  formatMeasurementsForWhatsApp,
+  preferenceCodeFromChoice,
+} from "@/lib/measurements/format-whatsapp";
+import type { MeasurementSelectionPayload } from "@/lib/measurements/format-whatsapp";
 import { Button } from "@/components/ui/Button";
-import { formatMeasurementsForWhatsApp } from "@/lib/measurements/format-whatsapp";
 import {
   createAlterationItem,
   createItemForService,
@@ -178,8 +179,14 @@ export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Pr
 
   const validation = useMemo(
     () =>
-      validateServiceRequestForm(customerName, customerPhone, items, requestValidationMessages),
-    [customerName, customerPhone, items],
+      validateServiceRequestForm(
+        customerName,
+        customerPhone,
+        items,
+        requestValidationMessages,
+        measurementPayload,
+      ),
+    [customerName, customerPhone, items, measurementPayload],
   );
 
   const showErrors = submitAttempted && !validation.ok;
@@ -258,6 +265,20 @@ export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Pr
           customerPhone: customer.phone,
           requestedDeliveryDate: customer.requestedDeliveryDate,
           items,
+          ...(measurementPayload?.selectionComplete
+            ? {
+                measurementPreferences: Object.fromEntries(
+                  measurementPayload.items.map((i) => {
+                    const ch = measurementPayload.choices[i.garmentType];
+                    return [
+                      i.garmentType,
+                      preferenceCodeFromChoice(ch === "update" ? "update" : "use"),
+                    ];
+                  }),
+                ) as Record<string, "USE_SAVED" | "UPDATE_REQUIRED">,
+                measurementLastSavedAt: measurementPayload.lastMeasurementDatesByGarment,
+              }
+            : {}),
         }),
       });
     } catch {
@@ -265,8 +286,9 @@ export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Pr
     }
 
     const measurementAppend =
-      measurementPayload &&
-      formatMeasurementsForWhatsApp(measurementPayload.items, measurementPayload.choices);
+      measurementPayload?.selectionComplete
+        ? formatMeasurementsForWhatsApp(measurementPayload.items, measurementPayload.choices)
+        : null;
     const msg = buildMultiItemOrderMessage(order, catalog, customer, {
       measurementAppend: measurementAppend ?? undefined,
     });
@@ -386,7 +408,15 @@ export function ServiceRequestForm({ catalog, categoryLabel, pricingNotice }: Pr
             <FieldError id="err-cust-phone" message={showErrors ? validation.customer.phone : undefined} />
           </div>
           <div className="sm:col-span-2">
-            <MeasurementLookupPanel phone={customerPhone} onSelectionChange={setMeasurementPayload} />
+            <MeasurementLookupPanel
+              phone={customerPhone}
+              onSelectionChange={setMeasurementPayload}
+              autoLookup
+            />
+            <FieldError
+              id="err-measurement-choice"
+              message={showErrors ? validation.customer.measurement : undefined}
+            />
           </div>
         </div>
       </div>

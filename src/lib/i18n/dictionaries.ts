@@ -715,6 +715,14 @@ export const en: Dictionary = {
       "Don’t see your idea here? Tell us what you have in mind — we love stitching one-of-a-kind pieces made just for you.",
     searchNoResultsCta: "Start a stitching request",
     searchClearFilters: "Clear search & show all categories",
+    herStylesMomMeHint: "Also available as Mom & Me sets 💖",
+    littlePrincessMomMeHint: "Matching with mom available 💖",
+    momMeMomentsTitle: "Mom & Me Moments",
+    momMeMomentsBody:
+      "Matching outfits for you and your little one — made for celebrations, photos, and memories you’ll keep forever.",
+    momMeMomentsCta: "Explore Mom & Me",
+    momMeMomentsImageAlt:
+      "Mother and daughter in matching dusty rose tiered dresses with floral embroidery, walking outdoors together",
   },
   terms: {
     pageTitle: "Terms & friendly ordering notes",

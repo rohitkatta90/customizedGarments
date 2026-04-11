@@ -3,6 +3,8 @@ export const measurementUiCopy = {
   sectionTitle: "Saved measurements",
   sectionHint:
     "If you’ve shared your measurements with us before, we can pull your latest numbers here.",
+  autoLookupHint:
+    "We check automatically a few moments after your number looks complete — no extra button needed.",
   findButton: "Find my measurements",
   searching: "Looking for your saved measurements…",
   phoneStaleHint: "Number changed — tap Find again to refresh for this number.",
@@ -18,8 +20,11 @@ export const measurementUiCopy = {
     `Last saved on ${date} — would you like to use them?`,
   foundSublineMulti:
     "Here are your latest saves by garment — would you like to use them?",
-  useThese: "Use these",
-  updateMeasurements: "Update measurements",
+  useSavedMeasurements: "Use saved measurements",
+  updateRemeasure: "Update / re-measure",
+  confirmedUseSaved: "✅ Using your saved measurements",
+  confirmedUpdate: "✏️ You’ll update measurements (during fitting or later)",
+  updateHelperBeforeStitching: "We’ll take or confirm your measurements before stitching.",
   perGarmentSaved: (garment: string, date: string) =>
     `${garment.replace(/_/g, " ")} · last saved ${date}`,
   kidsHint:

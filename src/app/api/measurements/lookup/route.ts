@@ -30,6 +30,22 @@ function rateAllowed(ip: string): boolean {
   return true;
 }
 
+/** Pull a readable reason from googleapis / Gaxios errors for local debugging. */
+function sheetErrorMessage(e: unknown): string {
+  if (e instanceof Error && e.message) return e.message;
+  if (typeof e === "object" && e !== null && "response" in e) {
+    const res = (e as { response?: { data?: unknown } }).response;
+    const data = res?.data as
+      | { error?: { message?: string; errors?: { message?: string }[] } }
+      | undefined;
+    const g = data?.error;
+    if (g?.message) return g.message;
+    const first = g?.errors?.[0]?.message;
+    if (first) return first;
+  }
+  return String(e);
+}
+
 export type MeasurementLookupResponse =
   | {
       ok: true;
@@ -81,12 +97,15 @@ export async function POST(request: Request): Promise<NextResponse<MeasurementLo
       latestByGarment,
     });
   } catch (e) {
-    console.error("[measurements/lookup]", e);
+    const detail = sheetErrorMessage(e);
+    console.error("[measurements/lookup]", detail, e);
+    const expose =
+      process.env.NODE_ENV === "development" || process.env.MEASUREMENT_LOOKUP_DEBUG === "1";
     return NextResponse.json(
       {
         ok: false,
         error: "sheet_error",
-        message: process.env.NODE_ENV === "development" ? String(e) : undefined,
+        message: expose ? detail : undefined,
       },
       { status: 502 },
     );

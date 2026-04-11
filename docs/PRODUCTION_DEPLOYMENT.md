@@ -79,8 +79,11 @@ Only if you use **Find my measurements** / `POST /api/measurements/lookup`:
 | `GOOGLE_SHEETS_PRIVATE_KEY` | PEM or full JSON string per [MEASUREMENTS_GOOGLE_SHEETS.md](./MEASUREMENTS_GOOGLE_SHEETS.md). |
 | `GOOGLE_SHEETS_RANGE` / `GOOGLE_SHEETS_TAB_NAME` | As documented; defaults exist. |
 | `GOOGLE_SHEETS_CACHE_TTL_SECONDS` | Optional. |
+| `MEASUREMENT_LOOKUP_DEBUG` | Optional. Set `1` only when debugging (extra logging). Omit in production. |
 
 If unset, measurement lookup returns “not configured” — site otherwise works.
+
+**Production vs staging (same variable names, different values):** You do **not** need new env *names* for prod. In Vercel, set **Production** and **Preview** environments separately: e.g. Preview can point `GOOGLE_SHEETS_SPREADSHEET_ID` at a **copy** of the sheet or a **staging tab** (`GOOGLE_SHEETS_RANGE` like `Staging!A:T`) so test numbers never touch the live master sheet. For **orders**, prefer a **separate Firebase project** (or at least separate Firestore database) for staging vs production so test checkouts do not mix with real customers. The **orders webhook** (`ORDERS_SHEET_WEBHOOK_URL`) should target a **staging** Make/Zapier scenario on Preview and the **live** sheet/automation in Production.
 
 ---
 

@@ -48,6 +48,13 @@ const GALLERY_AUDIENCE = {
   },
 } as const;
 
+/** Catalog reference: mom & daughter matching western dresses (warm, premium feel). */
+const MOM_ME_MOMENTS_IMAGE = {
+  src: "/images/catalog/her-styles-western/mom-daughter-dusty-rose-tiered-embroidery-dresses.png",
+  width: 683,
+  height: 1024,
+} as const;
+
 function formatPageOf(template: string, current: number, total: number): string {
   return template.replace(/\{\{current\}\}/g, String(current)).replace(/\{\{total\}\}/g, String(total));
 }
@@ -172,6 +179,8 @@ export function GalleryClient({ items }: Props) {
         {(Object.keys(GALLERY_AUDIENCE) as CatalogAudience[]).map((key) => {
           const copy = GALLERY_AUDIENCE[key];
           const selected = audience === key;
+          const momMeHint =
+            key === "women" ? g.herStylesMomMeHint : g.littlePrincessMomMeHint;
           return (
             <button
               key={key}
@@ -190,10 +199,59 @@ export function GalleryClient({ items }: Props) {
                 {copy.title}
               </span>
               <p className="mt-2 text-sm leading-relaxed text-muted">{copy.description}</p>
+              <p className="mt-3 text-xs leading-relaxed text-muted/90">{momMeHint}</p>
             </button>
           );
         })}
       </div>
+
+      <section className="mt-8" aria-labelledby="gallery-mom-me-heading">
+        <div className="overflow-hidden rounded-[18px] border border-rose-200/50 bg-gradient-to-br from-[#fdeef2] via-[#fdf8f6] to-[#f7f0eb] shadow-[0_1px_0_rgba(255,255,255,0.65)_inset,0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-8px_rgba(165,85,98,0.14)]">
+          <div className="flex flex-col md:flex-row md:items-stretch">
+            {/* Mobile: image first; md: text left (order-1), image right (order-2) */}
+            <div className="relative order-1 aspect-[5/6] w-full shrink-0 overflow-hidden bg-[#f5e8ec]/40 md:order-2 md:aspect-auto md:w-[min(44%,26rem)] md:max-w-md md:min-h-[15rem] md:self-stretch">
+              <div
+                className="absolute inset-0 bg-gradient-to-t from-[#fdf8f6]/25 via-transparent to-transparent md:bg-gradient-to-l"
+                aria-hidden
+              />
+              <img
+                src={MOM_ME_MOMENTS_IMAGE.src}
+                alt={g.momMeMomentsImageAlt}
+                width={MOM_ME_MOMENTS_IMAGE.width}
+                height={MOM_ME_MOMENTS_IMAGE.height}
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover object-[center_30%] md:h-full md:min-h-[15rem]"
+              />
+            </div>
+            <div className="order-2 flex flex-col justify-center px-6 py-8 sm:px-8 sm:py-9 md:order-1 md:flex-1 md:px-10 md:py-10 lg:pl-12 lg:pr-8 lg:py-11">
+              <h2
+                id="gallery-mom-me-heading"
+                className="font-display text-[1.375rem] font-semibold leading-tight tracking-tight text-foreground sm:text-2xl md:text-[1.75rem] lg:text-3xl"
+              >
+                <span aria-hidden className="mr-2 inline-block translate-y-px">
+                  💖
+                </span>
+                {g.momMeMomentsTitle}
+              </h2>
+              <p className="mt-4 max-w-[26rem] text-sm leading-relaxed text-muted sm:text-base sm:leading-relaxed">
+                {g.momMeMomentsBody}
+              </p>
+              <p className="mt-7 sm:mt-8">
+                <Link
+                  href="/request?momAndMe=1"
+                  className="inline-flex min-h-11 items-center gap-2 rounded-full bg-accent px-6 text-sm font-semibold text-white shadow-md shadow-accent/15 ring-1 ring-white/10 transition hover:bg-accent-dark hover:shadow-lg hover:shadow-accent/20"
+                >
+                  {g.momMeMomentsCta}
+                  <span aria-hidden className="text-base font-medium leading-none">
+                    →
+                  </span>
+                </Link>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <div className="mt-8">
         <label htmlFor="gallery-search" className="mb-2 block text-sm font-medium text-foreground">
