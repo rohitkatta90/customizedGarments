@@ -43,8 +43,8 @@ export function SiteHeader() {
             <img
               src={LOGO_SRC}
               alt={siteConfig.name}
-              width={1408}
-              height={768}
+              width={1024}
+              height={558}
               decoding="async"
               className="h-10 w-auto shrink-0 object-contain transition duration-200 ease-out group-hover:opacity-90 md:h-[calc(1.3*(1.875rem*1.15+0.125rem+1.125rem*1.35))] md:max-h-[5.5rem]"
             />
