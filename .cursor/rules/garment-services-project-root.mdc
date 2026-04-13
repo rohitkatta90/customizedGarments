@@ -1,0 +1,17 @@
+---
+description: Use GarmentServicesProject as the canonical repo root for all work on this app
+alwaysApply: true
+---
+
+# Garment Services — project root
+
+All edits, new files, terminal commands (`cd`, `npm`, `git`), and paths for this product refer to:
+
+**`/Users/rohitkatta/Documents/GarmentServicesProject`**
+
+Do not treat other workspaces (e.g. `specter` or `Downloads` test folders) as the source of truth for this Next.js app unless the user explicitly asks for a one-off copy.
+
+## Brand images
+
+- **Live site asset:** `public/images/radha-creations-logo.png` (referenced from `SiteHeader` as `/images/radha-creations-logo.png`).
+- **Archived master (original export):** `docs/brand/radha-creations-logo-original.png` — keep in sync when replacing the logo; update `width` / `height` on the `<img>` in `src/components/layout/SiteHeader.tsx` to match pixel dimensions.
