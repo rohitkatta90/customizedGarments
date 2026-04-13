@@ -4,7 +4,7 @@ All logo files for this project live **inside this repository** under `GarmentSe
 
 | File | Purpose |
 |------|--------|
-| `docs/brand/radha-creations-logo-original.png` | **Master archive** — full-resolution export from design / remove.bg. Update this when the logo changes. |
+| `docs/brand/radha-creations-logo-original.png` | **Master archive** — full-resolution export (e.g. copy of `RC Logo.png` from Downloads). Update this when the logo changes. |
 | `public/images/radha-creations-logo.png` | **Production file** served by Next.js (`/images/radha-creations-logo.png`). After changing the master, copy it here (or export a web-optimized PNG with the same filename). |
 
 When you replace the logo:
