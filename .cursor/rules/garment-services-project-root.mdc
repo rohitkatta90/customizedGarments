@@ -14,4 +14,4 @@ Do not treat other workspaces (e.g. `specter` or `Downloads` test folders) as th
 ## Brand images
 
 - **Live site asset:** `public/images/radha-creations-logo.png` (referenced from `SiteHeader` as `/images/radha-creations-logo.png`).
-- **Archived master (original export):** `docs/brand/radha-creations-logo-original.png` — keep in sync when replacing the logo; update `width` / `height` on the `<img>` in `src/components/layout/SiteHeader.tsx` to match pixel dimensions.
+- **Archived transparent master:** `docs/brand/radha-creations-logo-transparent.png` — keep in sync when replacing the logo; update `width` / `height` on the `<img>` in `src/components/layout/SiteHeader.tsx` to match pixel dimensions.
