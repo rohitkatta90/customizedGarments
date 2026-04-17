@@ -119,10 +119,13 @@ export function GalleryClient({ items }: Props) {
     [audienceItems, searchQuery],
   );
 
+  /** Girls catalog has no blouses chip; if state still says "blouses", treat as "all" for filtering. */
+  const activeForFilter = audience === "girls" && active === "blouses" ? "all" : active;
+
   const filtered = useMemo(() => {
-    if (active === "all") return searchFiltered;
-    return searchFiltered.filter((i) => i.category === active);
-  }, [active, searchFiltered]);
+    if (activeForFilter === "all") return searchFiltered;
+    return searchFiltered.filter((i) => i.category === activeForFilter);
+  }, [activeForFilter, searchFiltered]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
   const currentPage = Math.min(page, totalPages - 1);
@@ -130,23 +133,25 @@ export function GalleryClient({ items }: Props) {
   const pageItems = filtered.slice(start, start + pageSize);
 
   useEffect(() => {
-    setPage(0);
+    queueMicrotask(() => {
+      setPage(0);
+    });
   }, [audience, active, searchQuery]);
-
-  useEffect(() => {
-    if (audience === "girls" && active === "blouses") setActive("all");
-  }, [audience, active]);
 
   useEffect(() => {
     const prev = prevPageSizeRef.current;
     if (prev !== pageSize) {
       prevPageSizeRef.current = pageSize;
-      setPage((p) => Math.floor((p * prev) / pageSize));
+      queueMicrotask(() => {
+        setPage((p) => Math.floor((p * prev) / pageSize));
+      });
     }
   }, [pageSize]);
 
   useEffect(() => {
-    setPage((p) => Math.min(p, Math.max(0, totalPages - 1)));
+    queueMicrotask(() => {
+      setPage((p) => Math.min(p, Math.max(0, totalPages - 1)));
+    });
   }, [totalPages]);
 
   function labelFor(cat: CatalogCategory): string {
@@ -273,7 +278,7 @@ export function GalleryClient({ items }: Props) {
           type="button"
           onClick={() => setActive("all")}
           className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-            active === "all"
+            activeForFilter === "all"
               ? "bg-accent text-white shadow-sm"
               : "bg-white text-muted ring-1 ring-border hover:text-foreground"
           }`}
@@ -286,7 +291,7 @@ export function GalleryClient({ items }: Props) {
             type="button"
             onClick={() => setActive(c)}
             className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-              active === c
+              activeForFilter === c
                 ? "bg-accent text-white shadow-sm"
                 : "bg-white text-muted ring-1 ring-border hover:text-foreground"
             }`}

@@ -34,8 +34,6 @@ export function HeroCarousel({ items, fallbackSrc, fallbackAlt }: Props) {
     return () => window.clearInterval(id);
   }, [len]);
 
-  const current = slides[index]!;
-
   return (
     <div className="relative w-full">
       <div className="relative aspect-[4/5] w-full overflow-hidden rounded-2xl border border-border bg-card shadow-[0_16px_48px_-12px_rgba(43,43,43,0.18)]">

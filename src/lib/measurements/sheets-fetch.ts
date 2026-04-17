@@ -98,11 +98,22 @@ export function normalizeGoogleServiceAccountPrivateKey(raw: string): string {
  * Read-only Sheets access. Share the spreadsheet with the service account email
  * (Viewer is enough). Env mirrors Firebase-style credentials.
  */
+/** Non-secret booleans: which vars are non-empty after trim (for prod debugging `configured: false`). */
+export function measurementSheetsEnvPresence(): {
+  hasSpreadsheetId: boolean;
+  hasClientEmail: boolean;
+  hasPrivateKey: boolean;
+} {
+  return {
+    hasSpreadsheetId: Boolean(process.env.GOOGLE_SHEETS_SPREADSHEET_ID?.trim()),
+    hasClientEmail: Boolean(process.env.GOOGLE_SHEETS_CLIENT_EMAIL?.trim()),
+    hasPrivateKey: Boolean(process.env.GOOGLE_SHEETS_PRIVATE_KEY?.trim()),
+  };
+}
+
 export function isMeasurementSheetsConfigured(): boolean {
-  const id = process.env.GOOGLE_SHEETS_SPREADSHEET_ID?.trim();
-  const email = process.env.GOOGLE_SHEETS_CLIENT_EMAIL?.trim();
-  const key = process.env.GOOGLE_SHEETS_PRIVATE_KEY?.trim();
-  return Boolean(id && email && key);
+  const p = measurementSheetsEnvPresence();
+  return p.hasSpreadsheetId && p.hasClientEmail && p.hasPrivateKey;
 }
 
 async function getAuthorizedSheetsClient() {

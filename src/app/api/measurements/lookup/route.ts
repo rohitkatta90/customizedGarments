@@ -2,7 +2,10 @@ import { NextResponse } from "next/server";
 
 import { getCachedMeasurementRecords } from "@/lib/measurements/cache";
 import { latestPerGarmentForPhone } from "@/lib/measurements/sheet-parse";
-import { isMeasurementSheetsConfigured } from "@/lib/measurements/sheets-fetch";
+import {
+  isMeasurementSheetsConfigured,
+  measurementSheetsEnvPresence,
+} from "@/lib/measurements/sheets-fetch";
 import type { LatestMeasurementByGarment } from "@/lib/measurements/types";
 import { isPhonePlausible, normalizePhone } from "@/lib/orders/phone";
 
@@ -58,6 +61,12 @@ export type MeasurementLookupResponse =
       ok: true;
       configured: false;
       found: false;
+      /** Which env vars are non-empty (no secret values). Shown when Sheets is not wired. */
+      configurationStatus?: {
+        hasSpreadsheetId: boolean;
+        hasClientEmail: boolean;
+        hasPrivateKey: boolean;
+      };
     }
   | {
       ok: false;
@@ -83,7 +92,14 @@ export async function POST(request: Request): Promise<NextResponse<MeasurementLo
   }
 
   if (!isMeasurementSheetsConfigured()) {
-    return NextResponse.json({ ok: true, configured: false, found: false });
+    const configurationStatus = measurementSheetsEnvPresence();
+    console.warn("[measurements/lookup] sheets env incomplete", configurationStatus);
+    return NextResponse.json({
+      ok: true,
+      configured: false,
+      found: false,
+      configurationStatus,
+    });
   }
 
   try {

@@ -103,7 +103,8 @@ Optional: `GOOGLE_SHEETS_CACHE_TTL_SECONDS` (30–3600; default 300).
 
 | Scenario | Behaviour |
 |----------|-----------|
-| Env not set | `configured: false` — UI explains lookup isn’t wired |
+| Env not set | `configured: false` — UI explains lookup isn’t wired. **`POST /api/measurements/lookup`** also returns **`configurationStatus`**: `{ hasSpreadsheetId, hasClientEmail, hasPrivateKey }` (booleans only) so you can see which vars are empty on the server. **Vercel:** each variable must be enabled for **Production** (not only Preview), then **redeploy**. |
+
 | Invalid phone | `400` from API; button disabled client-side when implausible |
 | Sheet errors | `502` + generic message (details in dev logs) |
 | Rate limit | `429` after burst per IP (in-memory; resets per server instance) |

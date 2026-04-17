@@ -36,7 +36,9 @@ export function PaymentsDashboard() {
   }, [date]);
 
   useEffect(() => {
-    void load();
+    queueMicrotask(() => {
+      void load();
+    });
   }, [load]);
 
   return (

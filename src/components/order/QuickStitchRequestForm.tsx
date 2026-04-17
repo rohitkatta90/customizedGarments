@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 
 import { addCalendarDaysLocal, clampIsoDateToMin, todayLocalISODate } from "@/lib/date-today";
 
@@ -45,6 +45,20 @@ const inputBase =
   "w-full rounded-2xl border bg-background px-4 py-3.5 text-base outline-none transition-colors focus:ring-2 sm:text-sm";
 const inputNormal = "border-border ring-accent focus:ring-2";
 const inputInvalid = "border-red-500 ring-1 ring-red-500/40 focus:border-red-500 focus:ring-red-500";
+
+function subscribeReducedMotion(cb: () => void) {
+  const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+}
+
+function getReducedMotionSnapshot() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function getReducedMotionServerSnapshot() {
+  return false;
+}
 
 function CalendarGlyph({ className }: { className?: string }) {
   return (
@@ -94,12 +108,17 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
   const router = useRouter();
   const searchParams = useSearchParams();
   const catalogIdFromUrl = searchParams.get("catalog") ?? undefined;
-  const serviceFromUrl = searchParams.get("service") === "alteration" ? "alteration" : "stitching";
   const forKidsFromUrl = searchParams.get("for") === "kids";
 
   const [orderId] = useState(newOrderId);
   const [step, setStep] = useState(1);
-  const [serviceType, setServiceType] = useState<QuickServiceType>(serviceFromUrl);
+  const [serviceType, setServiceType] = useState<QuickServiceType>(() =>
+    searchParams.get("for") === "kids"
+      ? "stitching"
+      : searchParams.get("service") === "alteration"
+        ? "alteration"
+        : "stitching",
+  );
   const [pieces, setPieces] = useState(1);
   const [deliveryDate, setDeliveryDate] = useState("");
   const [notes, setNotes] = useState("");
@@ -111,7 +130,7 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
   const [finalizing, setFinalizing] = useState(false);
   const [childAgeInput, setChildAgeInput] = useState("");
   const [childAgeError, setChildAgeError] = useState(false);
-  const [kidsWearIntent, setKidsWearIntent] = useState(forKidsFromUrl);
+  const [kidsWearIntent, setKidsWearIntent] = useState(() => searchParams.get("for") === "kids");
   const [momAndMeEnabled, setMomAndMeEnabled] = useState(false);
   const [momAndMeChildKind, setMomAndMeChildKind] = useState<QuickMomAndMeChildKind | null>(null);
   const [momAndMeAgeInput, setMomAndMeAgeInput] = useState("");
@@ -135,8 +154,10 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
 
   useEffect(() => {
     if (!forKidsFromUrl) return;
-    setServiceType("stitching");
-    setKidsWearIntent(true);
+    queueMicrotask(() => {
+      setServiceType("stitching");
+      setKidsWearIntent(true);
+    });
   }, [forKidsFromUrl]);
 
   const isKidsPath = kidsWearIntent && serviceType === "stitching";
@@ -168,36 +189,39 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
 
   useEffect(() => {
     if (!isKidsPath) {
-      setChildAgeInput("");
-      setChildAgeError(false);
+      queueMicrotask(() => {
+        setChildAgeInput("");
+        setChildAgeError(false);
+      });
     }
   }, [isKidsPath]);
 
   useEffect(() => {
     if (!isAdultStitchPath) {
-      setMomAndMeEnabled(false);
-      setMomAndMeChildKind(null);
-      setMomAndMeAgeInput("");
-      setMomAndMeSizeInput("");
-      setMomAndMePreference(null);
-      setMomAndMeError(false);
+      queueMicrotask(() => {
+        setMomAndMeEnabled(false);
+        setMomAndMeChildKind(null);
+        setMomAndMeAgeInput("");
+        setMomAndMeSizeInput("");
+        setMomAndMePreference(null);
+        setMomAndMeError(false);
+      });
     }
   }, [isAdultStitchPath]);
 
   useEffect(() => {
     if (!isAdultStitchPath || searchParams.get("momAndMe") !== "1" || momMeUrlAppliedRef.current) return;
     momMeUrlAppliedRef.current = true;
-    setMomAndMeEnabled(true);
+    queueMicrotask(() => {
+      setMomAndMeEnabled(true);
+    });
   }, [isAdultStitchPath, searchParams]);
 
-  const [reduceMotion, setReduceMotion] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReduceMotion(mq.matches);
-    const onChange = () => setReduceMotion(mq.matches);
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, []);
+  const reduceMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotionSnapshot,
+    getReducedMotionServerSnapshot,
+  );
 
   const today = useMemo(() => todayLocalISODate(), []);
   const earliestISO = useMemo(() => addCalendarDaysLocal(today, EARLIEST_LEAD_DAYS), [today]);
@@ -209,7 +233,11 @@ export function QuickStitchRequestForm({ catalog, categoryLabel, pricingNotice }
   useEffect(() => {
     if (step !== 3 || !deliveryDate.trim()) return;
     const clamped = clampIsoDateToMin(deliveryDate, earliestISO);
-    if (clamped !== deliveryDate) setDeliveryDate(clamped);
+    if (clamped !== deliveryDate) {
+      queueMicrotask(() => {
+        setDeliveryDate(clamped);
+      });
+    }
   }, [step, deliveryDate, earliestISO]);
 
   const itemCount = piecesToQuickCount(pieces);

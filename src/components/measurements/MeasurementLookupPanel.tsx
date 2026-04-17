@@ -87,7 +87,9 @@ export function MeasurementLookupPanel({
   const stale = Boolean(snapDigits && digits !== snapDigits);
 
   const onSelectionChangeRef = useRef(onSelectionChange);
-  onSelectionChangeRef.current = onSelectionChange;
+  useEffect(() => {
+    onSelectionChangeRef.current = onSelectionChange;
+  }, [onSelectionChange]);
 
   const lookup = useCallback(async () => {
     if (!isPhonePlausible(phone)) return;
@@ -151,13 +153,15 @@ export function MeasurementLookupPanel({
   useEffect(() => {
     if (valid) return;
     abortRef.current?.abort();
-    setPhase("idle");
-    setConfigured(true);
-    setItems([]);
-    setChoices({});
-    setSoftIssue(null);
-    setSnapDigits("");
-    onSelectionChangeRef.current(null);
+    queueMicrotask(() => {
+      setPhase("idle");
+      setConfigured(true);
+      setItems([]);
+      setChoices({});
+      setSoftIssue(null);
+      setSnapDigits("");
+      onSelectionChangeRef.current(null);
+    });
   }, [valid]);
 
   useEffect(() => {
