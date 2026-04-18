@@ -385,6 +385,195 @@
     }
   },
   {
+    "id": "bl-001",
+    "audience": "women",
+    "category": "blouses",
+    "title": "Teal & gold embroidered saree blouse — back with pearl dori",
+    "description": "Rich teal / peacock silk-finish blouse with dense gold floral embroidery: deep U-shaped back with tie-up dori, pearl and bead latkans, long embroidered sleeves. Ethnic party or festive pairing with saree or lehenga. Filter: Blouses.",
+    "searchKeywords": [
+      "blouse",
+      "saree blouse",
+      "ethnic",
+      "embroidered",
+      "teal",
+      "gold",
+      "back design",
+      "dori",
+      "traditional"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-blouses/ethnic-teal-gold-embroidered-blouse-back-pearl-dori.png",
+      "alt": "Back view of teal gold-embroidered saree blouse with U-cut, pearl-trimmed dori and bow detail",
+      "width": 1024,
+      "height": 886
+    }
+  },
+  {
+    "id": "bl-002",
+    "audience": "women",
+    "category": "blouses",
+    "title": "Navy silk blouse — circular keyhole back, gold zari borders",
+    "description": "Deep navy textured silk blouse with a bold circular keyhole cutout on the back, red piping, tie-up dori with tassels, and ornate gold zari borders on sleeves and hem — classic saree blouse for ceremonies. Filter: Blouses.",
+    "searchKeywords": [
+      "blouse",
+      "saree blouse",
+      "navy",
+      "keyhole back",
+      "zari",
+      "ethnic",
+      "traditional",
+      "silk"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-blouses/ethnic-navy-gold-zari-blouse-circular-keyhole-back.png",
+      "alt": "Back view of navy saree blouse with circular cutout, gold brocade borders, and decorative dori",
+      "width": 978,
+      "height": 1024
+    }
+  },
+  {
+    "id": "bl-003",
+    "audience": "women",
+    "category": "blouses",
+    "title": "Maroon printed blouse — scalloped U-back & puff sleeves",
+    "description": "Maroon base with subtle gold geometric print: dramatic U-shaped back with scalloped edge and bead drops, short puff sleeves with gathered cuffs — festive saree blouse reference. Filter: Blouses.",
+    "searchKeywords": [
+      "blouse",
+      "maroon",
+      "puff sleeves",
+      "cutout back",
+      "printed",
+      "ethnic",
+      "festive",
+      "saree blouse"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-blouses/ethnic-maroon-gold-print-blouse-u-cut-puff-sleeves-back.png",
+      "alt": "Back view of maroon gold-print saree blouse with U-cut back, bead trim, and puff sleeves",
+      "width": 1024,
+      "height": 905
+    }
+  },
+  {
+    "id": "bl-004",
+    "audience": "women",
+    "category": "blouses",
+    "title": "Gold mirror-work blouses — keyhole & high-neck back designs",
+    "description": "Reference collage: ornate gold-toned saree blouses with mirror work and dense floral embroidery — teardrop keyhole back (top) and larger rounded opening with tassel ties (bottom). High-neck collar and sheer embroidered sleeves. Filter: Blouses.",
+    "searchKeywords": [
+      "blouse",
+      "mirror work",
+      "gold",
+      "embroidery",
+      "keyhole",
+      "bridal",
+      "ethnic",
+      "saree blouse",
+      "collage"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-blouses/ethnic-gold-mirror-work-blouse-back-designs-collage.png",
+      "alt": "Collage of two gold embroidered saree blouse back designs with mirror work and cutouts",
+      "width": 634,
+      "height": 1024
+    }
+  },
+  {
+    "id": "bl-005",
+    "audience": "women",
+    "category": "blouses",
+    "title": "Teal damask blouse — scalloped open back & puff sleeves",
+    "description": "Teal / forest green with gold floral damask: scalloped open-back silhouette, tie-ups with fabric latkans, puff sleeves with ruffled cuffs — designer saree blouse inspiration. Filter: Blouses.",
+    "searchKeywords": [
+      "blouse",
+      "teal",
+      "damask",
+      "scalloped",
+      "puff sleeves",
+      "tassels",
+      "ethnic",
+      "saree blouse"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-blouses/ethnic-teal-gold-damask-scalloped-back-puff-sleeves.png",
+      "alt": "Back view of teal gold damask saree blouse with scalloped cutout and puff sleeves",
+      "width": 878,
+      "height": 1024
+    }
+  },
+  {
+    "id": "bl-006",
+    "audience": "women",
+    "category": "blouses",
+    "title": "Emerald silk blouse — ornate window back & maggam embroidery",
+    "description": "Deep emerald silk with heavy gold zari embroidery, gemstone accents, high-neck band and dramatic window-style back cutout, central dori and statement latkan — bridal / festive maggam-style work. Filter: Blouses.",
+    "searchKeywords": [
+      "blouse",
+      "emerald",
+      "maggam",
+      "zari",
+      "bridal",
+      "embroidered",
+      "saree blouse",
+      "ethnic",
+      "festive"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-blouses/ethnic-emerald-gold-zari-blouse-window-back-maggam.png",
+      "alt": "Back view of emerald green heavily embroidered saree blouse with window cutout and gold details",
+      "width": 732,
+      "height": 1024
+    }
+  },
+  {
+    "id": "bl-007",
+    "audience": "women",
+    "category": "blouses",
+    "title": "Cream embroidered blouse — circular keyhole & multicolour tassels",
+    "description": "Off-white / cream blouse with pink, teal, and gold floral-paisley embroidery, circular keyhole back with cord ties and long multicolour tassels, gold waist belt visible — occasion saree styling. Filter: Blouses.",
+    "searchKeywords": [
+      "blouse",
+      "cream",
+      "embroidered",
+      "paisley",
+      "tassels",
+      "keyhole",
+      "ethnic",
+      "saree blouse",
+      "festive"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-blouses/ethnic-cream-floral-paisley-blouse-keyhole-tassels-back.png",
+      "alt": "Back view of cream floral-embroidered saree blouse with circular cutout and colourful tassel latkans",
+      "width": 847,
+      "height": 1024
+    }
+  },
+  {
+    "id": "bl-008",
+    "audience": "women",
+    "category": "blouses",
+    "title": "Light pink blouse — sheer floral back with pearl buttons",
+    "description": "Soft light pink / mauve saree blouse: sheer mesh upper back with white floral embroidery, vertical row of fabric-covered buttons, elbow sleeves fully embroidered — elegant reception or wedding guest look. Filter: Blouses.",
+    "searchKeywords": [
+      "blouse",
+      "pink",
+      "sheer",
+      "embroidery",
+      "pearl",
+      "buttons",
+      "saree blouse",
+      "ethnic",
+      "bridal"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-blouses/ethnic-light-pink-sheer-floral-blouse-pearl-buttons-back.png",
+      "alt": "Back view of light pink embroidered saree blouse with sheer panel and pearl-style buttons",
+      "width": 812,
+      "height": 1024
+    }
+  },
+  {
     "id": "gp-005",
     "audience": "girls",
     "category": "skirt-top",
