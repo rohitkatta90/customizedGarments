@@ -66,6 +66,8 @@ export type Dictionary = {
     mobileTeaserLine1After: string;
     /** Mobile-only teaser second paragraph */
     mobileTeaserLine2: string;
+    /** Footer link below grid → /gallery */
+    exploreMore: string;
   };
   stickyCta: {
     whatsapp: string;

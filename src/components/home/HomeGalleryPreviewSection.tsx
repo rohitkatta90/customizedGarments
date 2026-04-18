@@ -30,7 +30,7 @@ function categoryLabel(category: CatalogCategory, dict: Dictionary) {
 export async function HomeGalleryPreviewSection({ items }: Props) {
   const dict = await getDictionary();
   const s = dict.homeGalleryPreview;
-  const slice = items.slice(0, 5);
+  const slice = items;
   const showDesktop = slice.length > 0;
 
   return (
@@ -109,7 +109,7 @@ export async function HomeGalleryPreviewSection({ items }: Props) {
                 href="/gallery"
                 className="text-sm font-semibold text-accent-dark underline-offset-4 hover:underline"
               >
-                {dict.hero.explore} →
+                {s.exploreMore} →
               </Link>
             </p>
           </div>

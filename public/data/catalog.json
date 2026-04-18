@@ -3,13 +3,24 @@
     "id": "ku-003",
     "audience": "women",
     "category": "kurtis",
-    "title": "Powder blue embroidered kurti & plazo set",
-    "description": "Sleeveless kurti with dense white floral embroidery, matching wide-leg plazo (palazzo), and a sheer dupatta with lace trim — soft blue-grey, party or festive.",
-    "searchKeywords": ["kurti", "plazo"],
+    "title": "Pale grey–blue embroidered kurti & plazo with dupatta",
+    "description": "Three-piece ethnic set in a cool pale grey / dusty blue: sleeveless knee-length kurta with high round neck, dense white floral embroidery on the bodice and scalloped / beaded hem; very wide-leg matching plazo and a sheer dupatta with beaded trim draped over the arms. Indoor or festive styling. Filter: Kurtis.",
+    "searchKeywords": [
+      "kurti",
+      "plazo",
+      "palazzo",
+      "dupatta",
+      "sleeveless",
+      "embroidery",
+      "grey",
+      "blue",
+      "ethnic",
+      "festive"
+    ],
     "image": {
-      "src": "/images/catalog/her-styles-ethnic/kurti-plazo-powder-blue-embroidery.png",
-      "alt": "Woman in powder blue embroidered sleeveless kurti with matching plazo trousers and dupatta",
-      "width": 804,
+      "src": "/images/catalog/her-styles-ethnic/kurti-plazo-pale-grey-blue-white-embroidery-dupatta.png",
+      "alt": "Woman in pale grey-blue embroidered sleeveless kurti with wide palazzo trousers and sheer dupatta",
+      "width": 657,
       "height": 1024
     }
   },
@@ -45,24 +56,26 @@
     "id": "ku-006",
     "audience": "women",
     "category": "kurtis",
-    "title": "Navy sequin short kurti & draped lungi skirt",
-    "description": "Two-piece party set in deep navy: short kurti with V-neck, long sleeves, and all-over geometric sequin embroidery, mirror-style teardrop fringe along the hem; paired with a matching satin-finish draped lungi skirt with front overlap and tulip hem. Filter: Kurtis.",
+    "title": "Navy sequin peplum kurti & draped lungi skirt",
+    "description": "Two-piece party set in deep navy: peplum-style kurti with V-neck, long sleeves, and all-over geometric sequin work in a diamond lattice on a sheer base, with silver teardrop fringe along the peplum hem and sleeve cuffs; paired with a matching satin-finish draped lungi skirt. Filter: Kurtis.",
     "searchKeywords": [
       "lungi",
       "short kurti",
       "kurti",
+      "peplum",
       "navy",
       "sequin",
       "embroidered",
+      "fringe",
       "draped skirt",
       "party",
       "festive",
       "ethnic"
     ],
     "image": {
-      "src": "/images/catalog/her-styles-ethnic/navy-sequin-short-kurti-lungi-skirt.png",
-      "alt": "Woman in navy blue sequined short kurti with mirror fringe hem and matching draped lungi-style skirt",
-      "width": 433,
+      "src": "/images/catalog/her-styles-ethnic/navy-sequin-peplum-kurti-fringe-draped-lungi-skirt.png",
+      "alt": "Woman in navy blue sequined peplum kurti with fringe hem and matching draped lungi skirt",
+      "width": 732,
       "height": 1024
     }
   },
@@ -570,6 +583,148 @@
       "src": "/images/catalog/her-styles-blouses/ethnic-light-pink-sheer-floral-blouse-pearl-buttons-back.png",
       "alt": "Back view of light pink embroidered saree blouse with sheer panel and pearl-style buttons",
       "width": 812,
+      "height": 1024
+    }
+  },
+  {
+    "id": "gc-001",
+    "audience": "women",
+    "category": "custom-designs",
+    "title": "Pale lime ghagra choli — silver embroidery & dupatta",
+    "description": "Three-piece ghagra / lehenga set in pale lime–pistachio green: sweetheart-neck cropped choli with dense silver-white floral embroidery and sequins; matching full flared skirt with all-over work; sheer dupatta with embellished border — garden party or festive wear. Filter: Custom designs.",
+    "searchKeywords": [
+      "ghagra choli",
+      "ghagra",
+      "lehenga",
+      "lehenga choli",
+      "choli",
+      "dupatta",
+      "indian ethnic",
+      "traditional",
+      "festive",
+      "wedding guest",
+      "embroidered",
+      "lime green",
+      "pastel",
+      "sequin"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-ethnic/ghagra-choli-pale-lime-green-silver-embroidered-dupatta.png",
+      "alt": "Woman in pale lime green embroidered ghagra choli with flared skirt and sheer dupatta outdoors",
+      "width": 693,
+      "height": 1024
+    }
+  },
+  {
+    "id": "gc-002",
+    "audience": "women",
+    "category": "custom-designs",
+    "title": "Maroon & gold floral ghagra choli — kamarband dupatta",
+    "description": "Classic lehenga choli in deep maroon / burgundy with intricate gold floral and vine embroidery; elbow-sleeve choli, voluminous skirt with wide metallic gold hem border, dupatta draped with ornate waist belt (kamarband). Formal bridal-party or reception reference. Filter: Custom designs.",
+    "searchKeywords": [
+      "ghagra choli",
+      "lehenga",
+      "lehenga choli",
+      "maroon",
+      "gold embroidery",
+      "bridal",
+      "wedding",
+      "indian ethnic",
+      "traditional",
+      "dupatta",
+      "kamarband",
+      "festive"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-ethnic/ghagra-choli-maroon-gold-floral-lehenga-kamarband.png",
+      "alt": "Woman in maroon and gold embroidered lehenga choli with dupatta and waist belt",
+      "width": 692,
+      "height": 1024
+    }
+  },
+  {
+    "id": "gc-003",
+    "audience": "women",
+    "category": "custom-designs",
+    "title": "Sage mint ghagra choli — full gold embroidery (set)",
+    "description": "Pale sage / mint green three-piece ghagra choli on mannequin: cropped sweetheart choli with cap sleeves and dense gold-silver embroidery; high-waist full umbrella skirt with panelled work and heavy hem border; sheer dupatta with scalloped border — festive or sangeet-style reference. Filter: Custom designs.",
+    "searchKeywords": [
+      "ghagra choli",
+      "lehenga",
+      "lehenga choli",
+      "sage green",
+      "mint green",
+      "embroidered lehenga",
+      "indian ethnic",
+      "traditional",
+      "festive",
+      "wedding guest",
+      "dupatta",
+      "bridal wear"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-ethnic/ghagra-choli-sage-mint-green-embroidered-mannequin.png",
+      "alt": "Sage mint green embroidered ghagra choli set displayed on mannequin",
+      "width": 711,
+      "height": 1024
+    }
+  },
+  {
+    "id": "gc-004",
+    "audience": "women",
+    "category": "custom-designs",
+    "title": "Dusty rose peplum choli & sequin lehenga skirt",
+    "description": "Two-piece ghagra-style look in blush / dusty rose: sleeveless peplum choli with high neck and dense champagne-silver embroidery and mirror-style accents; flowing A-line skirt in sheer layers with light sequin sparkle — outdoor event or cocktail-ethnic reference. Filter: Custom designs.",
+    "searchKeywords": [
+      "ghagra choli",
+      "lehenga",
+      "lehenga choli",
+      "peplum",
+      "dusty rose",
+      "blush pink",
+      "embroidered",
+      "indian ethnic",
+      "pakistani fashion",
+      "wedding guest",
+      "festive",
+      "sequin",
+      "mirror work",
+      "ethnic two piece"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-ethnic/ghagra-choli-dusty-rose-peplum-choli-sequin-skirt.png",
+      "alt": "Woman in dusty rose peplum choli with embellished full skirt in outdoor setting",
+      "width": 715,
+      "height": 1024
+    }
+  },
+  {
+    "id": "sh-001",
+    "audience": "women",
+    "category": "custom-designs",
+    "title": "Mint green embroidered sharara set — kurta, tiered sharara & dupatta",
+    "description": "Three-piece sharara suit in soft mint / seafoam green: thigh-length sleeveless short kurta with square neckline and dense gold-silver floral embroidery; wide tiered sharara pants with embroidered mid-thigh band and heavy scalloped hem; sheer dupatta with thick border and sequin buttis — festive or wedding ethnic reference. Filter: Custom designs.",
+    "searchKeywords": [
+      "sharara",
+      "sharara set",
+      "mint green sharara",
+      "embroidered sharara",
+      "kurta sharara",
+      "dupatta",
+      "tiered pants",
+      "flared pants",
+      "sleeveless kurta",
+      "festive wear",
+      "wedding ethnic",
+      "indian ethnic",
+      "pastel",
+      "sequin",
+      "beadwork"
+    ],
+    "image": {
+      "src": "/images/catalog/her-styles-ethnic/sharara-mint-green-embroidered-kurta-tiered-pants-dupatta.png",
+      "alt": "Woman in mint green embroidered sharara set with short kurta, tiered flared pants, and sheer dupatta",
+      "width": 702,
       "height": 1024
     }
   },

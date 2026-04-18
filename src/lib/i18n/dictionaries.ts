@@ -56,13 +56,14 @@ export const en: Dictionary = {
     ctaWhatsapp: "Chat on WhatsApp",
   },
   homeGalleryPreview: {
-    title: "Stitched outfits you can start from",
+    title: "Designs you can start from",
     subtitle: "Every piece is made to your measurements — these are conversation starters.",
     mobileTeaserLine1Before:
       "When you're thinking about your next outfit, explore our ",
     mobileTeaserLine1After: " for ideas you'll love.",
     mobileTeaserLine2:
       "Save what speaks to you, share it with us, and we'll help bring it to life—tailored just for you.",
+    exploreMore: "Explore more",
   },
   stickyCta: {
     whatsapp: "Start on WhatsApp 💬",

@@ -27,7 +27,7 @@ export async function Hero({ previewItems }: Props) {
   const dict = await getDictionary();
   const wa = buildWhatsAppUrl(dict.wa.hero.replace("{{name}}", siteConfig.name));
 
-  const ordered = sortWomenFirst(previewItems).slice(0, 5);
+  const ordered = sortWomenFirst(previewItems);
   const heroAlt = ordered[0]?.image.alt ?? dict.hero.imageAria;
 
   return (

@@ -15,17 +15,10 @@ import { StickyMobileCta } from "@/components/home/StickyMobileCta";
 import { TestimonialsPreview } from "@/components/home/TestimonialsPreview";
 import { Button } from "@/components/ui/Button";
 import { getCatalog, getReviews } from "@/lib/data";
+import { buildGalleryPreviewStripItems, buildHomePreviewItems } from "@/lib/homePreviewCatalog";
 import { getDictionary } from "@/lib/i18n/server";
 import { siteConfig, telHref } from "@/lib/site";
-import type { CatalogItem, Review } from "@/lib/types";
-
-function womenFirstCatalog(catalog: CatalogItem[]) {
-  return [...catalog].sort((a, b) => {
-    const ag = a.audience === "girls" ? 1 : 0;
-    const bg = b.audience === "girls" ? 1 : 0;
-    return ag - bg;
-  });
-}
+import type { Review } from "@/lib/types";
 
 export default async function HomePage() {
   const [reviews, catalog, dict] = await Promise.all([
@@ -33,13 +26,15 @@ export default async function HomePage() {
     getCatalog(),
     getDictionary(),
   ]);
-  const previewItems = womenFirstCatalog(catalog).slice(0, 5);
+  const heroPreviewItems = buildHomePreviewItems(catalog);
+  const heroIds = new Set(heroPreviewItems.map((item) => item.id));
+  const galleryPreviewItems = buildGalleryPreviewStripItems(catalog, heroIds);
 
   return (
     <>
       <div className="pb-[calc(3.75rem+env(safe-area-inset-bottom))] md:pb-0">
-        <Hero previewItems={previewItems} />
-        <HomeGalleryPreviewSection items={previewItems} />
+        <Hero previewItems={heroPreviewItems} />
+        <HomeGalleryPreviewSection items={galleryPreviewItems} />
         <HomeQuickActionsSection />
         <HomeEmotionalSection />
         <HomeServicesSection />
